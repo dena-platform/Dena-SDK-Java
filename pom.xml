@@ -2,93 +2,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sample.sample</groupId>
-    <artifactId>Spring-JPA-V2</artifactId>
-    <version>1</version>
+    <groupId>com.dena-platform</groupId>
+    <artifactId>client</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Spring-JPA V2</name>
+    <name>Dena Platform Java SDK</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.framework.version>4.1.1.RELEASE</spring.framework.version>
-        <hibernate.version>4.2.8.Final</hibernate.version>
-        <mysql.connector.version>5.1.9</mysql.connector.version>
-        <commons-dbcp.version>1.4</commons-dbcp.version>
         <slf4j.version>1.7.5</slf4j.version>
         <junit.version>4.11</junit.version>
 
     </properties>
 
     <dependencies>
-        <!-- **********************************************************************
-        **                                SPRING DEPENDENCIES                    **
-        ********************************************************************** -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <!-- will come with all needed main dependencies such as spring-core and spring-beans-->
-
-        <!-- **********************************************************************
-        **                  Spring MVC DEPENDENCIES                             **
-        ********************************************************************** -->
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-
-
-        <!-- **********************************************************************
-       ** 				HIBERNATE DEPENDENCIES 							        **
-       ********************************************************************** -->
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
-
-        <!-- **********************************************************************
-        ** 				Mysql DEPENDENCIES 							        **
-        ********************************************************************** -->
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
-        </dependency>
-
         <!-- **********************************************************************
         **                 Logging DEPENDENCIES                                  **
         ********************************************************************** -->
@@ -132,20 +60,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <path>/</path>
-                    <port>8181</port>
-                    <uriEncoding>UTF-8</uriEncoding>
-                </configuration>
-
-            </plugin>
-
-
 
         </plugins>
     </build>
