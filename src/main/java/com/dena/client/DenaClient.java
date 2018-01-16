@@ -5,5 +5,7 @@ package com.dena.client;
  */
 
 public final class DenaClient {
-
+    public <T> T creatObject(T object) {
+        
+    }
 }
