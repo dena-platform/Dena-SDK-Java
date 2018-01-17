@@ -17,7 +17,7 @@ To Save object in Dena we can use a simple pojo. pojo need not extend or impleme
     public Date updatedTime;  
     
 
-## Save Object To Dena ##
+## Save Or Update Object To Dena ##
 
 This API used for two purposed:
 
@@ -31,7 +31,7 @@ The denaObjectId property is automatically assigned to all objects in the databa
 
 **Method:**
 
-    public T DENA.save(T object) throws DenaError
+    public T DENA.saveOrUpdate(T object) throws DenaError
 
 **Return Value:**
 
