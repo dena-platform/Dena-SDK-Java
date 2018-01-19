@@ -11,12 +11,8 @@ public final class Dena {
         Dena_URL = endPoint;
     }
 
-    public static  <T> T saveOrUpdate(T object) {
-        try {
-            System.out.println(object.getClass().getConstructor());
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+    public static <T> T saveOrUpdate(T object) {
+        System.out.println(object.getClass());
 
         return null;
     }

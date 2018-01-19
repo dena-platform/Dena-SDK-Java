@@ -25,9 +25,14 @@ This API used for two purposed:
 2. Updating existing objects.
  
 
-If an object has been previously saved, it is updated in the database, otherwise it is created. The save operation checks if the object has denaObjectId assigned by the server. In that case, the object is updated, otherwise it is created in the Dena Platform data store. 
+The save operation checks if the object has denaObjectId assigned by the server. In that case, the object is updated, otherwise it is created in the Dena Platform data store. 
 
 The denaObjectId property is automatically assigned to all objects in the database when they are initially saved. 
+
+**Class Hierarchy**
+
+1. When an class extend another class all public fields or getter, setter of parent class also save or update in dena platform.
+2. Interface are not include in hierarchy and do not save in this operation.
 
 **Method:**
 
