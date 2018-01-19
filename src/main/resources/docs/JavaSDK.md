@@ -6,6 +6,7 @@
 To Save object in Dena we can use a simple pojo. pojo need not extend or implement any class or interface. those pojo should have following requirements:
 
 1. The pojo class should have public fields or have getter and setter.
+2. static or transient fields will not serialized in operation (save, update)
 2. Optional requirement: Dena platform automatically assigns a unique ID to every persisted object. If the application needs to have access to the assigned ID, the class must declare the following field: 
 
     public String denaObjectId;
