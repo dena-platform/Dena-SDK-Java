@@ -8,6 +8,8 @@ public class A {
 
     private String a2;
 
+    public String a3;
+
     public A(int a1) {
         this.a1 = a1;
     }

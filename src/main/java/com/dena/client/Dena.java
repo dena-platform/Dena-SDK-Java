@@ -1,5 +1,7 @@
 package com.dena.client;
 
+import com.dena.client.service.MapperImpl;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -7,12 +9,14 @@ package com.dena.client;
 public final class Dena {
     private static String Dena_URL = "http://localhost:8090";
 
+    private final static MapperImpl mapper = new MapperImpl();
+
     public static void setEndPoint(String endPoint) {
         Dena_URL = endPoint;
     }
 
     public static <T> T saveOrUpdate(T object) {
-        System.out.println(object.getClass());
+        System.out.println(mapper.findAllFields(object));
 
         return null;
     }
