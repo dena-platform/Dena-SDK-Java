@@ -11,7 +11,7 @@ import java.util.List;
 
 public final class ReflectionUtils {
     /**
-     * Find all public fields in class or inherited class (not interface)
+     * Find all public fields in class or inherited class
      *
      * @param object
      * @return
