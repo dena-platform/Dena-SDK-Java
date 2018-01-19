@@ -1,10 +1,6 @@
-package foo;
-
-import org.apache.commons.lang3.ClassUtils;
+package com.dena.client.utils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
