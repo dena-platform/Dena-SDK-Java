@@ -1,11 +1,11 @@
 package com.dena.client.service.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
+import com.dena.client.service.web.HttpClient.dto.Parameter;
 import com.dena.client.service.web.HttpClient.dto.request.FetchRequest;
 import com.dena.client.service.web.HttpClient.dto.request.PostRequest;
 import com.dena.client.service.web.HttpClient.httpClient.HttpClient;
 import com.dena.client.utils.JSONMapper;
-import ir.peykasa.common.dto.Property;
 import ir.peykasa.common.exception.ServiceException;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -60,10 +60,10 @@ public class ExternalComponentManager {
 
     }
 
-    private static Map<String, String> getParameters(List<Property> properties) {
+    private static Map<String, String> getParameters(List<Parameter> properties) {
         Map<String, String> parametersNameValue = new LinkedHashMap<>();
-        for (Property property : properties) {
-            parametersNameValue.put(property.getName(), property.getValue());
+        for (Parameter parameter : properties) {
+            parametersNameValue.put(parameter.getName(), parameter.getValue());
         }
 
         return parametersNameValue;
