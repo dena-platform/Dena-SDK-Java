@@ -1,11 +1,11 @@
 package com.dena.client.utils;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.reflect.Modifier.*;
 
@@ -13,7 +13,7 @@ import static java.lang.reflect.Modifier.*;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public final class ReflectionUtils {
+public final class DenaReflectionUtils {
     private final static String GETTER_PREFIX = "get";
     private final static String BOOLEAN_GETTER_PREFIX = "is";
     private final static String SETTER_PREFIX = "set";
@@ -43,25 +43,39 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Find all non-static, non-transient public fields in class or inherited classes.
+     * Find all non-static, getter method in the object
      *
      * @param object object for searching to find method
      * @return
      */
 
-    public static List<Method> findGetterSetterMethod(Object object) {
+    public static Map<String, Method> findGetterMethods(Object object) {
         Class klass = object.getClass();
-        List<Method> methodList = new LinkedList<>();
-        while (klass != null) {
-            Method[] methods = klass.getDeclaredMethods();
-            for (Method method : methods) {
-                if (isGetterMethod(method) && isSetterMethodExist(methods, method)) {
-                    methodList.add(method);
-                }
-            }
-            klass = klass.getSuperclass();
+        Map<String, Method> getterMethod = new HashMap<>();
+
+        for (PropertyDescriptor propertyDescriptor : findGetterMethods(klass)) {
+            getterMethod.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
         }
-        return methodList;
+
+        return getterMethod;
+    }
+
+    /**
+     * remove getter, setter prefix from method name
+     *
+     * @param methodName
+     * @return removed getter, setter prefix from method
+     */
+    public static String excludePrefixFromMethodName(final String methodName) {
+        if (methodName.startsWith(GETTER_PREFIX)) {
+            return methodName.substring(GETTER_PREFIX.length());
+        } else if (methodName.startsWith(BOOLEAN_GETTER_PREFIX)) {
+            return methodName.substring(BOOLEAN_GETTER_PREFIX.length());
+        } else if (methodName.startsWith(SETTER_PREFIX)) {
+            return methodName.substring(SETTER_PREFIX.length());
+        } else {
+            return methodName;
+        }
 
     }
 
@@ -92,6 +106,8 @@ public final class ReflectionUtils {
 
         if (method.getReturnType().equals(void.class)) return false;
 
+        if (!Character.isUpperCase(excludePrefixFromMethodName(methodName).charAt(0))) return false;
+
         return true;
     }
 
@@ -107,6 +123,8 @@ public final class ReflectionUtils {
 
         if (method.getParameters().length != 1) return false;
 
+        if (!Character.isUpperCase(excludePrefixFromMethodName(methodName).charAt(0))) return false;
+
         return true;
 
     }
@@ -120,18 +138,21 @@ public final class ReflectionUtils {
 
     }
 
+    private static List<PropertyDescriptor> findGetterMethods(Class<?> klass) {
+        List<PropertyDescriptor> propertyDescriptorList = new ArrayList<>();
+        try {
+            for (PropertyDescriptor pd : Introspector.getBeanInfo(klass).getPropertyDescriptors()) {
+                if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
+                    propertyDescriptorList.add(pd);
+                }
+            }
+        } catch (IntrospectionException e) {
+            // do-nothing
 
-    private static String excludePrefixFromMethodName(final String methodName) {
-        if (methodName.startsWith(GETTER_PREFIX)) {
-            return methodName.substring(GETTER_PREFIX.length());
-        } else if (methodName.startsWith(BOOLEAN_GETTER_PREFIX)) {
-            return methodName.substring(BOOLEAN_GETTER_PREFIX.length());
-        } else if (methodName.startsWith(SETTER_PREFIX)) {
-            return methodName.substring(SETTER_PREFIX.length());
-        } else {
-            return methodName;
         }
 
+        return propertyDescriptorList;
     }
+
 
 }
