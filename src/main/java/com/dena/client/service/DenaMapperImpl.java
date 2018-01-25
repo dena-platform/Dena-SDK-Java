@@ -50,5 +50,4 @@ public class DenaMapperImpl implements DenaMapper {
         return returnMap;
     }
 
-
 }
