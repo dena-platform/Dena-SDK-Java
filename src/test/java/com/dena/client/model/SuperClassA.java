@@ -3,16 +3,12 @@ package com.dena.client.model;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public class A {
+public class SuperClassA {
     private int a1;
 
     private String a2;
 
     public String a3;
-
-    public A(int a1) {
-        this.a1 = a1;
-    }
 
     public int getA1() {
         return a1;

@@ -3,12 +3,12 @@ package com.dena.client.model;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public class B {
+public class SubClassB extends SuperClassA {
     private int b1;
 
     private String b2;
 
-    public B(int b1) {
+    public SubClassB(int b1) {
         this.b1 = b1;
     }
 

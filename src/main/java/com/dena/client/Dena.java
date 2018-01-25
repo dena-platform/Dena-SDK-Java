@@ -1,6 +1,6 @@
 package com.dena.client;
 
-import com.dena.client.service.MapperImpl;
+import com.dena.client.service.DenaMapperImpl;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -9,7 +9,7 @@ import com.dena.client.service.MapperImpl;
 public final class Dena {
     private static String Dena_URL = "http://localhost:8090";
 
-    private final static MapperImpl mapper = new MapperImpl();
+    private final static DenaMapperImpl mapper = new DenaMapperImpl();
 
     public static void setEndPoint(String endPoint) {
         Dena_URL = endPoint;

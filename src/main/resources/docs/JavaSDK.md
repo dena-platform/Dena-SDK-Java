@@ -33,7 +33,7 @@ The denaObjectId property is automatically assigned to all objects in the databa
 **Class Hierarchy**
 
 1. When an class extend another class all public fields or getter, setter of parent class also save or update in dena platform.
-2. Interface are not include in hierarchy and do not save in this operation.
+2. Interface are not include in hierarchy and do not include in this operation.
 
 **Method:**
 

@@ -5,6 +5,6 @@ import java.util.Map;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public interface Mapper {
+public interface DenaMapper {
     Map<String, Object> findAllFields(Object object);
 }

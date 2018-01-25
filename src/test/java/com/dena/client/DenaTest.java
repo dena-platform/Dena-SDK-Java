@@ -1,7 +1,7 @@
 package com.dena.client;
 
 
-import com.dena.client.model.A;
+import com.dena.client.model.SuperClassA;
 import org.junit.Test;
 
 /**
@@ -11,6 +11,8 @@ public class DenaTest {
 
     @Test
     public void saveOrUpdate() {
-        Dena.saveOrUpdate(new A(1));
+        SuperClassA superClassA = new SuperClassA();
+        superClassA.setA1(10);
+        Dena.saveOrUpdate(superClassA);
     }
 }
