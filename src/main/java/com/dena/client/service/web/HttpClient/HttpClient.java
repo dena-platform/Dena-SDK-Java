@@ -6,18 +6,13 @@ import com.dena.client.service.web.ErrorResponse;
 import com.dena.client.service.web.HttpClient.dto.Parameter;
 import com.dena.client.utils.DenaStringUtils;
 import com.dena.client.utils.JSONMapper;
-import ir.peykasa.common.exception.ServiceException;
 import okhttp3.*;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static ir.peykasa.common.config.DorsaSystemProperty.resolveIntSystemProperty;
 
 
 /**
@@ -60,7 +55,7 @@ public final class HttpClient {
         return getInstance(DEFAULT_CONNECTION_TIMEOUT_SECOND, DEFAULT_READ_TIMEOUT_SECOND);
     }
 
-    public Response getData(final String URL, List<Parameter> parameterList) throws ServiceException {
+    public Response getData(final String URL, List<Parameter> parameterList) throws DenaFault {
         log.info("Fetching data from address [{}] with parameters[{}]", URL, parameterList);
 
         Request request = prepareGetClient(URL, parameterList);
@@ -73,10 +68,10 @@ public final class HttpClient {
         return response;
     }
 
-    public Response postData(final String URL, Map<String, String> parameters, RequestBody requestBody) throws ServiceException {
-        Request request = preparePostClient(URL, parameters, requestBody);
+    public Response postData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
+        Request request = preparePostClient(URL, parameterList, requestBody);
         log.info("Posting data to address [{}]", request.url());
-        Response response = sendRequest(URL, parameters, request);
+        Response response = sendRequest(URL, parameterList, request);
 
         String body;
         try {
@@ -92,10 +87,10 @@ public final class HttpClient {
         return response;
     }
 
-    private Request preparePostClient(final String URL, Map<String, String> parameters, RequestBody requestBody) {
+    private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
         HttpUrl httpUrl = HttpUrl.parse(URL);
 
-        HttpUrl result = addParameterToHttpURL(httpUrl, parameters);
+        HttpUrl result = addParameterToHttpURL(httpUrl, parameterList);
         Request request = new Request.Builder()
                 .url(result)
                 .post(requestBody)
@@ -134,7 +129,7 @@ public final class HttpClient {
         return result;
     }
 
-    private Response sendRequest(final String URL, Map<String, String> parameters, Request request) throws DenaFault {
+    private Response sendRequest(final String URL, List<Parameter> parameters, Request request) throws DenaFault {
         try {
             Response response = HTTP_CLIENT.newCall(request).execute();
             if (!response.isSuccessful()) {
@@ -144,7 +139,7 @@ public final class HttpClient {
 
                 ErrorResponse errorResponse = JSONMapper.createObjectFromJSON(responseBody, ErrorResponse.class);
 
-                throw new DenaFault(message);
+                throw new DenaFault(message, errorResponse);
             }
 
             return response;
