@@ -13,7 +13,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.5</slf4j.version>
         <junit.version>4.11</junit.version>
-
+        <okkHttp.version>3.2.0</okkHttp.version>
+        <jackson.version>2.9.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -37,17 +38,34 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- **********************************************************************
+         **                 Http Client                                     **
+         ********************************************************************** -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.7</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okkHttp.version}</version>
+        </dependency>
+
+        <!-- **********************************************************************
+        **                     Jackson json converter
+        ********************************************************************** -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
 
