@@ -2,9 +2,8 @@ package com.dena.client.service.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
 import com.dena.client.service.web.HttpClient.dto.Parameter;
-import com.dena.client.service.web.HttpClient.dto.request.FetchRequest;
+import com.dena.client.service.web.HttpClient.dto.request.GetRequest;
 import com.dena.client.service.web.HttpClient.dto.request.PostRequest;
-import com.dena.client.service.web.HttpClient.httpClient.HttpClient;
 import com.dena.client.utils.JSONMapper;
 import ir.peykasa.common.exception.ServiceException;
 import okhttp3.RequestBody;
@@ -26,28 +25,28 @@ public class ExternalComponentManager {
     private final static Logger log = getLogger(ExternalComponentManager.class);
 
 
-    public static <T> T fetchData(FetchRequest fetchRequest) throws DenaFault {
-        String URL = fetchRequest.getURL();
-        Map<String, String> parametersKeyValue = getParameters(fetchRequest.getProperties());
+    public static <T> T fetchData(GetRequest getRequest) throws DenaFault {
+        String URL = getRequest.getURL();
+        Map<String, String> parametersKeyValue = getParameters(getRequest.getProperties());
 
-        Response response = HttpClient.fetchData(URL, parametersKeyValue);
+        Response response = HttpClient.getData(URL, parametersKeyValue);
 
         try {
             String bodyResponse = response.body().string();
-            if (fetchRequest.getReturnType() == null) {
-                return JSONMapper.createObjectFromJSON(bodyResponse, fetchRequest.getTypeReference());
+            if (getRequest.getReturnType() == null) {
+                return JSONMapper.createObjectFromJSON(bodyResponse, getRequest.getTypeReference());
             } else {
-                return JSONMapper.createObjectFromJSON(bodyResponse, fetchRequest.getReturnType());
+                return JSONMapper.createObjectFromJSON(bodyResponse, getRequest.getReturnType());
             }
         } catch (final Exception ex) {
-            throw new DenaFault("Exception in getting data from component [" + fetchRequest.getComponentName() + "]", ex);
+            throw new DenaFault("Exception in getting data from component [" + getRequest.getComponentName() + "]", ex);
         }
 
     }
 
     public static <T> T postData(PostRequest fetchRequest) throws DenaFault {
         String URL = fetchRequest.getURL();
-        Map<String, String> parametersKeyValue = getParameters(fetchRequest.getProperties());
+        Map<String, String> parametersKeyValue = getParameters(fetchRequest.getParameterList());
         RequestBody requestBody = RequestBody.create(fetchRequest.getMediaType(), fetchRequest.getRequestBodyContent());
         Response response = HttpClient.postData(URL, parametersKeyValue, requestBody);
 

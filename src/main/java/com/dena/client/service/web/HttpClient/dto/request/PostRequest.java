@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Author: Javad Alimohammadi Email:bc_alimohammadi@yahoo.com
- * DateTime: 4/7/13 11:23 AM
+ * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
+
 public class PostRequest {
-    private List<Parameter> properties = new ArrayList<>();
+    private List<Parameter> parameterList = new ArrayList<>();
 
     private MediaType mediaType;
 
@@ -25,12 +25,12 @@ public class PostRequest {
     private String componentName;
 
 
-    public List<Parameter> getProperties() {
-        return Collections.unmodifiableList(properties);
+    public List<Parameter> getParameterList() {
+        return Collections.unmodifiableList(parameterList);
     }
 
-    public void setProperties(List<Parameter> properties) {
-        this.properties = properties;
+    public void setParameterList(List<Parameter> parameterList) {
+        this.parameterList = parameterList;
     }
 
 
@@ -74,7 +74,7 @@ public class PostRequest {
         this.requestBodyContent = requestBodyContent;
     }
 
-    public static final class ExternalComponentPostDataRequestBuilder {
+    public static final class PostRequestBuilder {
         List<Parameter> properties = new ArrayList<>();
         private String URL;
         private Class returnType;
@@ -82,14 +82,14 @@ public class PostRequest {
         private String requestBodyContent;
         private MediaType mediaType;
 
-        private ExternalComponentPostDataRequestBuilder() {
+        private PostRequestBuilder() {
         }
 
-        public static ExternalComponentPostDataRequestBuilder anExternalComponentPostDataRequest() {
-            return new ExternalComponentPostDataRequestBuilder();
+        public static PostRequestBuilder anExternalComponentPostDataRequest() {
+            return new PostRequestBuilder();
         }
 
-        public ExternalComponentPostDataRequestBuilder withProperty(String name, String value) {
+        public PostRequestBuilder withProperty(String name, String value) {
             Parameter parameter = new Parameter();
             parameter.setName(name);
             parameter.setValue(value);
@@ -98,34 +98,34 @@ public class PostRequest {
 
         }
 
-        public ExternalComponentPostDataRequestBuilder withURL(String URL) {
+        public PostRequestBuilder withURL(String URL) {
             this.URL = URL;
             return this;
         }
 
-        public ExternalComponentPostDataRequestBuilder withReturnType(Class returnType) {
+        public PostRequestBuilder withReturnType(Class returnType) {
             this.returnType = returnType;
             return this;
         }
 
-        public ExternalComponentPostDataRequestBuilder withComponentName(String componentName) {
+        public PostRequestBuilder withComponentName(String componentName) {
             this.componentName = componentName;
             return this;
         }
 
-        public ExternalComponentPostDataRequestBuilder withRequestBodyContent(String requestBodyContent) {
+        public PostRequestBuilder withRequestBodyContent(String requestBodyContent) {
             this.requestBodyContent = requestBodyContent;
             return this;
         }
 
-        public ExternalComponentPostDataRequestBuilder withMediaType(MediaType mediaType) {
+        public PostRequestBuilder withMediaType(MediaType mediaType) {
             this.mediaType = mediaType;
             return this;
         }
 
         public PostRequest build() {
             PostRequest postRequest = new PostRequest();
-            postRequest.setProperties(properties);
+            postRequest.setParameterList(properties);
             postRequest.setURL(URL);
             postRequest.setReturnType(returnType);
             postRequest.setComponentName(componentName);

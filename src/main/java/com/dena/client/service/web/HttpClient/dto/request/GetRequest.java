@@ -11,7 +11,7 @@ import java.util.List;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public class FetchRequest {
+public class GetRequest {
 
     List<Parameter> properties = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class FetchRequest {
 
     private String componentName;
 
-    public FetchRequest withURL(String URL) {
+    public GetRequest withURL(String URL) {
         this.URL = URL;
         return this;
     }
@@ -36,7 +36,7 @@ public class FetchRequest {
         this.properties = properties;
     }
 
-    public FetchRequest withProperty(String name, String value) {
+    public GetRequest withProperty(String name, String value) {
         Parameter parameter = new Parameter();
         parameter.setName(name);
         parameter.setValue(value);
@@ -47,7 +47,7 @@ public class FetchRequest {
 
     }
 
-    public FetchRequest withComponentName(String componentName) {
+    public GetRequest withComponentName(String componentName) {
         setComponentName(componentName);
         return this;
     }
@@ -64,11 +64,11 @@ public class FetchRequest {
         this.URL = URL;
     }
 
-    public <T> FetchRequest withReturnType(Class<T> classType) {
+    public <T> GetRequest withReturnType(Class<T> classType) {
         setReturnType(classType);
         return this;
     }
-    public <T> FetchRequest withReturnType(TypeReference typeReference) {
+    public <T> GetRequest withReturnType(TypeReference typeReference) {
         setReturnType(typeReference);
         return this;
     }

@@ -1,19 +1,34 @@
 package com.dena.client.exception;
 
+import java.util.List;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public abstract class DenaFault extends RuntimeException {
+public class DenaFault extends RuntimeException {
+    private int httpStatusCode;
 
-    protected ErrorCode errorCode;
+    private String errorCode;
+
+    private List<String> messages;
 
     public DenaFault(String message) {
         super(message);
     }
 
-    public DenaFault(String message, Throwable cause) {
+    public DenaFault(String message, int httpStatusCode, String errorCode, Throwable cause) {
         super(message, cause);
     }
 
-    public abstract ErrorCode getErrorCode();
+    public int getHttpStatusCode() {
+        return httpStatusCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public List<String> getMessages() {
+        return messages;
+    }
 }
