@@ -19,6 +19,7 @@ import java.util.Map;
 public class DenaMapperImpl implements DenaMapper {
     private final static Logger log = LoggerFactory.getLogger(DenaMapperImpl.class);
 
+
     @Override
     public Map<String, Object> findAllFields(Object object) {
         List<Field> fieldList = DenaReflectionUtils.findInstanceVariables(object);
