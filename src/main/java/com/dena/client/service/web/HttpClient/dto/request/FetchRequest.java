@@ -1,7 +1,7 @@
-package com.dena.client.service.web.HttpClient.dto;
+package com.dena.client.service.web.HttpClient.dto.request;
 
+import com.dena.client.service.web.HttpClient.dto.Parameter;
 import com.fasterxml.jackson.core.type.TypeReference;
-import ir.peykasa.common.dto.Property;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +11,9 @@ import java.util.List;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public class ExternalComponentFetchRequest {
+public class FetchRequest {
 
-    List<Property> properties = new ArrayList<>();
+    List<Parameter> properties = new ArrayList<>();
 
     private String URL;
 
@@ -23,31 +23,31 @@ public class ExternalComponentFetchRequest {
 
     private String componentName;
 
-    public ExternalComponentFetchRequest withURL(String URL) {
+    public FetchRequest withURL(String URL) {
         this.URL = URL;
         return this;
     }
 
-    public List<Property> getProperties() {
+    public List<Parameter> getProperties() {
         return Collections.unmodifiableList(properties);
     }
 
-    public void setProperties(List<Property> properties) {
+    public void setProperties(List<Parameter> properties) {
         this.properties = properties;
     }
 
-    public ExternalComponentFetchRequest withProperty(String name, String value) {
-        Property property = new Property();
-        property.setName(name);
-        property.setValue(value);
+    public FetchRequest withProperty(String name, String value) {
+        Parameter parameter = new Parameter();
+        parameter.setName(name);
+        parameter.setValue(value);
 
-        properties.add(property);
+        properties.add(parameter);
 
         return this;
 
     }
 
-    public ExternalComponentFetchRequest withComponentName(String componentName) {
+    public FetchRequest withComponentName(String componentName) {
         setComponentName(componentName);
         return this;
     }
@@ -64,11 +64,11 @@ public class ExternalComponentFetchRequest {
         this.URL = URL;
     }
 
-    public <T> ExternalComponentFetchRequest withReturnType(Class<T> classType) {
+    public <T> FetchRequest withReturnType(Class<T> classType) {
         setReturnType(classType);
         return this;
     }
-    public <T> ExternalComponentFetchRequest withReturnType(TypeReference typeReference) {
+    public <T> FetchRequest withReturnType(TypeReference typeReference) {
         setReturnType(typeReference);
         return this;
     }

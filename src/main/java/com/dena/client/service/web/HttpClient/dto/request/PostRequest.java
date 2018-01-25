@@ -1,6 +1,6 @@
-package com.dena.client.service.web.HttpClient.dto;
+package com.dena.client.service.web.HttpClient.dto.request;
 
-import ir.peykasa.common.dto.Property;
+import com.dena.client.service.web.HttpClient.dto.Parameter;
 import okhttp3.MediaType;
 
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.List;
  * Author: Javad Alimohammadi Email:bc_alimohammadi@yahoo.com
  * DateTime: 4/7/13 11:23 AM
  */
-public class ExternalComponentPostDataRequest {
-    private List<Property> properties = new ArrayList<>();
+public class PostRequest {
+    private List<Parameter> properties = new ArrayList<>();
 
     private MediaType mediaType;
 
@@ -25,11 +25,11 @@ public class ExternalComponentPostDataRequest {
     private String componentName;
 
 
-    public List<Property> getProperties() {
+    public List<Parameter> getProperties() {
         return Collections.unmodifiableList(properties);
     }
 
-    public void setProperties(List<Property> properties) {
+    public void setProperties(List<Parameter> properties) {
         this.properties = properties;
     }
 
@@ -75,7 +75,7 @@ public class ExternalComponentPostDataRequest {
     }
 
     public static final class ExternalComponentPostDataRequestBuilder {
-        List<Property> properties = new ArrayList<>();
+        List<Parameter> properties = new ArrayList<>();
         private String URL;
         private Class returnType;
         private String componentName;
@@ -90,10 +90,10 @@ public class ExternalComponentPostDataRequest {
         }
 
         public ExternalComponentPostDataRequestBuilder withProperty(String name, String value) {
-            Property property = new Property();
-            property.setName(name);
-            property.setValue(value);
-            properties.add(property);
+            Parameter parameter = new Parameter();
+            parameter.setName(name);
+            parameter.setValue(value);
+            properties.add(parameter);
             return this;
 
         }
@@ -123,15 +123,15 @@ public class ExternalComponentPostDataRequest {
             return this;
         }
 
-        public ExternalComponentPostDataRequest build() {
-            ExternalComponentPostDataRequest externalComponentPostDataRequest = new ExternalComponentPostDataRequest();
-            externalComponentPostDataRequest.setProperties(properties);
-            externalComponentPostDataRequest.setURL(URL);
-            externalComponentPostDataRequest.setReturnType(returnType);
-            externalComponentPostDataRequest.setComponentName(componentName);
-            externalComponentPostDataRequest.setRequestBodyContent(requestBodyContent);
-            externalComponentPostDataRequest.setMediaType(mediaType);
-            return externalComponentPostDataRequest;
+        public PostRequest build() {
+            PostRequest postRequest = new PostRequest();
+            postRequest.setProperties(properties);
+            postRequest.setURL(URL);
+            postRequest.setReturnType(returnType);
+            postRequest.setComponentName(componentName);
+            postRequest.setRequestBodyContent(requestBodyContent);
+            postRequest.setMediaType(mediaType);
+            return postRequest;
         }
     }
 }

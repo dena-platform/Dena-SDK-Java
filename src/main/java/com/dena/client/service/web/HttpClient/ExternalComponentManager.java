@@ -1,8 +1,8 @@
 package com.dena.client.service.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.service.web.HttpClient.dto.ExternalComponentFetchRequest;
-import com.dena.client.service.web.HttpClient.dto.ExternalComponentPostDataRequest;
+import com.dena.client.service.web.HttpClient.dto.request.FetchRequest;
+import com.dena.client.service.web.HttpClient.dto.request.PostRequest;
 import com.dena.client.service.web.HttpClient.httpClient.HttpClient;
 import com.dena.client.utils.JSONMapper;
 import ir.peykasa.common.dto.Property;
@@ -26,7 +26,7 @@ public class ExternalComponentManager {
     private final static Logger log = getLogger(ExternalComponentManager.class);
 
 
-    public static <T> T fetchData(ExternalComponentFetchRequest fetchRequest) throws DenaFault {
+    public static <T> T fetchData(FetchRequest fetchRequest) throws DenaFault {
         String URL = fetchRequest.getURL();
         Map<String, String> parametersKeyValue = getParameters(fetchRequest.getProperties());
 
@@ -45,7 +45,7 @@ public class ExternalComponentManager {
 
     }
 
-    public static <T> T postData(ExternalComponentPostDataRequest fetchRequest) throws DenaFault {
+    public static <T> T postData(PostRequest fetchRequest) throws DenaFault {
         String URL = fetchRequest.getURL();
         Map<String, String> parametersKeyValue = getParameters(fetchRequest.getProperties());
         RequestBody requestBody = RequestBody.create(fetchRequest.getMediaType(), fetchRequest.getRequestBodyContent());
