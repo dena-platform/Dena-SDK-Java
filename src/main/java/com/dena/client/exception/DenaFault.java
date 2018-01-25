@@ -1,6 +1,6 @@
 package com.dena.client.exception;
 
-import com.dena.client.service.web.ErrorResponse;
+import com.dena.client.service.web.HttpClient.dto.response.ErrorResponse;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]

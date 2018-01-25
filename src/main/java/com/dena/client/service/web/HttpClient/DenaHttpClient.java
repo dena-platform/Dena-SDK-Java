@@ -2,7 +2,7 @@ package com.dena.client.service.web.HttpClient;
 
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.service.web.ErrorResponse;
+import com.dena.client.service.web.HttpClient.dto.response.ErrorResponse;
 import com.dena.client.service.web.HttpClient.dto.Parameter;
 import com.dena.client.utils.DenaStringUtils;
 import com.dena.client.utils.JSONMapper;
@@ -20,38 +20,38 @@ import java.util.concurrent.TimeUnit;
  */
 
 
-public final class HttpClient {
-    private final static Logger log = LoggerFactory.getLogger(HttpClient.class);
+public final class DenaHttpClient {
+    private final static Logger log = LoggerFactory.getLogger(DenaHttpClient.class);
 
     private static final int DEFAULT_CONNECTION_TIMEOUT_SECOND = 20;
 
     private static final int DEFAULT_READ_TIMEOUT_SECOND = 20;
 
 
-    private OkHttpClient HTTP_CLIENT;
+    private OkHttpClient OK_HTTP_CLIENT;
 
-    private static HttpClient httpClient;
+    private static DenaHttpClient denaHttpClient;
 
-    private HttpClient(int connectionTimeout, int readTimeout) {
+    private DenaHttpClient(int connectionTimeout, int readTimeout) {
         // todo: config write timeout setting
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(connectionTimeout, TimeUnit.SECONDS)
                 .readTimeout(readTimeout, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS);
 
-        this.HTTP_CLIENT = httpClient.build();
+        this.OK_HTTP_CLIENT = httpClient.build();
 
     }
 
-    public static synchronized HttpClient getInstance(int connectionTimeout, int readTimeout) {
-        if (httpClient == null) {
-            httpClient = new HttpClient(connectionTimeout, readTimeout);
+    public static synchronized DenaHttpClient getInstance(int connectionTimeout, int readTimeout) {
+        if (denaHttpClient == null) {
+            denaHttpClient = new DenaHttpClient(connectionTimeout, readTimeout);
         }
 
-        return httpClient;
+        return denaHttpClient;
     }
 
-    public static synchronized HttpClient getInstance() {
+    public static synchronized DenaHttpClient getInstance() {
         return getInstance(DEFAULT_CONNECTION_TIMEOUT_SECOND, DEFAULT_READ_TIMEOUT_SECOND);
     }
 
@@ -131,14 +131,13 @@ public final class HttpClient {
 
     private Response sendRequest(final String URL, List<Parameter> parameters, Request request) throws DenaFault {
         try {
-            Response response = HTTP_CLIENT.newCall(request).execute();
+            Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (!response.isSuccessful()) {
                 String responseBody = response.body().string();
                 String message = String.format("Exception when connected to address [%s] " +
                         "with parameters[%s] response code [%s] response body[%s]", URL, parameters, response.code(), responseBody);
 
                 ErrorResponse errorResponse = JSONMapper.createObjectFromJSON(responseBody, ErrorResponse.class);
-
                 throw new DenaFault(message, errorResponse);
             }
 

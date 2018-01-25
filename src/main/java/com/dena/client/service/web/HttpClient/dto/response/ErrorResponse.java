@@ -1,4 +1,4 @@
-package com.dena.client.service.web;
+package com.dena.client.service.web.HttpClient.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;

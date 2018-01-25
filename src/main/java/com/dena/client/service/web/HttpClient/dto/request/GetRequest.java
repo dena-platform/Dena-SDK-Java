@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetRequest {
 
-    List<Parameter> properties = new ArrayList<>();
+    private List<Parameter> parameterList = new ArrayList<>();
 
     private String URL;
 
@@ -23,37 +23,12 @@ public class GetRequest {
 
     private String componentName;
 
-    public GetRequest withURL(String URL) {
-        this.URL = URL;
-        return this;
+    public List<Parameter> getParameterList() {
+        return parameterList;
     }
 
-    public List<Parameter> getProperties() {
-        return Collections.unmodifiableList(properties);
-    }
-
-    public void setProperties(List<Parameter> properties) {
-        this.properties = properties;
-    }
-
-    public GetRequest withProperty(String name, String value) {
-        Parameter parameter = new Parameter();
-        parameter.setName(name);
-        parameter.setValue(value);
-
-        properties.add(parameter);
-
-        return this;
-
-    }
-
-    public GetRequest withComponentName(String componentName) {
-        setComponentName(componentName);
-        return this;
-    }
-
-    public void setComponentName(String componentName) {
-        this.componentName = componentName;
+    public void setParameterList(List<Parameter> parameterList) {
+        this.parameterList = parameterList;
     }
 
     public String getURL() {
@@ -64,32 +39,69 @@ public class GetRequest {
         this.URL = URL;
     }
 
-    public <T> GetRequest withReturnType(Class<T> classType) {
-        setReturnType(classType);
-        return this;
-    }
-    public <T> GetRequest withReturnType(TypeReference typeReference) {
-        setReturnType(typeReference);
-        return this;
-    }
-
-
     public Class getReturnType() {
         return returnType;
+    }
+
+    public void setReturnType(Class returnType) {
+        this.returnType = returnType;
     }
 
     public TypeReference getTypeReference() {
         return typeReference;
     }
 
+    public void setTypeReference(TypeReference typeReference) {
+        this.typeReference = typeReference;
+    }
+
     public String getComponentName() {
         return componentName;
     }
 
-    public void setReturnType(Class<?> returnType) {
-        this.returnType = returnType;
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
     }
-    public void setReturnType(TypeReference returnType) {
-        this.typeReference = returnType;
+
+
+    public static final class GetRequestBuilder {
+        private GetRequest getRequest;
+
+        private GetRequestBuilder() {
+            getRequest = new GetRequest();
+        }
+
+        public static GetRequestBuilder aGetRequest() {
+            return new GetRequestBuilder();
+        }
+
+        public GetRequestBuilder withParameterList(List<Parameter> parameterList) {
+            getRequest.setParameterList(parameterList);
+            return this;
+        }
+
+        public GetRequestBuilder withURL(String URL) {
+            getRequest.setURL(URL);
+            return this;
+        }
+
+        public GetRequestBuilder withReturnType(Class returnType) {
+            getRequest.setReturnType(returnType);
+            return this;
+        }
+
+        public GetRequestBuilder withTypeReference(TypeReference typeReference) {
+            getRequest.setTypeReference(typeReference);
+            return this;
+        }
+
+        public GetRequestBuilder withComponentName(String componentName) {
+            getRequest.setComponentName(componentName);
+            return this;
+        }
+
+        public GetRequest build() {
+            return getRequest;
+        }
     }
 }
