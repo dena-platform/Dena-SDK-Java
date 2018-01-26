@@ -123,7 +123,7 @@ public final class HttpClient {
             if (!response.isSuccessful()) {
                 String responseBody = response.body().string();
                 String message = String.format("Exception when connected to address [%s] " +
-                        "with parameters[%s] response code [%s] response body[%s]", URL, parameters, response.code(), responseBody);
+                        "with parameters [%s] response code [%s] response body[%s]", URL, parameters, response.code(), responseBody);
 
                 ErrorResponse errorResponse = JSONMapper.createObjectFromJSON(responseBody, ErrorResponse.class);
                 throw new DenaFault(message, errorResponse);
@@ -132,7 +132,8 @@ public final class HttpClient {
                 return JSONMapper.createObjectFromJSON(responseBody, DenaResponse.class);
             }
         } catch (IOException ex) {
-            throw new DenaFault("Exception when connecting to address [" + URL + "] with parameters[" + parameters + "]", ex);
+            String message = String.format("Exception when connecting to address [%s] with parameters[%s]", URL, parameters);
+            throw new DenaFault(message, ex);
         }
 
     }

@@ -40,8 +40,8 @@ public class JSONMapper {
         try {
             return JSON_MAPPER.readValue(jsonString, classType);
         } catch (IOException ex) {
-            String errMessage = String.format("Error in converting from JSON [%s] to class [%s]", jsonString, classType);
-            throw new InvalidJSONException(errMessage);
+            String errorMessage = String.format("Error in converting from JSON [%s] to class [%s]", jsonString, classType);
+            throw new InvalidJSONException(errorMessage);
         }
     }
 
@@ -52,8 +52,8 @@ public class JSONMapper {
             });
             return map;
         } catch (IOException ex) {
-            String errMessage = String.format("Error in converting from JSON [%s] to class [%s]", jsonString, HashMap.class);
-            throw new InvalidJSONException(errMessage);
+            String errorMessage = String.format("Error in converting from JSON [%s] to class [%s]", jsonString, HashMap.class);
+            throw new InvalidJSONException(errorMessage);
         }
 
     }

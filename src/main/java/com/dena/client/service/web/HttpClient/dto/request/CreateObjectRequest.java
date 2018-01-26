@@ -54,6 +54,10 @@ public class CreateObjectRequest {
     }
 
     public void setAppId(String appId) {
+        if (!appId.startsWith("/")) {
+            appId = "/" + appId;
+        }
+
         this.appId = appId;
     }
 
@@ -62,6 +66,10 @@ public class CreateObjectRequest {
     }
 
     public void setTypeName(String typeName) {
+        if (!typeName.startsWith("/")) {
+            typeName = "/" + typeName;
+        }
+
         this.typeName = typeName;
     }
 
@@ -101,18 +109,12 @@ public class CreateObjectRequest {
         }
 
         public CreateObjectRequestBuilder withAppId(String appId) {
-            if (!appId.startsWith("/")) {
-                appId += "/";
-            }
             createObjectRequest.setAppId(appId);
             return this;
         }
 
 
         public CreateObjectRequestBuilder withTypeName(String typeName) {
-            if (!typeName.startsWith("/")) {
-                typeName += "/";
-            }
             createObjectRequest.setTypeName(typeName);
             return this;
         }

@@ -11,6 +11,7 @@ public class DenaTest {
 
     @Test
     public void saveOrUpdate() {
+        Dena.initApp("denaQA");
         SuperClassA superClassA = new SuperClassA();
         superClassA.setA1(10);
         Dena.saveOrUpdate(superClassA);
