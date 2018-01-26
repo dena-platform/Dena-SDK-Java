@@ -22,6 +22,8 @@ public class CreateObjectRequest {
 
     private String appId;
 
+    private String typeName;
+
     public List<Parameter> getParameterList() {
         return Collections.unmodifiableList(parameterList);
     }
@@ -53,6 +55,14 @@ public class CreateObjectRequest {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public static final class CreateObjectRequestBuilder {
@@ -95,6 +105,15 @@ public class CreateObjectRequest {
                 appId += "/";
             }
             createObjectRequest.setAppId(appId);
+            return this;
+        }
+
+
+        public CreateObjectRequestBuilder withTypeName(String typeName) {
+            if (!typeName.startsWith("/")) {
+                typeName += "/";
+            }
+            createObjectRequest.setTypeName(typeName);
             return this;
         }
 

@@ -7,4 +7,6 @@ import java.util.Map;
  */
 public interface DenaMapper {
     Map<String, Object> findAllFields(Object object);
+
+    String findTypeName(Object object);
 }

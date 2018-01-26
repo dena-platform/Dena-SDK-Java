@@ -63,81 +63,14 @@ public final class DenaReflectionUtils {
     }
 
     /**
-     * remove getter, setter prefix from method name
+     * Find simple class name of object.
      *
-     * @param methodName
-     * @return removed getter, setter prefix from method
+     * @param object object for searching to find class name.
+     * @return
      */
-    public static String excludePrefixFromMethodName(final String methodName) {
-        if (methodName.startsWith(GETTER_PREFIX)) {
-            return methodName.substring(GETTER_PREFIX.length());
-        } else if (methodName.startsWith(BOOLEAN_GETTER_PREFIX)) {
-            return methodName.substring(BOOLEAN_GETTER_PREFIX.length());
-        } else if (methodName.startsWith(SETTER_PREFIX)) {
-            return methodName.substring(SETTER_PREFIX.length());
-        } else {
-            return methodName;
-        }
-
-    }
-
-    private static boolean isSetterMethodExist(Method[] methods, Method getterMethod) {
-        String methodNameWithoutPrefix = excludePrefixFromMethodName(getterMethod.getName());
-        Class<?> returnType = getterMethod.getReturnType();
-
-        for (Method method : methods) {
-            if (isSetterMethod(method, returnType) && method.getName().contains(methodNameWithoutPrefix)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    private static boolean isGetterMethod(Method method) {
-        String methodName = method.getName();
-        int modifiers = method.getModifiers();
-
-        if (!isPublic(modifiers) || isStatic(modifiers)) return false;
-
-        if (!methodName.startsWith(GETTER_PREFIX) || !methodName.startsWith(BOOLEAN_GETTER_PREFIX)) {
-            return false;
-        }
-
-        if (method.getParameters().length != 0) return false;
-
-        if (method.getReturnType().equals(void.class)) return false;
-
-        if (!Character.isUpperCase(excludePrefixFromMethodName(methodName).charAt(0))) return false;
-
-        return true;
-    }
-
-    private static boolean isSetterMethod(Method method) {
-        String methodName = method.getName();
-        int modifiers = method.getModifiers();
-
-        if (!isPublic(modifiers) || isStatic(modifiers)) return false;
-
-        if (!methodName.startsWith(SETTER_PREFIX)) {
-            return false;
-        }
-
-        if (method.getParameters().length != 1) return false;
-
-        if (!Character.isUpperCase(excludePrefixFromMethodName(methodName).charAt(0))) return false;
-
-        return true;
-
-    }
-
-    private static boolean isSetterMethod(Method method, Class<?> parameterType) {
-        if (!isSetterMethod(method)) return false;
-
-        if (!method.getParameters()[0].getType().equals(parameterType)) return false;
-
-        return true;
-
+    public static String findTypeName(Object object) {
+        String typeName = object.getClass().getSimpleName();
+        return typeName;
     }
 
     private static List<PropertyDescriptor> findGetterMethods(Class<?> klass) {

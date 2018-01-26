@@ -51,4 +51,10 @@ public class DenaMapperImpl implements DenaMapper {
         return returnMap;
     }
 
+    @Override
+    public String findTypeName(Object object) {
+
+        return null;
+    }
+
 }

@@ -32,8 +32,9 @@ public final class Dena {
     }
 
     public static <T> T saveOrUpdate(T object) {
-        Map<String, Object> requestParameter = DENA_MAPPER.findAllFields(object);
-        String requestDataBody = JSONMapper.createJSONFromObject(requestParameter);
+        Map<String, Object> fields = DENA_MAPPER.findAllFields(object);
+        String typeName=
+        String requestDataBody = JSONMapper.createJSONFromObject(fields);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyContent(requestDataBody)
