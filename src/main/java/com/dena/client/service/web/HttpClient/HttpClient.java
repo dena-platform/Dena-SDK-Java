@@ -69,9 +69,11 @@ public final class HttpClient {
 
     public DenaResponse postData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
         Request request = preparePostClient(URL, parameterList, requestBody);
-        log.info("Posting data to address [{}]", request.url());
+        log.debug("Posting data to address [{}]", request.url());
 
-        return sendRequest(URL, parameterList, request);
+        DenaResponse denaResponse = sendRequest(URL, parameterList, request);
+
+        return denaResponse;
     }
 
     private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {

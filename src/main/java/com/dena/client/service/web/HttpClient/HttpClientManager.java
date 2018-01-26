@@ -30,7 +30,10 @@ public class HttpClientManager {
     public static DenaResponse postData(CreateObjectRequest fetchRequest) throws DenaFault {
         String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId() + fetchRequest.getTypeName();
         RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
-        return DENA_HTTP_CLIENT.postData(fullURL, fetchRequest.getParameterList(), requestBody);
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, fetchRequest.getParameterList(), requestBody);
+        log.debug("Successfully posted data to address [{}], parameters {}, body [{}]", fullURL, fetchRequest.getParameterList(), fetchRequest.getRequestBodyContent());
+
+        return denaResponse;
     }
 
 
