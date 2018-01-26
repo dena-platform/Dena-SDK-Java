@@ -73,6 +73,10 @@ public final class DenaReflectionUtils {
         return typeName;
     }
 
+    public static void addFieldToObject(Object object, Object value) {
+        
+    }
+
     private static List<PropertyDescriptor> findGetterMethods(Class<?> klass) {
         List<PropertyDescriptor> propertyDescriptorList = new ArrayList<>();
         try {

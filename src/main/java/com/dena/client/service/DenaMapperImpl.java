@@ -1,5 +1,6 @@
 package com.dena.client.service;
 
+import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.utils.DenaCollectionUtils;
 import com.dena.client.utils.DenaMapUtils;
 import com.dena.client.utils.DenaReflectionUtils;
@@ -55,6 +56,11 @@ public class DenaMapperImpl implements DenaMapper {
     public String findTypeName(Object object) {
         String typeName = DenaReflectionUtils.findClassName(object);
         return typeName;
+    }
+
+    @Override
+    public <T> T updateObjectFromResponse(Object object, DenaResponse denaResponse) {
+
     }
 
 }
