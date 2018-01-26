@@ -21,19 +21,18 @@ import java.util.concurrent.TimeUnit;
  */
 
 
-public final class DenaHttpClient {
-    private final static Logger log = LoggerFactory.getLogger(DenaHttpClient.class);
+public final class HttpClient {
+    private final static Logger log = LoggerFactory.getLogger(HttpClient.class);
 
     private static final int DEFAULT_CONNECTION_TIMEOUT_SECOND = 20;
 
     private static final int DEFAULT_READ_TIMEOUT_SECOND = 20;
 
-
     private OkHttpClient OK_HTTP_CLIENT;
 
-    private static DenaHttpClient denaHttpClient;
+    private static HttpClient httpClient;
 
-    private DenaHttpClient(int connectionTimeout, int readTimeout) {
+    private HttpClient(int connectionTimeout, int readTimeout) {
         // todo: config write timeout setting
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(connectionTimeout, TimeUnit.SECONDS)
@@ -44,15 +43,15 @@ public final class DenaHttpClient {
 
     }
 
-    public static synchronized DenaHttpClient getInstance(int connectionTimeout, int readTimeout) {
-        if (denaHttpClient == null) {
-            denaHttpClient = new DenaHttpClient(connectionTimeout, readTimeout);
+    public static synchronized HttpClient getInstance(int connectionTimeout, int readTimeout) {
+        if (httpClient == null) {
+            httpClient = new HttpClient(connectionTimeout, readTimeout);
         }
 
-        return denaHttpClient;
+        return httpClient;
     }
 
-    public static synchronized DenaHttpClient getInstance() {
+    public static synchronized HttpClient getInstance() {
         return getInstance(DEFAULT_CONNECTION_TIMEOUT_SECOND, DEFAULT_READ_TIMEOUT_SECOND);
     }
 

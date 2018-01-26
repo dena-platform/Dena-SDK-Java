@@ -20,7 +20,7 @@ public class HttpClientManager {
 
     private final static Logger log = getLogger(HttpClientManager.class);
 
-    private static final DenaHttpClient DENA_HTTP_CLIENT = DenaHttpClient.getInstance();
+    private static final HttpClient DENA_HTTP_CLIENT = HttpClient.getInstance();
 
     public static DenaResponse getData(GetRequest getRequest) throws DenaFault {
         String URL = getRequest.getURL();

@@ -10,6 +10,8 @@ import com.dena.client.utils.JSONMapper;
 import java.util.List;
 import java.util.Map;
 
+import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -33,7 +35,7 @@ public final class Dena {
         Map<String, Object> requestParameter = DENA_MAPPER.findAllFields(object);
         String requestDataBody = JSONMapper.createJSONFromObject(requestParameter);
 
-        CreateObjectRequest createObjectRequest = CreateObjectRequest.PostRequestBuilder.aPostRequest()
+        CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyContent(requestDataBody)
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)

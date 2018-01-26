@@ -55,23 +55,23 @@ public class CreateObjectRequest {
         this.appId = appId;
     }
 
-    public static final class PostRequestBuilder {
+    public static final class CreateObjectRequestBuilder {
         private CreateObjectRequest createObjectRequest;
 
-        private PostRequestBuilder() {
+        private CreateObjectRequestBuilder() {
             createObjectRequest = new CreateObjectRequest();
         }
 
-        public static PostRequestBuilder aPostRequest() {
-            return new PostRequestBuilder();
+        public static CreateObjectRequestBuilder aCreateObjectRequest() {
+            return new CreateObjectRequestBuilder();
         }
 
-        public PostRequestBuilder withParameterList(List<Parameter> parameterList) {
+        public CreateObjectRequestBuilder withParameterList(List<Parameter> parameterList) {
             createObjectRequest.setParameterList(parameterList);
             return this;
         }
 
-        public PostRequestBuilder withParameterList(Map<String, Object> parameterMap) {
+        public CreateObjectRequestBuilder withParameterList(Map<String, Object> parameterMap) {
             if (DenaMapUtils.isNotEmpty(parameterMap)) {
                 for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
                     createObjectRequest.parameterList.add(new Parameter(entry.getKey(), entry.getValue().toString()));
@@ -80,17 +80,17 @@ public class CreateObjectRequest {
             return this;
         }
 
-        public PostRequestBuilder withRequestBodyContent(String requestBodyContent) {
+        public CreateObjectRequestBuilder withRequestBodyContent(String requestBodyContent) {
             createObjectRequest.setRequestBodyContent(requestBodyContent);
             return this;
         }
 
-        public PostRequestBuilder withBaseURL(String baseURL) {
+        public CreateObjectRequestBuilder withBaseURL(String baseURL) {
             createObjectRequest.setBaseURL(baseURL);
             return this;
         }
 
-        public PostRequestBuilder withAppId(String appId) {
+        public CreateObjectRequestBuilder withAppId(String appId) {
             if (!appId.startsWith("/")) {
                 appId += "/";
             }
