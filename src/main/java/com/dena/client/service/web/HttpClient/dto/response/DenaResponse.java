@@ -44,8 +44,8 @@ public class DenaResponse {
         this.count = count;
     }
 
-    public void setDenaObjectResponseList(List<DenaObjectResponse> denaObjectResponseList) {
-        this.denaObjectResponseList = denaObjectResponseList;
+    public List<DenaObjectResponse> getDenaObjectResponseList() {
+        return denaObjectResponseList;
     }
 
     public void setTotalCount(Long totalCount) {
@@ -104,7 +104,6 @@ public class DenaResponse {
             DenaResponse denaResponse = new DenaResponse();
             denaResponse.setTimestamp(timestamp);
             denaResponse.setCount(count);
-            denaResponse.setDenaObjectResponseList(denaObjectResponseList);
             denaResponse.setTotalCount(totalCount);
             denaResponse.setPage(page);
             return denaResponse;

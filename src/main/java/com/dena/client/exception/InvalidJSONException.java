@@ -3,16 +3,10 @@ package com.dena.client.exception;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public class InvalidJSONException extends DenaFault {
-    private ErrorCode errorCode;
+public class InvalidJSONException extends RuntimeException {
 
-    public InvalidJSONException(String message, ErrorCode errorCode) {
+    public InvalidJSONException(String message) {
         super(message);
-        this.errorCode = errorCode;
     }
 
-    @Override
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }

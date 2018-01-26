@@ -2,14 +2,11 @@ package com.dena.client.service.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
 import com.dena.client.service.web.HttpClient.dto.request.GetRequest;
-import com.dena.client.service.web.HttpClient.dto.request.PostRequest;
-import com.dena.client.utils.JSONMapper;
-import ir.peykasa.common.exception.ServiceException;
+import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
+import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
+import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.slf4j.Logger;
-
-import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -19,37 +16,22 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 
 public class HttpClientManager {
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     private final static Logger log = getLogger(HttpClientManager.class);
 
     private static final DenaHttpClient DENA_HTTP_CLIENT = DenaHttpClient.getInstance();
 
-    public static <T> T getData(GetRequest getRequest) throws DenaFault {
+    public static DenaResponse getData(GetRequest getRequest) throws DenaFault {
         String URL = getRequest.getURL();
-
-        Response response = DENA_HTTP_CLIENT.getData(URL, getRequest.getParameterList());
-
-        String bodyResponse = response.body().string();
-        if (getRequest.getReturnType() == null) {
-            return JSONMapper.createObjectFromJSON(bodyResponse, getRequest.getTypeReference());
-        } else {
-            return JSONMapper.createObjectFromJSON(bodyResponse, getRequest.getReturnType());
-        }
+        return DENA_HTTP_CLIENT.getData(URL, getRequest.getParameterList());
 
     }
 
-    public static <T> T postData(PostRequest fetchRequest) throws DenaFault {
-        String URL = fetchRequest.getURL();
-        Map<String, String> parametersKeyValue = getParameters(fetchRequest.getParameterList());
-        RequestBody requestBody = RequestBody.create(fetchRequest.getMediaType(), fetchRequest.getRequestBodyContent());
-        Response response = DenaHttpClient.postData(URL, parametersKeyValue, requestBody);
-
-        try {
-            String bodyResponse = response.body().string();
-            return JSONMapper.createObjectFromJSON(bodyResponse, fetchRequest.getReturnType());
-        } catch (final Exception ex) {
-            throw new ServiceException("Exception in posting data to component [" + fetchRequest.getComponentName() + "]", ex);
-        }
-
+    public static DenaResponse postData(CreateObjectRequest fetchRequest) throws DenaFault {
+        String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId();
+        RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
+        return DENA_HTTP_CLIENT.postData(fullURL, fetchRequest.getParameterList(), requestBody);
     }
 
 

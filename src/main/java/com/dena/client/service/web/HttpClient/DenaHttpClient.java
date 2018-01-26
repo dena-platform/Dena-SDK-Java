@@ -2,6 +2,7 @@ package com.dena.client.service.web.HttpClient;
 
 
 import com.dena.client.exception.DenaFault;
+import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.service.web.HttpClient.dto.response.ErrorResponse;
 import com.dena.client.service.web.HttpClient.dto.Parameter;
 import com.dena.client.utils.DenaStringUtils;
@@ -55,36 +56,24 @@ public final class DenaHttpClient {
         return getInstance(DEFAULT_CONNECTION_TIMEOUT_SECOND, DEFAULT_READ_TIMEOUT_SECOND);
     }
 
-    public Response getData(final String URL, List<Parameter> parameterList) throws DenaFault {
+    public DenaResponse getData(final String URL, List<Parameter> parameterList) throws DenaFault {
         log.info("Fetching data from address [{}] with parameters[{}]", URL, parameterList);
 
         Request request = prepareGetClient(URL, parameterList);
 
         log.info("Fetching data from address [{}]", request.url());
 
-        Response response = sendRequest(URL, parameterList, request);
+        DenaResponse response = sendRequest(URL, parameterList, request);
 
         log.info("Fetching data from address [{}] successfully", request.url());
         return response;
     }
 
-    public Response postData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
+    public DenaResponse postData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
         Request request = preparePostClient(URL, parameterList, requestBody);
         log.info("Posting data to address [{}]", request.url());
-        Response response = sendRequest(URL, parameterList, request);
 
-        String body;
-        try {
-            body = response.peekBody(100000).string();
-        } catch (IOException e) {
-            body = "";
-            log.error(e.getMessage(), e);
-        }
-
-        log.info("Posting data to address [{}] successfully. response code: [{}] with body: [{}]",
-                request.url(), response.code(), body);
-
-        return response;
+        return sendRequest(URL, parameterList, request);
     }
 
     private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
@@ -129,7 +118,7 @@ public final class DenaHttpClient {
         return result;
     }
 
-    private Response sendRequest(final String URL, List<Parameter> parameters, Request request) throws DenaFault {
+    private DenaResponse sendRequest(final String URL, List<Parameter> parameters, Request request) throws DenaFault {
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (!response.isSuccessful()) {
@@ -139,9 +128,10 @@ public final class DenaHttpClient {
 
                 ErrorResponse errorResponse = JSONMapper.createObjectFromJSON(responseBody, ErrorResponse.class);
                 throw new DenaFault(message, errorResponse);
+            } else {
+                String responseBody = response.body().string();
+                return JSONMapper.createObjectFromJSON(responseBody, DenaResponse.class);
             }
-
-            return response;
         } catch (IOException ex) {
             throw new DenaFault("Exception when connecting to address [" + URL + "] with parameters[" + parameters + "]", ex);
         }

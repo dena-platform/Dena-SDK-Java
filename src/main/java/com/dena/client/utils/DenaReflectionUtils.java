@@ -42,6 +42,8 @@ public final class DenaReflectionUtils {
         return fieldList;
     }
 
+    //todo: check for non static field
+
     /**
      * Find all non-static, non-transient getter method in the object.
      *
@@ -143,7 +145,6 @@ public final class DenaReflectionUtils {
         try {
             for (PropertyDescriptor pd : Introspector.getBeanInfo(klass).getPropertyDescriptors()) {
                 if (pd.getReadMethod() != null && !"class".equals(pd.getName())) {
-                    
                     propertyDescriptorList.add(pd);
                 }
             }
