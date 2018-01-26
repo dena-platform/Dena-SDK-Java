@@ -5,6 +5,7 @@ import com.dena.client.service.web.HttpClient.HttpClientManager;
 import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.service.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.utils.DenaReflectionUtils;
 import com.dena.client.utils.JSONMapper;
 
 import java.util.List;
@@ -31,15 +32,17 @@ public final class Dena {
         DENA_URL = endPoint;
     }
 
+
     public static <T> T saveOrUpdate(T object) {
         Map<String, Object> fields = DENA_MAPPER.findAllFields(object);
-        String typeName=
+        String typeName = DENA_MAPPER.findTypeName(object);
         String requestDataBody = JSONMapper.createJSONFromObject(fields);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyContent(requestDataBody)
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
+                .withTypeName(typeName)
                 .build();
 
         DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);

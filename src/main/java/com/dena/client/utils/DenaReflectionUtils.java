@@ -68,7 +68,7 @@ public final class DenaReflectionUtils {
      * @param object object for searching to find class name.
      * @return
      */
-    public static String findTypeName(Object object) {
+    public static String findClassName(Object object) {
         String typeName = object.getClass().getSimpleName();
         return typeName;
     }

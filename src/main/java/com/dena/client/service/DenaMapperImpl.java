@@ -53,8 +53,8 @@ public class DenaMapperImpl implements DenaMapper {
 
     @Override
     public String findTypeName(Object object) {
-
-        return null;
+        String typeName = DenaReflectionUtils.findClassName(object);
+        return typeName;
     }
 
 }
