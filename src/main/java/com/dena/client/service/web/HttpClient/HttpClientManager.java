@@ -11,8 +11,7 @@ import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * Author: Javad Alimohammadi Email:bc_alimohammadi@yahoo.com
- * DateTime: 4/7/13 11:23 AM
+ * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
 public class HttpClientManager {

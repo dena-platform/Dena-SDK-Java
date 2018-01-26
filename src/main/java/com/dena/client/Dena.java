@@ -18,7 +18,7 @@ import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectReq
  */
 
 public final class Dena {
-    private static String DENA_URL = "http://localhost:8090";
+    private static String DENA_URL = "http://localhost:8090/v1";
 
     private final static DenaMapperImpl DENA_MAPPER = new DenaMapperImpl();
 
