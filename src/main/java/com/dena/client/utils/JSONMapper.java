@@ -1,6 +1,5 @@
 package com.dena.client.utils;
 
-import com.dena.client.exception.ErrorCode;
 import com.dena.client.exception.InvalidJSONException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

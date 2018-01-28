@@ -1,6 +1,5 @@
 package com.dena.client.service;
 
-import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.utils.DenaCollectionUtils;
 import com.dena.client.utils.DenaMapUtils;
 import com.dena.client.utils.DenaReflectionUtils;
@@ -59,8 +58,9 @@ public class DenaMapperImpl implements DenaMapper {
     }
 
     @Override
-    public <T> T updateObjectFromResponse(Object object, DenaResponse denaResponse) {
-
+    public <T> T setObjectId(T object, String objectId) {
+        DenaReflectionUtils.addPublicFieldToObject(object, String.class, objectId);
+        return object;
     }
 
 }

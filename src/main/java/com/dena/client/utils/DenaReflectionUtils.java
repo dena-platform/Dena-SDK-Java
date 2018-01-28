@@ -1,10 +1,14 @@
 package com.dena.client.utils;
 
+import net.bytebuddy.ByteBuddy;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.*;
 
 import static java.lang.reflect.Modifier.*;
@@ -73,7 +77,16 @@ public final class DenaReflectionUtils {
         return typeName;
     }
 
-    public static void addFieldToObject(Object object, Object value) {
+    public static void addPublicFieldToObject(Object object, Type type, String name, Object value) throws IllegalAccessException, InstantiationException {
+        Class<?> parentClass = object.getClass();
+        Object newObject = new ByteBuddy().
+                subclass(parentClass)
+                .defineField(name, type, Modifier.PUBLIC)
+                .make()
+                .load(parentClass.getClass().getClassLoader())
+                .getLoaded()
+                .newInstance();
+
         
     }
 
