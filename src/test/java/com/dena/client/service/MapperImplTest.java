@@ -31,6 +31,5 @@ public class MapperImplTest {
         SuperClassA superClassA = new SuperClassA();
         denaMapper.setObjectId(superClassA, "5a6b15286f01790dfc600c3f");
 
-
     }
 }
