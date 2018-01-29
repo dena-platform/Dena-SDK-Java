@@ -59,12 +59,19 @@ public class DenaMapperImpl implements DenaMapper {
         return typeName;
     }
 
+    /**
+     * Inject 'denaObjectId' for specified target object. if 'denaObjectId' exist then do nothing.
+     * @param targetObject
+     * @param objectId
+     * @param <T>
+     * @return
+     */
     @Override
-    public <T> T setObjectId(final T object, final String objectId) {
+    public <T> T setObjectId(final T targetObject, final String objectId) {
         try {
-            Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(object.getClass(), String.class, DENA_OBJECT_ID);
+            Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID);
             T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
-            DenaReflectionUtils.copyObject(object, newObject);
+            DenaReflectionUtils.copyObject(targetObject, newObject);
             DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
 
             return newObject;
