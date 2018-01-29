@@ -9,6 +9,8 @@ import com.dena.client.service.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.utils.DenaReflectionUtils;
 import com.dena.client.utils.JSONMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectReq
  */
 
 public final class Dena {
+    private final static Logger log = LoggerFactory.getLogger(Dena.class);
+
     private static String DENA_URL = "http://localhost:8090/v1";
 
     private final static DenaMapper DENA_MAPPER = new DenaMapperImpl();
@@ -40,22 +44,25 @@ public final class Dena {
         final String typeName = DENA_MAPPER.findTypeName(denaObject);
         final String requestDataBody = JSONMapper.createJSONFromObject(fields);
 
+        CreateObjectRequest createObjectRequest = aCreateObjectRequest()
+                .withRequestBodyContent(requestDataBody)
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withTypeName(typeName)
+                .build();
+
         // object id have not set before, its new object
         if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
-            CreateObjectRequest createObjectRequest = aCreateObjectRequest()
-                    .withRequestBodyContent(requestDataBody)
-                    .withBaseURL(DENA_URL)
-                    .withAppId(APP_ID)
-                    .withTypeName(typeName)
-                    .build();
-
             DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
-
-            return DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
+            denaObject = DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
+            log.debug("Object [{}] is created successfully with id [{}]", denaObject, denaObjectResponse.getObjectId());
+            return denaObject;
 
         } else {
-
+            HttpClientManager.putData(createObjectRequest);
+            log.debug("Object [{}] is updated successfully.", denaObject);
+            return denaObject;
         }
 
     }
