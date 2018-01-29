@@ -39,7 +39,7 @@ The denaObjectId property is automatically assigned to all objects in the databa
 
 **Method:**
 
-    public T DENA.saveOrUpdate(T object) throws DenaError
+    public T DENA.saveOrUpdate(T object) throws DenaFault
 
 **Return Value:**
 

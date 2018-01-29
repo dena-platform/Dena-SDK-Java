@@ -1,5 +1,6 @@
 package com.dena.client;
 
+import com.dena.client.exception.DenaFault;
 import com.dena.client.service.DenaMapper;
 import com.dena.client.service.DenaMapperImpl;
 import com.dena.client.service.web.HttpClient.HttpClientManager;
@@ -34,21 +35,28 @@ public final class Dena {
     }
 
 
-    public static <T> T saveOrUpdate(T object) {
-        Map<String, Object> fields = DENA_MAPPER.findAllFields(object);
-        final String typeName = DENA_MAPPER.findTypeName(object);
+    public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
+        Map<String, Object> fields = DENA_MAPPER.findAllFields(denaObject);
+        final String typeName = DENA_MAPPER.findTypeName(denaObject);
         final String requestDataBody = JSONMapper.createJSONFromObject(fields);
 
-        CreateObjectRequest createObjectRequest = aCreateObjectRequest()
-                .withRequestBodyContent(requestDataBody)
-                .withBaseURL(DENA_URL)
-                .withAppId(APP_ID)
-                .withTypeName(typeName)
-                .build();
+        // object id have not set before, its new object
+        if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
+            CreateObjectRequest createObjectRequest = aCreateObjectRequest()
+                    .withRequestBodyContent(requestDataBody)
+                    .withBaseURL(DENA_URL)
+                    .withAppId(APP_ID)
+                    .withTypeName(typeName)
+                    .build();
 
-        DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
-        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
+            DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
+            DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
 
-        return DENA_MAPPER.setObjectId(object, denaObjectResponse.getObjectId());
+            return DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
+
+        } else {
+
+        }
+
     }
 }
