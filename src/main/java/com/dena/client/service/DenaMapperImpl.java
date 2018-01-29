@@ -60,7 +60,8 @@ public class DenaMapperImpl implements DenaMapper {
     }
 
     /**
-     * Inject 'denaObjectId' for specified target object. if 'denaObjectId' exist then do nothing.
+     * Inject field with name 'denaObjectId' to target object. if field with that name exist then do nothing.
+     *
      * @param targetObject
      * @param objectId
      * @param <T>
@@ -68,16 +69,22 @@ public class DenaMapperImpl implements DenaMapper {
      */
     @Override
     public <T> T setObjectId(final T targetObject, final String objectId) {
-        try {
-            Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID);
-            T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
-            DenaReflectionUtils.copyObject(targetObject, newObject);
-            DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
 
-            return newObject;
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-            throw new DenaFault(String.format("Can not set objectId [%s]", objectId), ex);
+        if (findAllFields(targetObject).get(DENA_OBJECT_ID) == null) {
+            try {
+                Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID);
+                T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
+                DenaReflectionUtils.copyObject(targetObject, newObject);
+                DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
+
+                return newObject;
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+                throw new DenaFault(String.format("Can not set objectId [%s]", objectId), ex);
+            }
+        } else {
+            return targetObject;
         }
+
     }
 
 }
