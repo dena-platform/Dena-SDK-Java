@@ -20,7 +20,7 @@ import java.util.Map;
 public class DenaMapperImpl implements DenaMapper {
     private final static Logger log = LoggerFactory.getLogger(DenaMapperImpl.class);
 
-    private static final String DENA_OBJECT_ID = "denaObjectId";
+    public static final String DENA_OBJECT_ID = "denaObjectId";
 
     @Override
     public Map<String, Object> findAllFields(Object object) {
