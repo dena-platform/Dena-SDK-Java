@@ -62,13 +62,12 @@ public class DenaMapperImpl implements DenaMapper {
     @Override
     public <T> T setObjectId(final T object, final String objectId) {
         try {
-
             Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(object.getClass(), String.class, DENA_OBJECT_ID);
             T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
             DenaReflectionUtils.copyObject(object, newObject);
             DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
-            return newObject;
 
+            return newObject;
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
             throw new DenaFault(String.format("Can not set objectId [%s]", objectId), ex);
         }
