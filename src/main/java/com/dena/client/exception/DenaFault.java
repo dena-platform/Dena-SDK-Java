@@ -9,7 +9,7 @@ public class DenaFault extends RuntimeException {
     private ErrorResponse errorResponse;
 
 
-    public DenaFault(String message,ErrorResponse errorResponse) {
+    public DenaFault(String message, ErrorResponse errorResponse) {
         super(message);
         this.errorResponse = errorResponse;
     }

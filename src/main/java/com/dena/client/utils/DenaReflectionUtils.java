@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 
 import static java.lang.reflect.Modifier.*;
@@ -80,36 +77,50 @@ public final class DenaReflectionUtils {
 
 
     /**
-     * Add field to object and set its value.
+     * Add public field to class.
      *
-     * @param object source object
-     * @param type   type of new field
-     * @param name   name of new field
-     * @param value  value of new field
+     * @param targetClass target class that we want to add field
+     * @param type        type of new field
+     * @param name        name of new field
      * @return new object with added field
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-
-    @SuppressWarnings("unchecked")
-    public static <T> T addPublicFieldToObject(T object, Type type, String name, Object value) throws IllegalAccessException, InstantiationException {
-        Class<T> parentClass = (Class<T>) object.getClass();
-        T newObject = new ByteBuddy().
-                subclass(parentClass)
+    public static <T> Class<? extends T> injectPublicFieldToClass(Class<T> targetClass, Type type, String name) {
+        Class<? extends T> newClass = new ByteBuddy()
+                .subclass(targetClass)
                 .defineField(name, type, Modifier.PUBLIC)
                 .make()
                 .load(DenaReflectionUtils.class.getClassLoader())
-                .getLoaded()
-                .newInstance();
+                .getLoaded();
 
-        copyObject(object, newObject);
-        foreSeetField(newObject, name, value);
-
-        return newObject;
-
-
+        return newClass;
     }
 
+    /**
+     * Call default constructor of specified class.
+     *
+     * @param klass
+     * @param <T>
+     * @return  new object of specified class.
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     */
+    public static <T> T callDefaultConstructor(Class<T> klass) throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
+        Constructor<T> constructor = klass.getConstructor();
+        return constructor.newInstance();
+    }
+
+    /**
+     * Copy all fields of source to destination object.
+     * @param sourceObject
+     * @param destinationObject
+     * @param <T>
+     * @return
+     */
     public static <T> T copyObject(T sourceObject, T destinationObject) {
         if (sourceObject == null || destinationObject == null) {
             throw new NullPointerException("source or destination object is null");
@@ -119,14 +130,12 @@ public final class DenaReflectionUtils {
         while (sourceKlass != null) {
             Field[] sourceFields = sourceKlass.getDeclaredFields();
             for (Field sourceField : sourceFields) {
-                boolean isAccessible = sourceField.isAccessible();
                 sourceField.setAccessible(true);
                 try {
                     sourceField.set(destinationObject, sourceField.get(sourceObject));
                 } catch (IllegalAccessException ex) {
                     log.error("Error in setting field", ex);
                 }
-                sourceField.setAccessible(isAccessible);
             }
 
             sourceKlass = sourceKlass.getSuperclass();
@@ -135,8 +144,14 @@ public final class DenaReflectionUtils {
 
     }
 
-
-    public static void foreSeetField(Object targetObject, String fieldName, Object value) throws IllegalAccessException {
+    /**
+     * Set field of target object to specified value even if that field is not public.
+     * @param targetObject
+     * @param fieldName
+     * @param value
+     * @throws IllegalAccessException
+     */
+    public static void forceSetField(Object targetObject, String fieldName, Object value) throws IllegalAccessException {
         Class<?> klass = targetObject.getClass();
         Optional<Field> field = findField(klass, fieldName, true);
         if (field.isPresent()) {

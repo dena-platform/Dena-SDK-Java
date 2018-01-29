@@ -27,9 +27,10 @@ public class MapperImplTest {
     }
 
     @Test
-    public void setObjectIdTest() {
+    public void testSetObjectId() {
         SuperClassA superClassA = new SuperClassA();
-        denaMapper.setObjectId(superClassA, "asdadd");
-        System.out.println();
+        denaMapper.setObjectId(superClassA, "5a6b15286f01790dfc600c3f");
+
+
     }
 }

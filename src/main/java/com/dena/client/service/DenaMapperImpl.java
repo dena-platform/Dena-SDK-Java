@@ -1,5 +1,6 @@
 package com.dena.client.service;
 
+import com.dena.client.exception.DenaFault;
 import com.dena.client.utils.DenaCollectionUtils;
 import com.dena.client.utils.DenaMapUtils;
 import com.dena.client.utils.DenaReflectionUtils;
@@ -59,15 +60,18 @@ public class DenaMapperImpl implements DenaMapper {
     }
 
     @Override
-    public <T> T setObjectId(T object, String objectId) {
+    public <T> T setObjectId(final T object, final String objectId) {
         try {
-            object = DenaReflectionUtils.addPublicFieldToObject(object, String.class, DENA_OBJECT_ID, objectId);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
+
+            Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(object.getClass(), String.class, DENA_OBJECT_ID);
+            T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
+            DenaReflectionUtils.copyObject(object, newObject);
+            DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
+            return newObject;
+
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set objectId [%s]", objectId), ex);
         }
-        return object;
     }
 
 }
