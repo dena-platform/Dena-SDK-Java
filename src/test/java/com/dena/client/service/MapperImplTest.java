@@ -1,6 +1,6 @@
 package com.dena.client.service;
 
-import com.dena.client.model.ModelWithAssignedObjectId;
+import com.dena.client.model.ModelWithObjectIdField;
 import com.dena.client.model.SuperClassA;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,9 +44,9 @@ public class MapperImplTest {
     public void test_setObjectId_when_objectId_is_assigned() {
         String objectId = "5a6b24026f01790dfc600c40";
 
-        ModelWithAssignedObjectId modelWithAssignedObjectId = new ModelWithAssignedObjectId();
+        ModelWithObjectIdField modelWithObjectIdField = new ModelWithObjectIdField();
 
-        ModelWithAssignedObjectId newClassA = denaMapper.setObjectId(modelWithAssignedObjectId, objectId);
+        ModelWithObjectIdField newClassA = denaMapper.setObjectId(modelWithObjectIdField, objectId);
         Map<String, Object> objectMap = denaMapper.findAllFields(newClassA);
 
         Assert.assertEquals("Object Id is invalid", objectId, objectMap.get(DenaMapperImpl.DENA_OBJECT_ID));

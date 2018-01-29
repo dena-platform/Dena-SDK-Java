@@ -3,8 +3,8 @@ package com.dena.client.model;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public class ModelWithAssignedObjectId {
-    public String denaObjectId = "5a6b24026f01790dfc600c40";
+public class ModelWithObjectIdField {
+    public String denaObjectId;
 
     private int a1;
     private int a2;
