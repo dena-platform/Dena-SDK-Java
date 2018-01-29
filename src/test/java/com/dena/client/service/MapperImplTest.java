@@ -25,4 +25,11 @@ public class MapperImplTest {
         Map<String, Object> allFields = denaMapper.findAllFields(superClassA);
         System.out.println(allFields);
     }
+
+    @Test
+    public void setObjectIdTest() {
+        SuperClassA superClassA = new SuperClassA();
+        denaMapper.setObjectId(superClassA, "asdadd");
+        System.out.println();
+    }
 }

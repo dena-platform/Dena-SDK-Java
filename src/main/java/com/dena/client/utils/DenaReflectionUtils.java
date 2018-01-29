@@ -1,6 +1,8 @@
 package com.dena.client.utils;
 
 import net.bytebuddy.ByteBuddy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -12,15 +14,14 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 import static java.lang.reflect.Modifier.*;
+import static java.lang.reflect.Modifier.isPublic;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
 public final class DenaReflectionUtils {
-    private final static String GETTER_PREFIX = "get";
-    private final static String BOOLEAN_GETTER_PREFIX = "is";
-    private final static String SETTER_PREFIX = "set";
+    private final static Logger log = LoggerFactory.getLogger(DenaReflectionUtils.class);
 
     /**
      * Find all non-static, non-transient public fields in class or inherited classes.
@@ -77,17 +78,94 @@ public final class DenaReflectionUtils {
         return typeName;
     }
 
-    public static void addPublicFieldToObject(Object object, Type type, String name, Object value) throws IllegalAccessException, InstantiationException {
-        Class<?> parentClass = object.getClass();
-        Object newObject = new ByteBuddy().
+
+    /**
+     * Add field to object and set its value.
+     *
+     * @param object source object
+     * @param type   type of new field
+     * @param name   name of new field
+     * @param value  value of new field
+     * @return new object with added field
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+
+    @SuppressWarnings("unchecked")
+    public static <T> T addPublicFieldToObject(T object, Type type, String name, Object value) throws IllegalAccessException, InstantiationException {
+        Class<T> parentClass = (Class<T>) object.getClass();
+        T newObject = new ByteBuddy().
                 subclass(parentClass)
                 .defineField(name, type, Modifier.PUBLIC)
                 .make()
-                .load(parentClass.getClass().getClassLoader())
+                .load(DenaReflectionUtils.class.getClassLoader())
                 .getLoaded()
                 .newInstance();
 
-        
+        copyObject(object, newObject);
+        foreSeetField(newObject, name, value);
+
+        return newObject;
+
+
+    }
+
+    public static <T> T copyObject(T sourceObject, T destinationObject) {
+        if (sourceObject == null || destinationObject == null) {
+            throw new NullPointerException("source or destination object is null");
+        }
+
+        Class sourceKlass = sourceObject.getClass();
+        while (sourceKlass != null) {
+            Field[] sourceFields = sourceKlass.getDeclaredFields();
+            for (Field sourceField : sourceFields) {
+                boolean isAccessible = sourceField.isAccessible();
+                sourceField.setAccessible(true);
+                try {
+                    sourceField.set(destinationObject, sourceField.get(sourceObject));
+                } catch (IllegalAccessException ex) {
+                    log.error("Error in setting field", ex);
+                }
+                sourceField.setAccessible(isAccessible);
+            }
+
+            sourceKlass = sourceKlass.getSuperclass();
+        }
+        return destinationObject;
+
+    }
+
+
+    public static void foreSeetField(Object targetObject, String fieldName, Object value) throws IllegalAccessException {
+        Class<?> klass = targetObject.getClass();
+        Optional<Field> field = findField(klass, fieldName, true);
+        if (field.isPresent()) {
+            field.get().set(targetObject, value);
+        } else {
+            throw new RuntimeException(String.format("Can not find field [%s] in class [%s]", field, klass));
+        }
+    }
+
+    private static Optional<Field> findField(Class<?> klass, String fieldName, boolean forceAccess) {
+        while (klass != null) {
+            try {
+                Field field = klass.getDeclaredField(fieldName);
+                if (!isPublic(field.getModifiers())) {
+                    if (forceAccess) {
+                        field.setAccessible(true);
+                    } else {
+                        continue;
+                    }
+                }
+                return Optional.of(field);
+            } catch (NoSuchFieldException e) {
+                // do nothing
+            }
+
+            klass = klass.getSuperclass();
+        }
+
+        return Optional.empty();
     }
 
     private static List<PropertyDescriptor> findGetterMethods(Class<?> klass) {

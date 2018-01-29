@@ -19,6 +19,7 @@ import java.util.Map;
 public class DenaMapperImpl implements DenaMapper {
     private final static Logger log = LoggerFactory.getLogger(DenaMapperImpl.class);
 
+    private static final String DENA_OBJECT_ID = "denaObjectId";
 
     @Override
     public Map<String, Object> findAllFields(Object object) {
@@ -59,7 +60,13 @@ public class DenaMapperImpl implements DenaMapper {
 
     @Override
     public <T> T setObjectId(T object, String objectId) {
-        DenaReflectionUtils.addPublicFieldToObject(object, String.class, objectId);
+        try {
+            object = DenaReflectionUtils.addPublicFieldToObject(object, String.class, DENA_OBJECT_ID, objectId);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 
