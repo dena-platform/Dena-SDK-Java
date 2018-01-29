@@ -1,5 +1,6 @@
 package com.dena.client;
 
+import com.dena.client.service.DenaMapper;
 import com.dena.client.service.DenaMapperImpl;
 import com.dena.client.service.web.HttpClient.HttpClientManager;
 import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
@@ -20,7 +21,7 @@ import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectReq
 public final class Dena {
     private static String DENA_URL = "http://localhost:8090/v1";
 
-    private final static DenaMapperImpl DENA_MAPPER = new DenaMapperImpl();
+    private final static DenaMapper DENA_MAPPER = new DenaMapperImpl();
 
     private static String APP_ID;
 
@@ -35,8 +36,8 @@ public final class Dena {
 
     public static <T> T saveOrUpdate(T object) {
         Map<String, Object> fields = DENA_MAPPER.findAllFields(object);
-        String typeName = DENA_MAPPER.findTypeName(object);
-        String requestDataBody = JSONMapper.createJSONFromObject(fields);
+        final String typeName = DENA_MAPPER.findTypeName(object);
+        final String requestDataBody = JSONMapper.createJSONFromObject(fields);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyContent(requestDataBody)
@@ -46,8 +47,8 @@ public final class Dena {
                 .build();
 
         DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
-        List<DenaObjectResponse> denaObjectResponseList = denaResponse.getDenaObjectResponseList();
+        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
 
-        return null;
+        return DENA_MAPPER.setObjectId(object, denaObjectResponse.getObjectId());
     }
 }

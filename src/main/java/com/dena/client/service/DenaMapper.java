@@ -6,9 +6,11 @@ import java.util.Map;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 public interface DenaMapper {
-    Map<String, Object> findAllFields(Object object);
+    Map<String, Object> findAllFields(Object targetObject);
 
-    String findTypeName(Object object);
+    String findTypeName(Object targetObject);
 
-    <T> T setObjectId(T object, String objectId);
+    <T> boolean isObjectIdSet(T targetObject);
+
+    <T> T setObjectId(T targetObject, String objectId);
 }

@@ -23,9 +23,9 @@ public class DenaMapperImpl implements DenaMapper {
     public static final String DENA_OBJECT_ID = "denaObjectId";
 
     @Override
-    public Map<String, Object> findAllFields(Object object) {
-        List<Field> fieldList = DenaReflectionUtils.findInstanceVariables(object);
-        Map<String, Method> getterMethodList = DenaReflectionUtils.findGetterMethods(object);
+    public Map<String, Object> findAllFields(Object targetObject) {
+        List<Field> fieldList = DenaReflectionUtils.findInstanceVariables(targetObject);
+        Map<String, Method> getterMethodList = DenaReflectionUtils.findGetterMethods(targetObject);
 
         Map<String, Object> returnMap = new HashMap<>();
 
@@ -33,7 +33,7 @@ public class DenaMapperImpl implements DenaMapper {
             for (Map.Entry<String, Method> method : getterMethodList.entrySet()) {
                 try {
                     String propertyName = method.getKey();
-                    returnMap.put(propertyName, method.getValue().invoke(object));
+                    returnMap.put(propertyName, method.getValue().invoke(targetObject));
                 } catch (InvocationTargetException | IllegalAccessException ex) {
                     log.error("Error in getting value ", ex);
                 }
@@ -43,7 +43,7 @@ public class DenaMapperImpl implements DenaMapper {
         if (DenaCollectionUtils.isNotEmpty(fieldList)) {
             for (Field field : fieldList) {
                 try {
-                    returnMap.put(field.getName(), field.get(object));
+                    returnMap.put(field.getName(), field.get(targetObject));
                 } catch (IllegalAccessException ex) {
                     log.error("Error in getting value ", ex);
                 }
@@ -54,9 +54,13 @@ public class DenaMapperImpl implements DenaMapper {
     }
 
     @Override
-    public String findTypeName(Object object) {
-        String typeName = DenaReflectionUtils.findClassName(object);
-        return typeName;
+    public String findTypeName(Object targetObject) {
+        return DenaReflectionUtils.findClassName(targetObject);
+    }
+
+    @Override
+    public <T> boolean isObjectIdSet(T targetObject) {
+        return findAllFields(targetObject).containsKey(DENA_OBJECT_ID) && findAllFields(targetObject).get(DENA_OBJECT_ID) != null;
     }
 
     /**
