@@ -51,7 +51,7 @@ public final class Dena {
                 .withTypeName(typeName)
                 .build();
 
-        // object id have not set before, its new object
+        // object id have not set before, create new object
         if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
             DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);

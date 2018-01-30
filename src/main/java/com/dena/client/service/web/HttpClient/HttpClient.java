@@ -29,7 +29,7 @@ public final class HttpClient {
 
     private OkHttpClient OK_HTTP_CLIENT;
 
-    private static HttpClient httpClient;
+    private static HttpClient httpClientInstnce;
 
     private HttpClient(int connectionTimeout, int readTimeout) {
         // todo: config write timeout setting
@@ -43,11 +43,11 @@ public final class HttpClient {
     }
 
     public static synchronized HttpClient getInstance(int connectionTimeout, int readTimeout) {
-        if (httpClient == null) {
-            httpClient = new HttpClient(connectionTimeout, readTimeout);
+        if (httpClientInstnce == null) {
+            httpClientInstnce = new HttpClient(connectionTimeout, readTimeout);
         }
 
-        return httpClient;
+        return httpClientInstnce;
     }
 
     public static synchronized HttpClient getInstance() {
@@ -77,14 +77,13 @@ public final class HttpClient {
     }
 
     public DenaResponse putData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
-        Request request = preparePostClient(URL, parameterList, requestBody);
+        Request request = preparePutClient(URL, parameterList, requestBody);
         log.debug("Putting data to address [{}]", request.url());
 
         DenaResponse denaResponse = sendRequest(URL, parameterList, request);
 
         return denaResponse;
     }
-
 
 
     private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
@@ -96,7 +95,6 @@ public final class HttpClient {
                 .post(requestBody)
                 .build();
         return request;
-
     }
 
     private Request prepareGetClient(final String URL, List<Parameter> parameterList) {
@@ -108,6 +106,18 @@ public final class HttpClient {
 
         return request;
     }
+
+    private Request preparePutClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
+        HttpUrl httpUrl = HttpUrl.parse(URL);
+
+        HttpUrl result = addParameterToHttpURL(httpUrl, parameterList);
+        Request request = new Request.Builder()
+                .url(result)
+                .put(requestBody)
+                .build();
+        return request;
+    }
+
 
     private HttpUrl addParameterToHttpURL(final HttpUrl httpUrl, List<Parameter> parameterList) {
         HttpUrl result = httpUrl;
@@ -150,3 +160,5 @@ public final class HttpClient {
 
     }
 }
+
+
