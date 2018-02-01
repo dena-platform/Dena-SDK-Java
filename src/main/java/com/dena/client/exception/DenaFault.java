@@ -21,4 +21,8 @@ public class DenaFault extends RuntimeException {
     public ErrorResponse getErrorResponse() {
         return errorResponse;
     }
+
+    public static DenaFault makeException(String message, Throwable cause) {
+        return new DenaFault(message, cause);
+    }
 }

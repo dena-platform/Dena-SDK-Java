@@ -1,6 +1,7 @@
 package com.dena.client;
 
 import com.dena.client.exception.DenaFault;
+import com.dena.client.exception.ErrorCode;
 import com.dena.client.service.DenaMapper;
 import com.dena.client.service.DenaMapperImpl;
 import com.dena.client.service.web.HttpClient.HttpClientManager;
@@ -39,7 +40,11 @@ public final class Dena {
     }
 
 
-    public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
+    public static <T> T saveOrUpdate(final T denaObject) throws DenaFault {
+        if (denaObject == null) {
+            throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
+        }
+
         final String requestBody = DENA_MAPPER.serializeObject(denaObject);
         final String typeName = DENA_MAPPER.findTypeName(denaObject);
 
@@ -54,7 +59,7 @@ public final class Dena {
         if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
             DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
-            denaObject = DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
+            DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
         } else {
