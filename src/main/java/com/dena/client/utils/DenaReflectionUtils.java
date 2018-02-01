@@ -93,7 +93,7 @@ public final class DenaReflectionUtils {
      */
     public static <T> Class<? extends T> injectPublicFieldToClass(Class<T> targetClass, Type type, String name) {
         Class<? extends T> newClass = new ByteBuddy()
-                .with(new NamingStrategy.SuffixingRandom() {
+                .with(new NamingStrategy.AbstractBase() {
                     @Override
                     protected String name(TypeDescription superClass) {
                         long randomNumber = (long) (Math.random() * 99999999999999999L);
