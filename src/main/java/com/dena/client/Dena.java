@@ -57,7 +57,8 @@ public final class Dena {
             denaObject = DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
-        } else {  // send update object request
+        } else {
+            // send update object request
             HttpClientManager.putData(createObjectRequest);
             log.debug("Object [{}] is updated successfully.", denaObject);
             return denaObject;

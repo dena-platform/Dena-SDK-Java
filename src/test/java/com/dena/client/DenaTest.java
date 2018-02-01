@@ -17,14 +17,12 @@ public class DenaTest {
         Dena.initApp("denaQA");
     }
 
-
     @Test
     public void test_saveOrUpdate() {
-
         SuperClassA superClassA = new SuperClassA();
         superClassA.setA1(10);
 
-        superClassA = Dena.saveOrUpdate(superClassA);
+        Dena.saveOrUpdate(superClassA);
         superClassA.setA2("javad");
 
         Dena.saveOrUpdate(superClassA);
