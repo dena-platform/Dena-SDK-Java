@@ -4,6 +4,7 @@ import com.dena.client.exception.DenaFault;
 import com.dena.client.utils.DenaCollectionUtils;
 import com.dena.client.utils.DenaMapUtils;
 import com.dena.client.utils.DenaReflectionUtils;
+import com.dena.client.utils.JSONMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,19 @@ import java.util.Map;
 public class DenaMapperImpl implements DenaMapper {
     private final static Logger log = LoggerFactory.getLogger(DenaMapperImpl.class);
 
-    public static final String DENA_OBJECT_ID = "denaObjectId";
+    public static final String DENA_OBJECT_ID_FIELD = "denaObjectId";
+
+    @Override
+    public String serializeObject(Object targetObject) {
+        final String objectId = "object_id";
+        Map<String, Object> fields = findAllFields(targetObject);
+        Object previousValue = fields.remove(DENA_OBJECT_ID_FIELD);
+        if (previousValue != null) {
+            fields.put(objectId, previousValue);
+        }
+
+        return JSONMapper.createJSONFromObject(fields);
+    }
 
     @Override
     public Map<String, Object> findAllFields(Object targetObject) {
@@ -51,18 +64,19 @@ public class DenaMapperImpl implements DenaMapper {
         }
 
 
-
         return returnMap;
     }
 
     @Override
     public String findTypeName(Object targetObject) {
-        return DenaReflectionUtils.findClassName(targetObject);
+        String fullClassName = DenaReflectionUtils.findClassName(targetObject);
+        int endIndex = !fullClassName.contains("$") ? fullClassName.length() : fullClassName.indexOf("@");
+        return fullClassName.substring(0, endIndex);
     }
 
     @Override
     public <T> boolean isObjectIdSet(T targetObject) {
-        return findAllFields(targetObject).containsKey(DENA_OBJECT_ID) && findAllFields(targetObject).get(DENA_OBJECT_ID) != null;
+        return findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD) && findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD) != null;
     }
 
     /**
@@ -78,14 +92,14 @@ public class DenaMapperImpl implements DenaMapper {
     public <T> T setObjectId(final T targetObject, final String objectId) {
 
         try {
-            if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID)) {
-                DenaReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID, objectId);
+            if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
+                DenaReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
                 return targetObject;
             } else {
-                Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID);
+                Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
                 T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
                 DenaReflectionUtils.copyObject(targetObject, newObject);
-                DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID, objectId);
+                DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
 
                 return newObject;
             }
@@ -94,5 +108,4 @@ public class DenaMapperImpl implements DenaMapper {
         }
 
     }
-
 }

@@ -40,9 +40,8 @@ public final class Dena {
 
 
     public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
-        Map<String, Object> fields = DENA_MAPPER.findAllFields(denaObject);
+        final String requestBody = DENA_MAPPER.serializeObject(denaObject);
         final String typeName = DENA_MAPPER.findTypeName(denaObject);
-        final String requestBody = JSONMapper.createJSONFromObject(fields);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyContent(requestBody)

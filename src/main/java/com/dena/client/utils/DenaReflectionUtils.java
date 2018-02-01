@@ -1,6 +1,7 @@
 package com.dena.client.utils;
 
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,8 +72,7 @@ public final class DenaReflectionUtils {
      * @return
      */
     public static String findClassName(Object object) {
-        String typeName = object.getClass().getSimpleName();
-        return typeName;
+        return object.getClass().getSimpleName();
     }
 
 
@@ -102,7 +102,7 @@ public final class DenaReflectionUtils {
      *
      * @param klass
      * @param <T>
-     * @return  new object of specified class.
+     * @return new object of specified class.
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
@@ -116,6 +116,7 @@ public final class DenaReflectionUtils {
 
     /**
      * Copy all fields of source to destination object.
+     *
      * @param sourceObject
      * @param destinationObject
      * @param <T>
@@ -146,6 +147,7 @@ public final class DenaReflectionUtils {
 
     /**
      * Set field of target object to specified value even if that field is not public.
+     *
      * @param targetObject
      * @param fieldName
      * @param value

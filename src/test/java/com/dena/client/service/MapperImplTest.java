@@ -37,7 +37,7 @@ public class MapperImplTest {
         SuperClassA newClassA = denaMapper.setObjectId(superClassA, objectId);
         Map<String, Object> objectMap = denaMapper.findAllFields(newClassA);
 
-        Assert.assertEquals("Object Id is invalid", objectId, objectMap.get(DenaMapperImpl.DENA_OBJECT_ID));
+        Assert.assertEquals("Object Id is invalid", objectId, objectMap.get(DenaMapperImpl.DENA_OBJECT_ID_FIELD));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class MapperImplTest {
         ModelWithObjectIdField newClassA = denaMapper.setObjectId(modelWithObjectIdField, objectId);
         Map<String, Object> objectMap = denaMapper.findAllFields(newClassA);
 
-        Assert.assertEquals("Object Id is invalid", objectId, objectMap.get(DenaMapperImpl.DENA_OBJECT_ID));
+        Assert.assertEquals("Object Id is invalid", objectId, objectMap.get(DenaMapperImpl.DENA_OBJECT_ID_FIELD));
     }
 
 
