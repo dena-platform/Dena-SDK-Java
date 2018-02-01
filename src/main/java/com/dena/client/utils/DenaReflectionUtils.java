@@ -1,7 +1,10 @@
 package com.dena.client.utils;
 
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.NamingStrategy;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +23,8 @@ import static java.lang.reflect.Modifier.isPublic;
 
 public final class DenaReflectionUtils {
     private final static Logger log = LoggerFactory.getLogger(DenaReflectionUtils.class);
+
+    public static final String CLASS_NAMING_PREFIX = "_$DenaObject$_";
 
     /**
      * Find all non-static, non-transient public fields in class or inherited classes.
@@ -88,6 +93,13 @@ public final class DenaReflectionUtils {
      */
     public static <T> Class<? extends T> injectPublicFieldToClass(Class<T> targetClass, Type type, String name) {
         Class<? extends T> newClass = new ByteBuddy()
+                .with(new NamingStrategy.SuffixingRandom() {
+                    @Override
+                    protected String name(TypeDescription superClass) {
+                        long randomNumber = (long) (Math.random() * 99999999999999999L);
+                        return superClass.getSimpleName() + CLASS_NAMING_PREFIX + randomNumber;
+                    }
+                })
                 .subclass(targetClass)
                 .defineField(name, type, Modifier.PUBLIC)
                 .make()
