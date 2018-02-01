@@ -70,7 +70,8 @@ public class DenaMapperImpl implements DenaMapper {
     @Override
     public String findTypeName(Object targetObject) {
         String fullClassName = DenaReflectionUtils.findClassName(targetObject);
-        int endIndex = !fullClassName.contains("$") ? fullClassName.length() : fullClassName.indexOf("$");
+        int endIndex = !fullClassName.contains(DenaReflectionUtils.CLASS_NAMING_PREFIX) ?
+                fullClassName.length() : fullClassName.indexOf(DenaReflectionUtils.CLASS_NAMING_PREFIX);
         return fullClassName.substring(0, endIndex);
     }
 
