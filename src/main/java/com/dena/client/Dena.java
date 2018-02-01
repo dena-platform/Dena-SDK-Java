@@ -42,24 +42,24 @@ public final class Dena {
     public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
         Map<String, Object> fields = DENA_MAPPER.findAllFields(denaObject);
         final String typeName = DENA_MAPPER.findTypeName(denaObject);
-        final String requestDataBody = JSONMapper.createJSONFromObject(fields);
+        final String requestBody = JSONMapper.createJSONFromObject(fields);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
-                .withRequestBodyContent(requestDataBody)
+                .withRequestBodyContent(requestBody)
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
                 .withTypeName(typeName)
                 .build();
 
-        // object id have not set before, create new object
+        // object id have not set before, send create object request
         if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
             DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
             denaObject = DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
-            log.debug("Object [{}] is created successfully with id [{}]", denaObject, denaObjectResponse.getObjectId());
+            log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
-
-        } else {
+        } else {  // update object
+            
             HttpClientManager.putData(createObjectRequest);
             log.debug("Object [{}] is updated successfully.", denaObject);
             return denaObject;
