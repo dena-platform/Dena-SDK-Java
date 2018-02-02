@@ -77,7 +77,8 @@ public class DenaMapperImpl implements DenaMapper {
 
     @Override
     public <T> boolean isObjectIdSet(T targetObject) {
-        return findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD) && findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD) != null;
+        return findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD) &&
+                findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD) != null;
     }
 
     /**
