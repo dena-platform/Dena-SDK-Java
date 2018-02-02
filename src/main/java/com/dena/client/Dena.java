@@ -8,13 +8,8 @@ import com.dena.client.service.web.HttpClient.HttpClientManager;
 import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.service.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
-import com.dena.client.utils.DenaReflectionUtils;
-import com.dena.client.utils.JSONMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
 
 import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 
@@ -57,14 +52,14 @@ public final class Dena {
 
         // object id have not set before, send create object request
         if (!DENA_MAPPER.isObjectIdSet(denaObject)) {
-            DenaResponse denaResponse = HttpClientManager.postData(createObjectRequest);
+            DenaResponse denaResponse = HttpClientManager.createNewDenaObject(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
             DENA_MAPPER.setObjectId(denaObject, denaObjectResponse.getObjectId());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
         } else {
             // send update object request
-            HttpClientManager.putData(createObjectRequest);
+            HttpClientManager.updateDenaObject(createObjectRequest);
             log.debug("Object [{}] is updated successfully.", denaObject);
             return denaObject;
         }

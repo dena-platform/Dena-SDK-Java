@@ -27,7 +27,7 @@ public class HttpClientManager {
 
     }
 
-    public static DenaResponse postData(CreateObjectRequest fetchRequest) throws DenaFault {
+    public static DenaResponse createNewDenaObject(CreateObjectRequest fetchRequest) throws DenaFault {
         String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId() + fetchRequest.getTypeName();
         RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
         DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, fetchRequest.getParameterList(), requestBody);
@@ -37,7 +37,7 @@ public class HttpClientManager {
     }
 
 
-    public static DenaResponse putData(CreateObjectRequest fetchRequest) throws DenaFault {
+    public static DenaResponse updateDenaObject(CreateObjectRequest fetchRequest) throws DenaFault {
         String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId() + fetchRequest.getTypeName();
         RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
         DenaResponse denaResponse = DENA_HTTP_CLIENT.putData(fullURL, fetchRequest.getParameterList(), requestBody);
