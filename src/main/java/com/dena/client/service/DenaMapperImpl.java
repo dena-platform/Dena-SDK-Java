@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,38 @@ public class DenaMapperImpl implements DenaMapper {
     public String serializeObject(Object targetObject) {
         final String objectId = "object_id";
         Map<String, Object> fields = findAllFields(targetObject);
+        Map<String, Object> ignoredNullFields = new HashMap<>();
+
+        // replace denaObjectId with objectId
         Object previousValue = fields.remove(DENA_OBJECT_ID_FIELD);
         if (previousValue != null) {
             fields.put(objectId, previousValue);
         }
+
+        // ignore null value fields or empty array, map
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            if (entry.getValue() == null) {
+                // ignore null
+            }
+
+            if (entry.getValue() instanceof Collection && ((Collection) entry.getValue()).size() == 0) {
+                // ignore empty array
+            }
+
+            if (entry.getValue() instanceof Collection) {
+                Object firstItem = ((Collection) entry).iterator().next();
+                
+            }
+
+
+        }
+
+
+        // check type of field in
+        for (Map.Entry<String, Object> entry : ignoredNullFields.entrySet()) {
+
+        }
+
 
         return JSONMapper.createJSONFromObject(fields);
     }

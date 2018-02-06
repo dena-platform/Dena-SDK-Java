@@ -1,5 +1,8 @@
 package com.dena.client.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -9,6 +12,8 @@ public class SuperClassA {
     private String a2;
 
     public String a3;
+
+    public List<String> names = new ArrayList<>();
 
     public int getA1() {
         return a1;
