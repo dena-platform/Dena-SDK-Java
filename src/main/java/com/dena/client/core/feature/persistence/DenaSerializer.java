@@ -44,7 +44,7 @@ public class DenaSerializer {
 
             if (entry.getValue() instanceof Collection &&
                     !ClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
-                // ignore collection that contain non primitive ,non-wrapper element or String type
+                // ignore collection that not contain primitive ,primitive-wrapper or String type
                 if (!ClassUtils.isStringCollection((Collection) entry.getValue())) {
                     continue;
                 }
