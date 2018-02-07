@@ -1,4 +1,4 @@
-package com.dena.client.utils;
+package com.dena.client.common.utils;
 
 import java.util.Map;
 

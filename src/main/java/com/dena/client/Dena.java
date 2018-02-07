@@ -2,18 +2,18 @@ package com.dena.client;
 
 import com.dena.client.exception.DenaFault;
 import com.dena.client.exception.ErrorCode;
-import com.dena.client.service.DenaSerializer;
-import com.dena.client.service.web.HttpClient.HttpClientManager;
-import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
-import com.dena.client.service.web.HttpClient.dto.response.DenaObjectResponse;
-import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
-import com.dena.client.utils.DenaClassUtils;
+import com.dena.client.core.feature.persistence.DenaSerializer;
+import com.dena.client.common.web.HttpClient.HttpClientManager;
+import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
+import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.common.utils.DenaClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
+import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]

@@ -1,10 +1,8 @@
-package com.dena.client.utils;
+package com.dena.client.common.utils;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.NamingStrategy;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

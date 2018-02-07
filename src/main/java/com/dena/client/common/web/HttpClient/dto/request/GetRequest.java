@@ -1,10 +1,9 @@
-package com.dena.client.service.web.HttpClient.dto.request;
+package com.dena.client.common.web.HttpClient.dto.request;
 
-import com.dena.client.service.web.HttpClient.dto.Parameter;
+import com.dena.client.common.web.HttpClient.dto.Parameter;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

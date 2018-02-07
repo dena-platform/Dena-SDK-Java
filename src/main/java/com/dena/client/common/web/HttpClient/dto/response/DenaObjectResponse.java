@@ -1,6 +1,6 @@
-package com.dena.client.service.web.HttpClient.dto.response;
+package com.dena.client.common.web.HttpClient.dto.response;
 
-import com.dena.client.utils.DenaStringUtils;
+import com.dena.client.common.utils.DenaStringUtils;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.ArrayList;

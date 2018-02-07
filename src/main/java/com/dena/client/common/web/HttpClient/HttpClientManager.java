@@ -1,10 +1,10 @@
-package com.dena.client.service.web.HttpClient;
+package com.dena.client.common.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
-import com.dena.client.service.web.HttpClient.dto.request.GetRequest;
-import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
-import com.dena.client.utils.JSONMapper;
+import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.request.GetRequest;
+import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.common.utils.JSONMapper;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
