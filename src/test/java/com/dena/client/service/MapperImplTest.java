@@ -12,12 +12,6 @@ import java.util.Map;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 public class MapperImplTest {
-    private DenaMapper denaMapper;
-
-    @Before
-    public void setup() {
-        denaMapper = new DenaMapperImpl();
-    }
 
     @Test
     public void test_findAllFields() {

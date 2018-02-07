@@ -4,7 +4,6 @@ package com.dena.client;
 import com.dena.client.model.SuperClassA;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.omg.CORBA.INTERNAL;
 
 import java.util.Arrays;
 import java.util.HashMap;
