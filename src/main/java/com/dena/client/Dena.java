@@ -18,6 +18,8 @@ import static com.dena.client.service.web.HttpClient.dto.request.CreateObjectReq
  */
 
 public final class Dena {
+    public static final String DENA_OBJECT_ID_FIELD = "denaObjectId";
+
     private final static Logger log = LoggerFactory.getLogger(Dena.class);
 
     private static String DENA_URL = "http://localhost:8090/v1";

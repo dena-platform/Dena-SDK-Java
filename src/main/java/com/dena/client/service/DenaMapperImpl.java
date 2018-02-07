@@ -1,17 +1,13 @@
 package com.dena.client.service;
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.utils.*;
+import com.dena.client.utils.DenaReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import static com.dena.client.service.DenaSerializer.DENA_OBJECT_ID_FIELD;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -19,86 +15,7 @@ import java.util.Map;
 public class DenaMapperImpl implements DenaMapper {
     private final static Logger log = LoggerFactory.getLogger(DenaMapperImpl.class);
 
-    public static final String DENA_OBJECT_ID_FIELD = "denaObjectId";
-
-    @Override
-    public String serializeObject(Object targetObject) {
-        final String objectId = "object_id";
-        Map<String, Object> fields = findAllFields(targetObject);
-        Map<String, Object> ignoredNullFields = new HashMap<>();
-
-        // replace denaObjectId with objectId
-        Object previousValue = fields.remove(DENA_OBJECT_ID_FIELD);
-        if (previousValue != null) {
-            fields.put(objectId, previousValue);
-        }
-
-        // ignore null value fields or empty collection, map
-        for (Map.Entry<String, Object> entry : fields.entrySet()) {
-            if (entry.getValue() == null) {
-                // ignore null
-                continue;
-            }
-
-            if (entry.getValue() instanceof Collection && ((Collection) entry.getValue()).size() == 0) {
-                // ignore empty collection
-                continue;
-            }
-
-            if (entry.getValue() instanceof Collection &&
-                    !DenaClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
-                // ignore collection that contain non primitive or non-wrapper element
-
-            }
-
-            if (entry.getValue() instanceof Map && !DenaClassUtils.isPrimitiveOrWrapperMapValue((Map<String, ?>) entry.getValue())) {
-                
-            }
-
-
-        }
-
-
-        // check type of field in
-        for (Map.Entry<String, Object> entry : ignoredNullFields.entrySet()) {
-
-        }
-
-
-        return JSONMapper.createJSONFromObject(fields);
-    }
-
-    @Override
-    public Map<String, Object> findAllFields(Object targetObject) {
-        List<Field> fieldList = DenaReflectionUtils.findInstanceVariables(targetObject);
-        Map<String, Method> getterMethodList = DenaReflectionUtils.findGetterMethods(targetObject);
-
-        Map<String, Object> returnMap = new HashMap<>();
-
-        if (DenaMapUtils.isNotEmpty(getterMethodList)) {
-            for (Map.Entry<String, Method> method : getterMethodList.entrySet()) {
-                try {
-                    String propertyName = method.getKey();
-                    returnMap.put(propertyName, method.getValue().invoke(targetObject));
-                } catch (InvocationTargetException | IllegalAccessException ex) {
-                    log.error("Error in getting value ", ex);
-                }
-            }
-        }
-
-        if (DenaCollectionUtils.isNotEmpty(fieldList)) {
-            for (Field field : fieldList) {
-                try {
-                    returnMap.put(field.getName(), field.get(targetObject));
-                } catch (IllegalAccessException ex) {
-                    log.error("Error in getting value ", ex);
-                }
-            }
-        }
-
-
-        return returnMap;
-    }
+    private DenaSerializer denaSerializer = new DenaSerializer();
 
     @Override
     public String findTypeName(Object targetObject) {
