@@ -24,7 +24,7 @@ public class DenaTest {
         SuperClassA superClassA = new SuperClassA();
         superClassA.setA1(10);
         superClassA.setA2("javad");
-        superClassA.names = Arrays.asList("javad", "ali");
+        superClassA.names = Arrays.asList(1L, 2L);
         Map<Integer, Integer> sso = new HashMap<>();
         sso.put(1, 1);
         sso.put(2, 2);

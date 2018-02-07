@@ -15,7 +15,7 @@ public class SuperClassA {
 
     public String a3;
 
-    public List<String> names = new ArrayList<>();
+    public List<Long> names = new ArrayList<>();
 
     public Map<Integer, Integer> sso = new HashMap<>();
 
