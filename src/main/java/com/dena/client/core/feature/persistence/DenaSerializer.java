@@ -1,10 +1,10 @@
 package com.dena.client.core.feature.persistence;
 
+import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.utils.ClassUtils;
 import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.utils.MapUtils;
 import com.dena.client.common.utils.ReflectionUtils;
-import com.dena.client.common.exception.DenaFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,10 +44,12 @@ public class DenaSerializer {
 
             if (entry.getValue() instanceof Collection &&
                     !ClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
-                // ignore collection that contain non primitive or non-wrapper element
-                continue;
-
+                // ignore collection that contain non primitive ,non-wrapper element or String type
+                if (!ClassUtils.isStringCollection((Collection) entry.getValue())) {
+                    continue;
+                }
             }
+
 
             if (entry.getValue() instanceof Map) {
                 // ignore map

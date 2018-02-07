@@ -24,12 +24,37 @@ public final class ClassUtils {
 
         while (iterator.hasNext()) {
             Object element = iterator.next();
+
             if (!isPrimitiveOrWrapper(element.getClass())) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * check if collection contain only String type
+     *
+     * @param collection
+     * @return
+     */
+    public static boolean isStringCollection(Collection<?> collection) {
+        Iterator<?> iterator = collection.iterator();
+
+        while (iterator.hasNext()) {
+            Object element = iterator.next();
+
+            if (!element.getClass().equals(String.class)) {
+                return false;
+            }
+
+            return true;
+
+        }
+
+        return true;
+
     }
 
     /**
