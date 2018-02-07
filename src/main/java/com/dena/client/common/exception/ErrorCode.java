@@ -1,4 +1,4 @@
-package com.dena.client.exception;
+package com.dena.client.common.exception;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]

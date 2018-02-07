@@ -4,7 +4,7 @@ import com.dena.client.common.utils.DenaClassUtils;
 import com.dena.client.common.utils.DenaCollectionUtils;
 import com.dena.client.common.utils.DenaMapUtils;
 import com.dena.client.common.utils.DenaReflectionUtils;
-import com.dena.client.exception.DenaFault;
+import com.dena.client.common.exception.DenaFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

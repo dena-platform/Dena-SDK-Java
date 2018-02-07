@@ -1,4 +1,4 @@
-package com.dena.client.exception;
+package com.dena.client.common.exception;
 
 import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
 

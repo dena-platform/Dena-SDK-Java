@@ -1,7 +1,7 @@
 package com.dena.client;
 
-import com.dena.client.exception.DenaFault;
-import com.dena.client.exception.ErrorCode;
+import com.dena.client.common.exception.DenaFault;
+import com.dena.client.common.exception.ErrorCode;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.common.web.HttpClient.HttpClientManager;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;

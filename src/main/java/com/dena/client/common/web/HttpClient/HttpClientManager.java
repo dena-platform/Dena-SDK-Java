@@ -1,6 +1,6 @@
 package com.dena.client.common.web.HttpClient;
 
-import com.dena.client.exception.DenaFault;
+import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.GetRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
