@@ -16,7 +16,7 @@ public class CreateObjectRequest {
 
     private List<Parameter> parameterList = new ArrayList<>();
 
-    private String requestBodyContent;
+    private Map<String, Object> requestBodyMap;
 
     private String BaseURL;
 
@@ -41,12 +41,12 @@ public class CreateObjectRequest {
         this.BaseURL = baseURL;
     }
 
-    public String getRequestBodyContent() {
-        return requestBodyContent == null ? "" : requestBodyContent;
+    public Map<String, Object> getRequestBodyMap() {
+        return requestBodyMap;
     }
 
-    public void setRequestBodyContent(String requestBodyContent) {
-        this.requestBodyContent = requestBodyContent;
+    public void setRequestBodyMap(Map<String, Object> requestBodyMap) {
+        this.requestBodyMap = requestBodyMap;
     }
 
     public String getAppId() {
@@ -98,8 +98,8 @@ public class CreateObjectRequest {
             return this;
         }
 
-        public CreateObjectRequestBuilder withRequestBodyContent(String requestBodyContent) {
-            createObjectRequest.setRequestBodyContent(requestBodyContent);
+        public CreateObjectRequestBuilder withRequestBodyMap(Map<String,Object> requestBodyMap) {
+            createObjectRequest.setRequestBodyMap(requestBodyMap);
             return this;
         }
 

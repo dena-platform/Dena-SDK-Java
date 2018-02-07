@@ -1,5 +1,6 @@
 package com.dena.client.service;
 
+import com.dena.client.exception.DenaFault;
 import com.dena.client.utils.DenaClassUtils;
 import com.dena.client.utils.DenaCollectionUtils;
 import com.dena.client.utils.DenaMapUtils;
@@ -25,17 +26,9 @@ public class DenaSerializer {
     private final static Logger log = LoggerFactory.getLogger(DenaSerializer.class);
 
 
-    public Map<String, Object> serilizeObject(Object targetObject) {
-        // todo: can use object_id instead of denaObject_id
-        final String objectId = "object_id";
+    public Map<String, Object> serializeToMap(Object targetObject) {
         Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
-
-        // replace denaObjectId with objectId
-        Object previousValue = fields.remove(DENA_OBJECT_ID_FIELD);
-        if (previousValue != null) {
-            fields.put(objectId, previousValue);
-        }
 
         // ignore null value fields or empty collection, map
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
@@ -100,5 +93,39 @@ public class DenaSerializer {
 
         return returnMap;
     }
+
+    public boolean isObjectIdSet(Map<String, ?> denaObject) {
+        return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
+    }
+
+    /**
+     * Inject field with name 'denaObjectId' and specified value to target object.
+     * if field with that name exist then only set value to field.
+     *
+     * @param targetObject
+     * @param objectId
+     * @param <T>
+     * @return
+     */
+    public <T> T setObjectId(final T targetObject, final String objectId) {
+
+        try {
+            if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
+                DenaReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
+                return targetObject;
+            } else {
+                Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
+                T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
+                DenaReflectionUtils.copyObject(targetObject, newObject);
+                DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
+
+                return newObject;
+            }
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set objectId [%s]", objectId), ex);
+        }
+
+    }
+
 
 }

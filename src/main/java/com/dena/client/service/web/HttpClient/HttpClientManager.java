@@ -1,9 +1,10 @@
 package com.dena.client.service.web.HttpClient;
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.service.web.HttpClient.dto.request.GetRequest;
 import com.dena.client.service.web.HttpClient.dto.request.CreateObjectRequest;
+import com.dena.client.service.web.HttpClient.dto.request.GetRequest;
 import com.dena.client.service.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.utils.JSONMapper;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
@@ -29,9 +30,9 @@ public class HttpClientManager {
 
     public static DenaResponse createNewDenaObject(CreateObjectRequest fetchRequest) throws DenaFault {
         String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId() + fetchRequest.getTypeName();
-        RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
+        RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(fetchRequest.getRequestBodyMap()));
         DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, fetchRequest.getParameterList(), requestBody);
-        log.debug("Successfully posted data to address [{}], parameters {}, body [{}]", fullURL, fetchRequest.getParameterList(), fetchRequest.getRequestBodyContent());
+        log.debug("Successfully posted data to address [{}], parameters {}, body [{}]", fullURL, fetchRequest.getParameterList(), fetchRequest.getRequestBodyMap());
 
         return denaResponse;
     }
@@ -39,9 +40,9 @@ public class HttpClientManager {
 
     public static DenaResponse updateDenaObject(CreateObjectRequest fetchRequest) throws DenaFault {
         String fullURL = fetchRequest.getBaseURL() + fetchRequest.getAppId() + fetchRequest.getTypeName();
-        RequestBody requestBody = RequestBody.create(JSON, fetchRequest.getRequestBodyContent());
+        RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(fetchRequest.getRequestBodyMap()));
         DenaResponse denaResponse = DENA_HTTP_CLIENT.putData(fullURL, fetchRequest.getParameterList(), requestBody);
-        log.debug("Successfully put data to address [{}], parameters {}, body [{}]", fullURL, fetchRequest.getParameterList(), fetchRequest.getRequestBodyContent());
+        log.debug("Successfully put data to address [{}], parameters {}, body [{}]", fullURL, fetchRequest.getParameterList(), fetchRequest.getRequestBodyMap());
 
         return denaResponse;
     }

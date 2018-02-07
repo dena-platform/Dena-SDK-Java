@@ -49,6 +49,14 @@ public final class DenaClassUtils {
         return true;
     }
 
+    public static String findTypeName(Object targetObject) {
+        String fullClassName = DenaReflectionUtils.findClassName(targetObject);
+        int endIndex = !fullClassName.contains(DenaReflectionUtils.CLASS_NAMING_PREFIX) ?
+                fullClassName.length() : fullClassName.indexOf(DenaReflectionUtils.CLASS_NAMING_PREFIX);
+        return fullClassName.substring(0, endIndex);
+    }
+
+
     static {
         PRIMITIVE_WRAPPER_CLASS.add(Boolean.TYPE);
         PRIMITIVE_WRAPPER_CLASS.add(Byte.TYPE);
