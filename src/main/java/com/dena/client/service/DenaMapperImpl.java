@@ -1,10 +1,7 @@
 package com.dena.client.service;
 
 import com.dena.client.exception.DenaFault;
-import com.dena.client.utils.DenaCollectionUtils;
-import com.dena.client.utils.DenaMapUtils;
-import com.dena.client.utils.DenaReflectionUtils;
-import com.dena.client.utils.JSONMapper;
+import com.dena.client.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,18 +33,25 @@ public class DenaMapperImpl implements DenaMapper {
             fields.put(objectId, previousValue);
         }
 
-        // ignore null value fields or empty array, map
+        // ignore null value fields or empty collection, map
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             if (entry.getValue() == null) {
                 // ignore null
+                continue;
             }
 
             if (entry.getValue() instanceof Collection && ((Collection) entry.getValue()).size() == 0) {
-                // ignore empty array
+                // ignore empty collection
+                continue;
             }
 
-            if (entry.getValue() instanceof Collection) {
-                Object firstItem = ((Collection) entry).iterator().next();
+            if (entry.getValue() instanceof Collection &&
+                    !DenaClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
+                // ignore collection that contain non primitive or non-wrapper element
+
+            }
+
+            if (entry.getValue() instanceof Map && !DenaClassUtils.isPrimitiveOrWrapperMapValue((Map<String, ?>) entry.getValue())) {
                 
             }
 

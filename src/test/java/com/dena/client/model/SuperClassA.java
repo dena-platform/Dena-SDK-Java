@@ -1,7 +1,9 @@
 package com.dena.client.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -14,6 +16,8 @@ public class SuperClassA {
     public String a3;
 
     public List<String> names = new ArrayList<>();
+
+    public Map<Integer, Integer> sso = new HashMap<>();
 
     public int getA1() {
         return a1;
