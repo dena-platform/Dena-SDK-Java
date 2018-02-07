@@ -5,7 +5,7 @@ import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
 import com.dena.client.common.web.HttpClient.dto.Parameter;
-import com.dena.client.common.utils.DenaStringUtils;
+import com.dena.client.common.utils.StringUtils;
 import com.dena.client.common.utils.JSONMapper;
 import okhttp3.*;
 import org.slf4j.Logger;
@@ -125,13 +125,13 @@ public final class HttpClient {
         for (Parameter parameter : parameterList) {
             String parameterName = parameter.getName();
             String parameterValue = parameter.getValue();
-            if (DenaStringUtils.isBlank(parameterName))
+            if (StringUtils.isBlank(parameterName))
                 log.warn("Parameter name for entry [{}] is empty", parameter);
 
-            if (DenaStringUtils.isBlank(parameterValue))
+            if (StringUtils.isBlank(parameterValue))
                 log.warn("Parameter value for entry [{}] is empty", parameter);
 
-            if (DenaStringUtils.isNoneBlank(parameterName, parameterValue)) {
+            if (StringUtils.isNoneBlank(parameterName, parameterValue)) {
                 result = result.newBuilder().addQueryParameter(parameterName, parameterValue).build();
             }
         }

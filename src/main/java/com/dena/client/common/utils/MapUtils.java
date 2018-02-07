@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public final class DenaMapUtils {
+public final class MapUtils {
     public static boolean isEmpty(Map<?, ?> map) {
         return map == null || map.isEmpty();
     }

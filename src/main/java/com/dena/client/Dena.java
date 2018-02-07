@@ -7,7 +7,7 @@ import com.dena.client.common.web.HttpClient.HttpClientManager;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
-import com.dena.client.common.utils.DenaClassUtils;
+import com.dena.client.common.utils.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ public final class Dena {
         }
 
         final Map<String, Object> serializedObject = DENA_SERIALIZER.serializeToMap(denaObject);
-        final String typeName = DenaClassUtils.findTypeName(denaObject);
+        final String typeName = ClassUtils.findTypeName(denaObject);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyMap(serializedObject)

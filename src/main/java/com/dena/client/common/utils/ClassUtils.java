@@ -6,7 +6,7 @@ import java.util.*;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public final class DenaClassUtils {
+public final class ClassUtils {
     private final static Set<Class<?>> PRIMITIVE_WRAPPER_CLASS = new HashSet<>();
 
     public static boolean isPrimitiveOrWrapper(final Class<?> klass) {
@@ -50,9 +50,9 @@ public final class DenaClassUtils {
     }
 
     public static String findTypeName(Object targetObject) {
-        String fullClassName = DenaReflectionUtils.findClassName(targetObject);
-        int endIndex = !fullClassName.contains(DenaReflectionUtils.CLASS_NAMING_PREFIX) ?
-                fullClassName.length() : fullClassName.indexOf(DenaReflectionUtils.CLASS_NAMING_PREFIX);
+        String fullClassName = ReflectionUtils.findClassName(targetObject);
+        int endIndex = !fullClassName.contains(ReflectionUtils.CLASS_NAMING_PREFIX) ?
+                fullClassName.length() : fullClassName.indexOf(ReflectionUtils.CLASS_NAMING_PREFIX);
         return fullClassName.substring(0, endIndex);
     }
 

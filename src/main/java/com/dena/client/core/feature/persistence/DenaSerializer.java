@@ -1,9 +1,9 @@
 package com.dena.client.core.feature.persistence;
 
-import com.dena.client.common.utils.DenaClassUtils;
-import com.dena.client.common.utils.DenaCollectionUtils;
-import com.dena.client.common.utils.DenaMapUtils;
-import com.dena.client.common.utils.DenaReflectionUtils;
+import com.dena.client.common.utils.ClassUtils;
+import com.dena.client.common.utils.CollectionUtils;
+import com.dena.client.common.utils.MapUtils;
+import com.dena.client.common.utils.ReflectionUtils;
 import com.dena.client.common.exception.DenaFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class DenaSerializer {
             }
 
             if (entry.getValue() instanceof Collection &&
-                    !DenaClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
+                    !ClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
                 // ignore collection that contain non primitive or non-wrapper element
                 continue;
 
@@ -62,13 +62,13 @@ public class DenaSerializer {
 
 
     public Map<String, Object> findAllFields(Object targetObject) {
-        List<Field> fieldList = DenaReflectionUtils.findInstanceVariables(targetObject);
-        Map<String, Method> getterMethodList = DenaReflectionUtils.findGetterMethods(targetObject);
+        List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
+        Map<String, Method> getterMethodList = ReflectionUtils.findGetterMethods(targetObject);
 
         Map<String, Object> returnMap = new HashMap<>();
 
         // call getter method
-        if (DenaMapUtils.isNotEmpty(getterMethodList)) {
+        if (MapUtils.isNotEmpty(getterMethodList)) {
             for (Map.Entry<String, Method> method : getterMethodList.entrySet()) {
                 try {
                     String propertyName = method.getKey();
@@ -80,7 +80,7 @@ public class DenaSerializer {
         }
 
         // find public field
-        if (DenaCollectionUtils.isNotEmpty(fieldList)) {
+        if (CollectionUtils.isNotEmpty(fieldList)) {
             for (Field field : fieldList) {
                 try {
                     returnMap.put(field.getName(), field.get(targetObject));
@@ -111,13 +111,13 @@ public class DenaSerializer {
 
         try {
             if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
-                DenaReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
+                ReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
                 return targetObject;
             } else {
-                Class<T> newClass = (Class<T>) DenaReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
-                T newObject = DenaReflectionUtils.callDefaultConstructor(newClass);
-                DenaReflectionUtils.copyObject(targetObject, newObject);
-                DenaReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
+                Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
+                T newObject = ReflectionUtils.callDefaultConstructor(newClass);
+                ReflectionUtils.copyObject(targetObject, newObject);
+                ReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
 
                 return newObject;
             }

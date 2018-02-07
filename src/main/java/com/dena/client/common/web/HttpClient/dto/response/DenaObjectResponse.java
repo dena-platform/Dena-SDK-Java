@@ -1,6 +1,6 @@
 package com.dena.client.common.web.HttpClient.dto.response;
 
-import com.dena.client.common.utils.DenaStringUtils;
+import com.dena.client.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class DenaObjectResponse {
 
     @JsonAnySetter
     public void addProperty(String name, Object value) {
-        if (DenaStringUtils.isNoneBlank(name) && value != null) {
+        if (StringUtils.isNoneBlank(name) && value != null) {
             fields.put(name, value);
         }
     }

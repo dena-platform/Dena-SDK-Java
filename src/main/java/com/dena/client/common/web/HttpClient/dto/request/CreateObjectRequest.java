@@ -1,7 +1,7 @@
 package com.dena.client.common.web.HttpClient.dto.request;
 
 import com.dena.client.common.web.HttpClient.dto.Parameter;
-import com.dena.client.common.utils.DenaMapUtils;
+import com.dena.client.common.utils.MapUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class CreateObjectRequest {
         }
 
         public CreateObjectRequestBuilder withParameterList(Map<String, Object> parameterMap) {
-            if (DenaMapUtils.isNotEmpty(parameterMap)) {
+            if (MapUtils.isNotEmpty(parameterMap)) {
                 for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
                     createObjectRequest.parameterList.add(new Parameter(entry.getKey(), entry.getValue().toString()));
                 }

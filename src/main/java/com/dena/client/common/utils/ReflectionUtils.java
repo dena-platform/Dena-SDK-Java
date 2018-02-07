@@ -19,8 +19,8 @@ import static java.lang.reflect.Modifier.isPublic;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public final class DenaReflectionUtils {
-    private final static Logger log = LoggerFactory.getLogger(DenaReflectionUtils.class);
+public final class ReflectionUtils {
+    private final static Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
 
     public static final String CLASS_NAMING_PREFIX = "_$DenaObject$_";
 
@@ -101,7 +101,7 @@ public final class DenaReflectionUtils {
                 .subclass(targetClass)
                 .defineField(name, type, Modifier.PUBLIC)
                 .make()
-                .load(DenaReflectionUtils.class.getClassLoader())
+                .load(ReflectionUtils.class.getClassLoader())
                 .getLoaded();
 
         return newClass;
