@@ -26,7 +26,7 @@ public class DenaSerializer {
     private final static Logger log = LoggerFactory.getLogger(DenaSerializer.class);
 
 
-    public Map<String, Object> serializeToMap(Object targetObject) {
+    public static Map<String, Object> serializeToMap(Object targetObject) {
         Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
@@ -63,7 +63,7 @@ public class DenaSerializer {
     }
 
 
-    public Map<String, Object> findAllFields(Object targetObject) {
+    public static Map<String, Object> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
         Map<String, Method> getterMethodList = ReflectionUtils.findGetterMethods(targetObject);
 
@@ -96,7 +96,7 @@ public class DenaSerializer {
         return returnMap;
     }
 
-    public boolean isObjectIdSet(Map<String, ?> denaObject) {
+    public static boolean isObjectIdSet(Map<String, ?> denaObject) {
         return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
     }
 
@@ -109,7 +109,7 @@ public class DenaSerializer {
      * @param <T>
      * @return
      */
-    public <T> T setObjectId(final T targetObject, final String objectId) {
+    public static <T> T setObjectId(final T targetObject, final String objectId) {
 
         try {
             if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
