@@ -1,5 +1,7 @@
 package com.dena.client.common.utils;
 
+import com.dena.client.core.feature.persistence.Relation;
+
 import java.util.*;
 
 /**
@@ -9,16 +11,24 @@ import java.util.*;
 public final class ClassUtils {
     private final static Set<Class<?>> PRIMITIVE_WRAPPER_CLASS = new HashSet<>();
 
-    public static boolean isPrimitiveOrWrapper(final Class<?> klass) {
-        return klass.isPrimitive() || PRIMITIVE_WRAPPER_CLASS.contains(klass);
+    public static boolean isPrimitiveType(final Object targetObject) {
+        return targetObject.getClass().isPrimitive() || PRIMITIVE_WRAPPER_CLASS.contains(targetObject.getClass());
+    }
+
+    public static boolean isRelationType(final Object targetObject) {
+        return targetObject instanceof Relation;
     }
 
 
-    public static String findTypeName(Object targetObject) {
+    public static String findTypeName(final Object targetObject) {
         String fullClassName = ReflectionUtils.findClassName(targetObject);
         int endIndex = !fullClassName.contains(ReflectionUtils.CLASS_NAMING_PREFIX) ?
                 fullClassName.length() : fullClassName.indexOf(ReflectionUtils.CLASS_NAMING_PREFIX);
         return fullClassName.substring(0, endIndex);
+    }
+
+    public static boolean isCollectionType(final Object targetObject) {
+        return targetObject != null && (targetObject instanceof Collection);
     }
 
 

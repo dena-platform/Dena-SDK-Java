@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.dena.client.common.utils.ClassUtils.isPrimitiveOrWrapper;
+import static com.dena.client.common.utils.ClassUtils.isPrimitiveType;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -24,13 +24,13 @@ public final class CollectionUtils {
      * @param collection
      * @return
      */
-    public static boolean isPrimitiveOrWrapperCollection(Collection<?> collection) {
+    public static boolean isPrimitiveCollection(Collection<?> collection) {
         Iterator<?> iterator = collection.iterator();
 
         while (iterator.hasNext()) {
             Object element = iterator.next();
 
-            if (!isPrimitiveOrWrapper(element.getClass())) {
+            if (!isPrimitiveType(element.getClass())) {
                 return false;
             }
         }
@@ -69,7 +69,7 @@ public final class CollectionUtils {
 
     public static boolean isPrimitiveOrWrapperMapValue(Map<String, ?> map) {
         for (Map.Entry<String, ?> entry : map.entrySet()) {
-            if (!isPrimitiveOrWrapper(entry.getValue().getClass())) {
+            if (!isPrimitiveType(entry.getValue().getClass())) {
                 return false;
             }
         }

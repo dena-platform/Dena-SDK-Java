@@ -1,5 +1,7 @@
 package com.dena.client.model;
 
+import com.dena.client.core.feature.persistence.Relation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,10 @@ import java.util.Map;
  */
 public class SuperClassA {
     private transient int a1;
+
+    private ModelWithObjectIdField modelWithObjectIdField;
+
+    public Relation<ModelWithObjectIdField> relation = new Relation<>();
 
     private String a2;
 

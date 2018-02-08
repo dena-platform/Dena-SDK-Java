@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.dena.client.Dena.DENA_OBJECT_ID_FIELD;
 
@@ -27,24 +24,25 @@ public class DenaSerializer {
 
 
     public static Map<String, Object> serializeToMap(Object targetObject) {
-        Map<String, Object> fields = findAllFields(targetObject);
+        Map<String, ?> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
         // ignore null value fields, empty collection, map
-        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+        for (Map.Entry<String, ?> entry : fields.entrySet()) {
             if (entry.getValue() == null) {
                 // ignore null
                 continue;
             }
 
-            if (entry.getValue() instanceof Collection && ((Collection) entry.getValue()).size() == 0) {
+            if (ClassUtils.isCollectionType(entry.getValue()) && ((Collection) entry.getValue()).size() == 0) {
                 // ignore empty collection
                 continue;
             }
 
-            if (entry.getValue() instanceof Collection &&
-                    !CollectionUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
-                // ignore collection that contain non primitive ,non-wrapper element or String type
+            if (ClassUtils.isCollectionType(entry.getValue()) &&
+                    !CollectionUtils.isPrimitiveCollection((Collection) entry.getValue())) {
+
+                // ignore collection that contain non primitive, or String type
                 if (!CollectionUtils.isStringCollection((Collection) entry.getValue())) {
                     continue;
                 }
@@ -56,7 +54,18 @@ public class DenaSerializer {
                 continue;
             }
 
-            refinedFields.put(entry.getKey(), entry.getValue());
+            if (!ClassUtils.isPrimitiveType(entry.getValue()) && !ClassUtils.isRelationType(entry.getValue())
+                    && !ClassUtils.isCollectionType(entry.getValue())) {
+                // ignore user define type
+                continue;
+            }
+
+            if (ClassUtils.isRelationType(entry.getValue())) {
+                Relation<?> relation = (Relation<?>) entry.getValue();
+                refinedFields.put(entry.getKey(), relation.getAllRelatedObjects());
+            } else {
+                refinedFields.put(entry.getKey(), entry.getValue());
+            }
         }
 
 
@@ -64,7 +73,7 @@ public class DenaSerializer {
     }
 
 
-    public static Map<String, Object> findAllFields(Object targetObject) {
+    public static Map<String, ?> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
         Map<String, Method> getterMethodList = ReflectionUtils.findGetterMethods(targetObject);
 
@@ -130,5 +139,7 @@ public class DenaSerializer {
 
     }
 
-
+    public static Optional<String> findObjectId(Object targetObject) {
+        return Optional.ofNullable(String.valueOf(findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD)));
+    }
 }
