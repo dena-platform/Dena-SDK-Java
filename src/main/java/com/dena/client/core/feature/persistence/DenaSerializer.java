@@ -30,7 +30,7 @@ public class DenaSerializer {
         Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
-        // ignore null value fields or empty collection, map
+        // ignore null value fields, empty collection, map
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             if (entry.getValue() == null) {
                 // ignore null
@@ -43,9 +43,9 @@ public class DenaSerializer {
             }
 
             if (entry.getValue() instanceof Collection &&
-                    !ClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
+                    !CollectionUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
                 // ignore collection that contain non primitive ,non-wrapper element or String type
-                if (!ClassUtils.isStringCollection((Collection) entry.getValue())) {
+                if (!CollectionUtils.isStringCollection((Collection) entry.getValue())) {
                     continue;
                 }
             }
@@ -59,6 +59,7 @@ public class DenaSerializer {
             refinedFields.put(entry.getKey(), entry.getValue());
         }
 
+
         return refinedFields;
     }
 
@@ -69,7 +70,7 @@ public class DenaSerializer {
 
         Map<String, Object> returnMap = new HashMap<>();
 
-        // call getter method
+        // find result of getter method
         if (MapUtils.isNotEmpty(getterMethodList)) {
             for (Map.Entry<String, Method> method : getterMethodList.entrySet()) {
                 try {

@@ -15,9 +15,9 @@ public class SuperClassA {
 
     public String a3;
 
-    public List<String> names = new ArrayList<>();
+    public List<String> nameList = new ArrayList<>();
 
-    public Map<Integer, Integer> sso = new HashMap<>();
+    public Map<Integer, Integer> myMap = new HashMap<>();
 
     public int getA1() {
         return a1;
