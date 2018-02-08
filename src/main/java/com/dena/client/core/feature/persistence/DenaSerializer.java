@@ -102,7 +102,7 @@ public class DenaSerializer {
     }
 
     /**
-     * Inject field with name 'denaObjectId' and specified value to target object.
+     * Inject field dena_object_id and specified value to target object.
      * if field with that name exist then only set value to field.
      *
      * @param targetObject
