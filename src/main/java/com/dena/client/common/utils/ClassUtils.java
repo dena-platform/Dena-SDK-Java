@@ -1,5 +1,7 @@
 package com.dena.client.common.utils;
 
+import com.dena.client.core.feature.persistence.Relation;
+
 import java.util.*;
 
 /**
@@ -9,76 +11,24 @@ import java.util.*;
 public final class ClassUtils {
     private final static Set<Class<?>> PRIMITIVE_WRAPPER_CLASS = new HashSet<>();
 
-    public static boolean isPrimitiveOrWrapper(final Class<?> klass) {
-        return klass.isPrimitive() || PRIMITIVE_WRAPPER_CLASS.contains(klass);
+    public static boolean isPrimitiveType(final Object targetObject) {
+        return targetObject.getClass().isPrimitive() || PRIMITIVE_WRAPPER_CLASS.contains(targetObject.getClass());
     }
 
-    /**
-     * check if all element of Collection is primitive or wrapper of primitive
-     *
-     * @param collection
-     * @return
-     */
-    public static boolean isPrimitiveOrWrapperCollection(Collection<?> collection) {
-        Iterator<?> iterator = collection.iterator();
-
-        while (iterator.hasNext()) {
-            Object element = iterator.next();
-
-            if (!isPrimitiveOrWrapper(element.getClass())) {
-                return false;
-            }
-        }
-
-        return true;
+    public static boolean isRelationType(final Object targetObject) {
+        return targetObject instanceof Relation;
     }
 
-    /**
-     * check if collection contain only String type
-     *
-     * @param collection
-     * @return
-     */
-    public static boolean isStringCollection(Collection<?> collection) {
-        Iterator<?> iterator = collection.iterator();
 
-        while (iterator.hasNext()) {
-            Object element = iterator.next();
-
-            if (!element.getClass().equals(String.class)) {
-                return false;
-            }
-
-            return true;
-
-        }
-
-        return true;
-
-    }
-
-    /**
-     * check if value element of Map is primitive or wrapper of primitive
-     *
-     * @param map
-     * @return
-     */
-
-    public static boolean isPrimitiveOrWrapperMapValue(Map<String, ?> map) {
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            if (!isPrimitiveOrWrapper(entry.getValue().getClass())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static String findTypeName(Object targetObject) {
+    public static String findTypeName(final Object targetObject) {
         String fullClassName = ReflectionUtils.findClassName(targetObject);
         int endIndex = !fullClassName.contains(ReflectionUtils.CLASS_NAMING_PREFIX) ?
                 fullClassName.length() : fullClassName.indexOf(ReflectionUtils.CLASS_NAMING_PREFIX);
         return fullClassName.substring(0, endIndex);
+    }
+
+    public static boolean isCollectionType(final Object targetObject) {
+        return targetObject != null && (targetObject instanceof Collection);
     }
 
 

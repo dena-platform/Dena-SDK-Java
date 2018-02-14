@@ -26,8 +26,6 @@ public final class Dena {
 
     private static String DENA_URL = "http://localhost:8090/v1";
 
-    private final static DenaSerializer DENA_SERIALIZER = new DenaSerializer();
-
     private static String APP_ID;
 
     public static void initApp(String AppId) {
@@ -44,7 +42,7 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
         }
 
-        final Map<String, Object> serializedObject = DENA_SERIALIZER.serializeToMap(denaObject);
+        final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
         final String typeName = ClassUtils.findTypeName(denaObject);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
@@ -55,10 +53,10 @@ public final class Dena {
                 .build();
 
         // object id have not set before, send create new object request
-        if (!DENA_SERIALIZER.isObjectIdSet(serializedObject)) {
+        if (!DenaSerializer.isObjectIdSet(serializedObject)) {
             DenaResponse denaResponse = HttpClientManager.createNewDenaObject(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
-            DENA_SERIALIZER.setObjectId(denaObject, denaObjectResponse.getObjectId());
+            DenaSerializer.setObjectId(denaObject, denaObjectResponse.getObjectId());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
         } else {

@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.dena.client.Dena.DENA_OBJECT_ID_FIELD;
 
@@ -26,26 +23,27 @@ public class DenaSerializer {
     private final static Logger log = LoggerFactory.getLogger(DenaSerializer.class);
 
 
-    public Map<String, Object> serializeToMap(Object targetObject) {
-        Map<String, Object> fields = findAllFields(targetObject);
+    public static Map<String, Object> serializeToMap(Object targetObject) {
+        Map<String, ?> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
-        // ignore null value fields or empty collection, map
-        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+        // ignore null value fields, empty collection, map
+        for (Map.Entry<String, ?> entry : fields.entrySet()) {
             if (entry.getValue() == null) {
                 // ignore null
                 continue;
             }
 
-            if (entry.getValue() instanceof Collection && ((Collection) entry.getValue()).size() == 0) {
+            if (ClassUtils.isCollectionType(entry.getValue()) && ((Collection) entry.getValue()).size() == 0) {
                 // ignore empty collection
                 continue;
             }
 
-            if (entry.getValue() instanceof Collection &&
-                    !ClassUtils.isPrimitiveOrWrapperCollection((Collection) entry.getValue())) {
-                // ignore collection that not contain primitive ,primitive-wrapper or String type
-                if (!ClassUtils.isStringCollection((Collection) entry.getValue())) {
+            if (ClassUtils.isCollectionType(entry.getValue()) &&
+                    !CollectionUtils.isPrimitiveCollection((Collection) entry.getValue())) {
+
+                // ignore collection that contain non primitive, or String type
+                if (!CollectionUtils.isStringCollection((Collection) entry.getValue())) {
                     continue;
                 }
             }
@@ -56,20 +54,32 @@ public class DenaSerializer {
                 continue;
             }
 
-            refinedFields.put(entry.getKey(), entry.getValue());
+            if (!ClassUtils.isPrimitiveType(entry.getValue()) && !ClassUtils.isRelationType(entry.getValue())
+                    && !ClassUtils.isCollectionType(entry.getValue())) {
+                // ignore user define type
+                continue;
+            }
+
+            if (ClassUtils.isRelationType(entry.getValue())) {
+                Relation<?> relation = (Relation<?>) entry.getValue();
+                refinedFields.put(entry.getKey(), relation.getAllRelatedObjects());
+            } else {
+                refinedFields.put(entry.getKey(), entry.getValue());
+            }
         }
+
 
         return refinedFields;
     }
 
 
-    public Map<String, Object> findAllFields(Object targetObject) {
+    public static Map<String, ?> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
         Map<String, Method> getterMethodList = ReflectionUtils.findGetterMethods(targetObject);
 
         Map<String, Object> returnMap = new HashMap<>();
 
-        // call getter method
+        // find result of getter method
         if (MapUtils.isNotEmpty(getterMethodList)) {
             for (Map.Entry<String, Method> method : getterMethodList.entrySet()) {
                 try {
@@ -96,12 +106,12 @@ public class DenaSerializer {
         return returnMap;
     }
 
-    public boolean isObjectIdSet(Map<String, ?> denaObject) {
+    public static boolean isObjectIdSet(Map<String, ?> denaObject) {
         return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
     }
 
     /**
-     * Inject field with name 'denaObjectId' and specified value to target object.
+     * Inject field dena_object_id and specified value to target object.
      * if field with that name exist then only set value to field.
      *
      * @param targetObject
@@ -109,7 +119,7 @@ public class DenaSerializer {
      * @param <T>
      * @return
      */
-    public <T> T setObjectId(final T targetObject, final String objectId) {
+    public static <T> T setObjectId(final T targetObject, final String objectId) {
 
         try {
             if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
@@ -129,5 +139,7 @@ public class DenaSerializer {
 
     }
 
-
+    public static Optional<String> findObjectId(Object targetObject) {
+        return Optional.ofNullable(String.valueOf(findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD)));
+    }
 }
