@@ -24,7 +24,7 @@ public class DenaSerializer {
 
 
     public static Map<String, Object> serializeToMap(Object targetObject) {
-        Map<String, ?> fields = findAllFields(targetObject);
+        Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
         // ignore null value fields, empty collection, map
@@ -73,7 +73,7 @@ public class DenaSerializer {
     }
 
 
-    public static Map<String, ?> findAllFields(Object targetObject) {
+    public static Map<String, Object> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
         Map<String, Method> getterMethodList = ReflectionUtils.findGetterMethods(targetObject);
 

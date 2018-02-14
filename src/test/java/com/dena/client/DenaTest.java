@@ -25,10 +25,12 @@ public class DenaTest {
         superClassA.setA1(10);
         superClassA.setA2("javad");
         superClassA.nameList = Arrays.asList("javad", "ali");
+
         Map<Integer, Integer> myMap = new HashMap<>();
         myMap.put(1, 1);
         myMap.put(2, 2);
         myMap.put(3, 3);
+
         superClassA.myMap = myMap;
 
         Dena.saveOrUpdate(superClassA);

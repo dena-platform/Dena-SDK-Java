@@ -11,11 +11,12 @@ import java.util.Map;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 public class SuperClassA {
+
     private transient int a1;
 
-    private ModelWithObjectIdField modelWithObjectIdField;
+    private UserDefinedClass UserDefinedClass;
 
-    public Relation<ModelWithObjectIdField> relation = new Relation<>();
+    public Map<Integer, Integer> myMap = new HashMap<>();
 
     private String a2;
 
@@ -23,7 +24,7 @@ public class SuperClassA {
 
     public List<String> nameList = new ArrayList<>();
 
-    public Map<Integer, Integer> myMap = new HashMap<>();
+    public Relation<ModelWithObjectIdField> relation = new Relation<>();
 
     public int getA1() {
         return a1;
