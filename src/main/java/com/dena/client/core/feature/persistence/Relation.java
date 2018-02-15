@@ -22,7 +22,7 @@ public final class Relation<T> {
         Optional<String> objectId = DenaSerializer.findObjectId(object);
 
         if (objectId.isPresent()) {
-            RelatedObject relatedObject = new RelatedObject(type, objectId.get());
+            RelatedObject relatedObject = new RelatedObject(objectId.get(), type);
             relatedObjects.add(relatedObject);
         } else {
             log.debug("object_id not set for object [{}]", object);

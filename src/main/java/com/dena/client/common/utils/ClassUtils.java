@@ -33,14 +33,14 @@ public final class ClassUtils {
 
 
     static {
-        PRIMITIVE_WRAPPER_CLASS.add(Boolean.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Byte.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Character.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Short.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Integer.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Long.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Double.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Float.TYPE);
-        PRIMITIVE_WRAPPER_CLASS.add(Void.TYPE);
+        PRIMITIVE_WRAPPER_CLASS.add(Boolean.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Byte.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Character.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Short.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Integer.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Long.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Double.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Float.class);
+        PRIMITIVE_WRAPPER_CLASS.add(Void.class);
     }
 }

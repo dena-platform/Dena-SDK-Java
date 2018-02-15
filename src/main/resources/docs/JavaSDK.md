@@ -8,11 +8,11 @@ To Save object in Dena use simple class type. class need not extend or implement
 1.It should have public fields or have getter and setter for private fields (that follow the naming design patterns outlined in the JavaBeans Specification)
 3. pojo should have default public, no-argument constructor. 
 4. Static or transient fields will not serialized in operation (save, update)
-5. Field name can not be 'denaObjectId','created', 'updated'.
+5. Field name can not be 'object_id','created', 'updated'.
 6. Field type should be primitive, primitive wrapper, String or Collection of those type . other type will be ignore  
 6. Optional requirement: Dena platform automatically assigns a unique ID to every persisted object. If the application needs to have access to the assigned ID, the class must declare the following field: 
 
-    public String denaObjectId;
+    public String object_id;
 
 7. Optional requirement: in addition to denaObjectId, Dena platform maintains two other properties for every persisted object - created and updated. The former contains the timestamp when the object was initially created in the Dena Platform. The latter is updated every time the object is updated. To get access to these values, the class must declare the following fields:
  

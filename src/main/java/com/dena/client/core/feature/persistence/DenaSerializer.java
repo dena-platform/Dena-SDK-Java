@@ -5,6 +5,7 @@ import com.dena.client.common.utils.ClassUtils;
 import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.utils.MapUtils;
 import com.dena.client.common.utils.ReflectionUtils;
+import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,22 +14,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static com.dena.client.Dena.DENA_OBJECT_ID_FIELD;
-
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
 public class DenaSerializer {
+    public final static String DENA_OBJECT_ID_FIELD = "object_id";
+    public final static String RELATED_OBJECT_FIELD = "related_objects";
+
     private final static Logger log = LoggerFactory.getLogger(DenaSerializer.class);
 
-
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> serializeToMap(Object targetObject) {
         Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
         // ignore null value fields, empty collection, map
-        for (Map.Entry<String, ?> entry : fields.entrySet()) {
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(DENA_OBJECT_ID_FIELD)) {
+                refinedFields.put(DENA_OBJECT_ID_FIELD, entry.getValue());
+                continue;
+            }
+
             if (entry.getValue() == null) {
                 // ignore null
                 continue;
@@ -62,7 +69,11 @@ public class DenaSerializer {
 
             if (ClassUtils.isRelationType(entry.getValue())) {
                 Relation<?> relation = (Relation<?>) entry.getValue();
-                refinedFields.put(entry.getKey(), relation.getAllRelatedObjects());
+                if (CollectionUtils.isNotEmpty(relation.getAllRelatedObjects())) {
+                    Set<RelatedObject> relatedObjects = (Set<RelatedObject>) refinedFields.getOrDefault(RELATED_OBJECT_FIELD, new HashSet<>());
+                    relatedObjects.addAll(relation.getAllRelatedObjects());
+                    refinedFields.put(RELATED_OBJECT_FIELD, relatedObjects);
+                }
             } else {
                 refinedFields.put(entry.getKey(), entry.getValue());
             }
@@ -106,7 +117,7 @@ public class DenaSerializer {
         return returnMap;
     }
 
-    public static boolean isObjectIdSet(Map<String, ?> denaObject) {
+    public static boolean isObjectIdSet(Map<String, Object> denaObject) {
         return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
     }
 

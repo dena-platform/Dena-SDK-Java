@@ -1,6 +1,7 @@
 package com.dena.client;
 
 
+import com.dena.client.model.ModelWithObjectIdField;
 import com.dena.client.model.SuperClassA;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,6 +22,12 @@ public class DenaTest {
 
     @Test
     public void test_saveOrUpdate() {
+
+        // create new object
+        ModelWithObjectIdField modelWithObjectIdField = new ModelWithObjectIdField();
+        modelWithObjectIdField = Dena.saveOrUpdate(modelWithObjectIdField);
+
+
         SuperClassA superClassA = new SuperClassA();
         superClassA.setA1(10);
         superClassA.setA2("javad");
@@ -32,6 +39,7 @@ public class DenaTest {
         myMap.put(3, 3);
 
         superClassA.myMap = myMap;
+        superClassA.relation.addRelatedObject(modelWithObjectIdField);
 
         Dena.saveOrUpdate(superClassA);
     }

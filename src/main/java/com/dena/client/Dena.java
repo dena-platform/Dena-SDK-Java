@@ -20,7 +20,6 @@ import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequ
  */
 
 public final class Dena {
-    public static final String DENA_OBJECT_ID_FIELD = "object_id";
 
     private final static Logger log = LoggerFactory.getLogger(Dena.class);
 

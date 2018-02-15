@@ -4,7 +4,7 @@ package com.dena.client.model;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 public class ModelWithObjectIdField {
-    public String denaObjectId;
+    public String object_id;
 
     private int a1;
     private int a2;
