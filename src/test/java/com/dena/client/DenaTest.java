@@ -21,7 +21,7 @@ public class DenaTest {
     }
 
     @Test
-    public void test_saveOrUpdate() {
+    public void test_saveObject() {
 
         // create related object
         ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
@@ -45,5 +45,15 @@ public class DenaTest {
         superClassA.modelWithObjectIdFieldRelation.addRelatedObject(modelWithObjectIdField2);
 
         Dena.saveOrUpdate(superClassA);
+    }
+
+    @Test
+    public void test_updateObject() {
+        // create related object
+        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+
+        modelWithObjectIdField1.setA2(45);
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
     }
 }

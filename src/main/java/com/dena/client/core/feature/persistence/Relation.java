@@ -18,7 +18,7 @@ public final class Relation<T> {
     private Set<RelatedObject> relatedObjects = new HashSet<>();
 
     public void addRelatedObject(T object) {
-        String type = ClassUtils.findTypeName(object);
+        String type = ClassUtils.findSimpleTypeName(object);
         Optional<String> objectId = DenaSerializer.findObjectId(object);
 
         if (objectId.isPresent()) {

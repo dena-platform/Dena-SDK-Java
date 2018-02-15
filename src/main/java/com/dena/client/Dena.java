@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.Set;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 
@@ -37,13 +36,13 @@ public final class Dena {
     }
 
 
-    public static <T> T saveOrUpdate(final T denaObject) throws DenaFault {
+    public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
         if (denaObject == null) {
             throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
         }
 
         final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
-        final String typeName = ClassUtils.findTypeName(denaObject);
+        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyMap(serializedObject)
@@ -56,24 +55,20 @@ public final class Dena {
         if (!DenaSerializer.isObjectIdSet(serializedObject)) {
             DenaResponse denaResponse = HttpClientManager.createNewDenaObject(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
-            DenaSerializer.setObjectId(denaObject, denaObjectResponse.getObjectId());
-            DenaSerializer.setCreatedTime(denaObject, denaResponse.getTimestamp());
-            DenaSerializer.setCount(denaObject, denaResponse.getCount());
+            denaObject = DenaSerializer.setObjectId(denaObject, denaObjectResponse.getObjectId());
+            denaObject = DenaSerializer.setCreatedTime(denaObject, denaResponse.getTimestamp());
+            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getCount());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
         } else {
             // send update object request
             DenaResponse denaResponse = HttpClientManager.updateDenaObject(createObjectRequest);
-            DenaSerializer.setCreatedTime(denaObject, denaResponse.getTimestamp());
-            DenaSerializer.setCount(denaObject, denaResponse.getCount());
+            denaObject = DenaSerializer.setUpdateTime(denaObject, denaResponse.getTimestamp());
+            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getCount());
             log.debug("Object [{}] is updated successfully.", denaObject);
             return denaObject;
         }
 
-    }
-
-    public static <T> Set<T> saveOrUpdate(final Set<T> denaObjects) {
-        return null;
     }
 
 

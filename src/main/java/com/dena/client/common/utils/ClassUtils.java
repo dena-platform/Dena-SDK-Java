@@ -20,11 +20,8 @@ public final class ClassUtils {
     }
 
 
-    public static String findTypeName(final Object targetObject) {
-        String fullClassName = ReflectionUtils.findClassName(targetObject);
-        int endIndex = !fullClassName.contains(ReflectionUtils.CLASS_NAMING_PREFIX) ?
-                fullClassName.length() : fullClassName.indexOf(ReflectionUtils.CLASS_NAMING_PREFIX);
-        return fullClassName.substring(0, endIndex);
+    public static String findSimpleTypeName(final Object targetObject) {
+        return ReflectionUtils.findTypeName(ReflectionUtils.findClassName(targetObject));
     }
 
     public static boolean isCollectionType(final Object targetObject) {

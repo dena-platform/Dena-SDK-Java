@@ -40,6 +40,12 @@ public class DenaSerializer {
                 continue;
             }
 
+            if (entry.getKey().equalsIgnoreCase(DENA_CREATED_TIME_FIELD) || entry.getKey().equalsIgnoreCase(DENA_UPDATE_TIME_FIELD)
+                    || entry.getKey().equalsIgnoreCase(DENA_COUNT_FIELD)) {
+                // ignore update & create fields
+                continue;
+            }
+
             if (entry.getValue() == null) {
                 // ignore null
                 continue;
