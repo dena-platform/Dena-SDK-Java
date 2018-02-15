@@ -63,7 +63,7 @@ public class DenaTest {
     }
 
     @Test
-    public void test_deleteObject() {
+    public void test_DeleteOneObject_When_Object_Exist() {
         // create new object
         ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
         modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
@@ -72,6 +72,23 @@ public class DenaTest {
         assertEquals("Number of deleted object is wrong", 1, actualDeletedCount);
 
     }
+
+    @Test
+    public void test_DeleteBulkObject_When_Objects_Exist() {
+        // create new objects
+        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
+        ModelWithObjectIdField modelWithObjectIdField2 = new ModelWithObjectIdField();
+        ModelWithObjectIdField modelWithObjectIdField3 = new ModelWithObjectIdField();
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField2);
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField3);
+
+        long actualDeletedCount = Dena.remove(modelWithObjectIdField1);
+        assertEquals("Number of deleted object is wrong", 1, actualDeletedCount);
+
+    }
+
+
 
 
 }

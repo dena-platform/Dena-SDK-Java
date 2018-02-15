@@ -2,6 +2,7 @@ package com.dena.client;
 
 import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.exception.ErrorCode;
+import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.common.web.DenaClientManager;
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 
@@ -40,7 +41,7 @@ public final class Dena {
 
     public static <T> T saveOrUpdate(T denaObject) throws DenaFault {
         if (denaObject == null) {
-            throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
         final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
@@ -75,7 +76,7 @@ public final class Dena {
 
     public static long remove(Object denaObject) throws DenaFault {
         if (denaObject == null) {
-            throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
         final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
@@ -96,4 +97,30 @@ public final class Dena {
         DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
         return denaResponse.getCount();
     }
+
+    public static long remove(Set<Object> denaObjects) throws DenaFault {
+        if (CollectionUtils.isEmpty(denaObjects)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
+
+        if (!DenaSerializer.isObjectIdSet(serializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+
+        DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withTypeName(typeName)
+                .withObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
+        return denaResponse.getCount();
+    }
+
+
 }
