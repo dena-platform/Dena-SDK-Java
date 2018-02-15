@@ -85,6 +85,15 @@ public final class HttpClient {
         return denaResponse;
     }
 
+    public DenaResponse deleteData(final String URL, List<Parameter> parameterList) throws DenaFault {
+        Request request = prepareDeleteClient(URL, parameterList);
+        log.debug("Delete data, address [{}]", request.url());
+
+        DenaResponse denaResponse = sendRequest(URL, parameterList, request);
+
+        return denaResponse;
+    }
+
 
     private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
         HttpUrl httpUrl = HttpUrl.parse(URL);
@@ -114,6 +123,17 @@ public final class HttpClient {
         Request request = new Request.Builder()
                 .url(result)
                 .put(requestBody)
+                .build();
+        return request;
+    }
+
+    private Request prepareDeleteClient(final String URL, List<Parameter> parameterList) {
+        HttpUrl httpUrl = HttpUrl.parse(URL);
+
+        HttpUrl result = addParameterToHttpURL(httpUrl, parameterList);
+        Request request = new Request.Builder()
+                .url(result)
+                .delete()
                 .build();
         return request;
     }

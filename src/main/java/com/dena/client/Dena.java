@@ -2,8 +2,9 @@ package com.dena.client;
 
 import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.exception.ErrorCode;
+import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.core.feature.persistence.DenaSerializer;
-import com.dena.client.common.web.HttpClient.HttpClientManager;
+import com.dena.client.common.web.DenaClientManager;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 
@@ -53,7 +55,7 @@ public final class Dena {
 
         // object id have not set before so send create new object request
         if (!DenaSerializer.isObjectIdSet(serializedObject)) {
-            DenaResponse denaResponse = HttpClientManager.createNewDenaObject(createObjectRequest);
+            DenaResponse denaResponse = DenaClientManager.createNewDenaObject(createObjectRequest);
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
             denaObject = DenaSerializer.setObjectId(denaObject, denaObjectResponse.getObjectId());
             denaObject = DenaSerializer.setCreatedTime(denaObject, denaResponse.getTimestamp());
@@ -62,7 +64,7 @@ public final class Dena {
             return denaObject;
         } else {
             // send update object request
-            DenaResponse denaResponse = HttpClientManager.updateDenaObject(createObjectRequest);
+            DenaResponse denaResponse = DenaClientManager.updateDenaObject(createObjectRequest);
             denaObject = DenaSerializer.setUpdateTime(denaObject, denaResponse.getTimestamp());
             denaObject = DenaSerializer.setCount(denaObject, denaResponse.getCount());
             log.debug("Object [{}] is updated successfully.", denaObject);
@@ -71,5 +73,27 @@ public final class Dena {
 
     }
 
+    public static long remove(Object denaObject) throws DenaFault {
+        if (denaObject == null) {
+            throw DenaFault.makeException(ErrorCode.NULL_ENTITY, new IllegalAccessException());
+        }
 
+        final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
+
+        if (!DenaSerializer.isObjectIdSet(serializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+
+        DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withTypeName(typeName)
+                .withObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
+        return denaResponse.getCount();
+    }
 }

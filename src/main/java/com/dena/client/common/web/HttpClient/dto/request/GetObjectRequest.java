@@ -10,7 +10,7 @@ import java.util.List;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 
-public class GetRequest {
+public class GetObjectRequest {
 
     private List<Parameter> parameterList = new ArrayList<>();
 
@@ -64,10 +64,10 @@ public class GetRequest {
 
 
     public static final class GetRequestBuilder {
-        private GetRequest getRequest;
+        private GetObjectRequest getObjectRequest;
 
         private GetRequestBuilder() {
-            getRequest = new GetRequest();
+            getObjectRequest = new GetObjectRequest();
         }
 
         public static GetRequestBuilder aGetRequest() {
@@ -75,32 +75,32 @@ public class GetRequest {
         }
 
         public GetRequestBuilder withParameterList(List<Parameter> parameterList) {
-            getRequest.setParameterList(parameterList);
+            getObjectRequest.setParameterList(parameterList);
             return this;
         }
 
         public GetRequestBuilder withURL(String URL) {
-            getRequest.setURL(URL);
+            getObjectRequest.setURL(URL);
             return this;
         }
 
         public GetRequestBuilder withReturnType(Class returnType) {
-            getRequest.setReturnType(returnType);
+            getObjectRequest.setReturnType(returnType);
             return this;
         }
 
         public GetRequestBuilder withTypeReference(TypeReference typeReference) {
-            getRequest.setTypeReference(typeReference);
+            getObjectRequest.setTypeReference(typeReference);
             return this;
         }
 
         public GetRequestBuilder withComponentName(String componentName) {
-            getRequest.setComponentName(componentName);
+            getObjectRequest.setComponentName(componentName);
             return this;
         }
 
-        public GetRequest build() {
-            return getRequest;
+        public GetObjectRequest build() {
+            return getObjectRequest;
         }
     }
 }

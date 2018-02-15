@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -49,11 +52,26 @@ public class DenaTest {
 
     @Test
     public void test_updateObject() {
-        // create related object
+        // create new object
         ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
         modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
 
         modelWithObjectIdField1.setA2(45);
         modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+
+
     }
+
+    @Test
+    public void test_deleteObject() {
+        // create new object
+        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+
+        long actualDeletedCount = Dena.remove(modelWithObjectIdField1);
+        assertEquals("Number of deleted object is wrong", 1, actualDeletedCount);
+
+    }
+
+
 }
