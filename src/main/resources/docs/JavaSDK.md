@@ -14,7 +14,7 @@ To Save object in Dena use simple class type. class need not extend or implement
 
     public String object_id;
 
-7. Optional requirement: in addition to denaObjectId, Dena platform maintains two other properties for every persisted object - created and updated. The former contains the timestamp when the object was initially created in the Dena Platform. The latter is updated every time the object is updated. To get access to these values, the class must declare the following fields:
+7. Optional requirement: in addition to object_id, Dena platform maintains two other properties for every persisted object - created and updated. The former contains the timestamp when the object was initially created in the Dena Platform. The latter is updated every time the object is updated. To get access to these values, the class must declare the following fields:
  
     public Date createdTime;
 
