@@ -24,7 +24,7 @@ public class SuperClassA {
 
     public List<String> nameList = new ArrayList<>();
 
-    public Relation<ModelWithObjectIdField> relation = new Relation<>();
+    public Relation<ModelWithObjectIdField> modelWithObjectIdFieldRelation = new Relation<>();
 
     public int getA1() {
         return a1;

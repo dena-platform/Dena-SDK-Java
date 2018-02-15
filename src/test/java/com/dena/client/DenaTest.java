@@ -23,11 +23,13 @@ public class DenaTest {
     @Test
     public void test_saveOrUpdate() {
 
-        // create new object
-        ModelWithObjectIdField modelWithObjectIdField = new ModelWithObjectIdField();
-        modelWithObjectIdField = Dena.saveOrUpdate(modelWithObjectIdField);
+        // create related object
+        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
+        ModelWithObjectIdField modelWithObjectIdField2 = new ModelWithObjectIdField();
+        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+        modelWithObjectIdField2 = Dena.saveOrUpdate(modelWithObjectIdField2);
 
-
+        // create main object
         SuperClassA superClassA = new SuperClassA();
         superClassA.setA1(10);
         superClassA.setA2("javad");
@@ -39,7 +41,8 @@ public class DenaTest {
         myMap.put(3, 3);
 
         superClassA.myMap = myMap;
-        superClassA.relation.addRelatedObject(modelWithObjectIdField);
+        superClassA.modelWithObjectIdFieldRelation.addRelatedObject(modelWithObjectIdField1);
+        superClassA.modelWithObjectIdFieldRelation.addRelatedObject(modelWithObjectIdField2);
 
         Dena.saveOrUpdate(superClassA);
     }
