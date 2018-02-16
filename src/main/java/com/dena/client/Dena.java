@@ -10,6 +10,7 @@ import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.common.utils.ClassUtils;
+import com.dena.client.core.feature.persistence.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +76,7 @@ public final class Dena {
 
     }
 
-    public static long remove(Object denaObject) throws DenaFault {
+    public static long removeObject(Object denaObject) throws DenaFault {
         if (denaObject == null) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
@@ -99,7 +100,7 @@ public final class Dena {
         return denaResponse.getCount();
     }
 
-    public static long remove(Collection<?> denaObjects) throws DenaFault {
+    public static long removeObjects(Collection<?> denaObjects) throws DenaFault {
         if (CollectionUtils.isEmpty(denaObjects)) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
@@ -128,6 +129,29 @@ public final class Dena {
         return denaResponse.getCount();
     }
 
-    
+    public static long removeRelation(Object denaObject, Relation<?> relation) throws DenaFault {
+        if (denaObject == null) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
+
+        if (!DenaSerializer.isObjectIdSet(serializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+
+        DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withTypeName(typeName)
+                .withObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
+        return denaResponse.getCount();
+
+    }
 
 }

@@ -60,7 +60,7 @@ This API remove object completely from dena storage. If the object is successful
 
 Method: 
 
-    public static long remove(Object denaObject) throws DenaFault
+    public static long removeObject(Object denaObject) throws DenaFault
 
 Return Value:
   Number of deleted objects.
@@ -70,7 +70,7 @@ This API remove bulk objects completely from dena storage. If the objects is suc
 
 Method: 
 
-    public static long remove(Collection<?> denaObjects) throws DenaFault
+    public static long removeObjects(Collection<?> denaObjects) throws DenaFault
 
 Return Value:
   Number of deleted objects.

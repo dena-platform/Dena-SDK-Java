@@ -66,7 +66,7 @@ public class DenaTest {
         ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
         modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
 
-        long actualDeletedCount = Dena.remove(modelWithObjectIdField1);
+        long actualDeletedCount = Dena.removeObject(modelWithObjectIdField1);
         assertEquals("Number of deleted object is wrong", 1, actualDeletedCount);
 
     }
@@ -86,7 +86,7 @@ public class DenaTest {
         modelWithObjectIdFields.add(modelWithObjectIdField2);
         modelWithObjectIdFields.add(modelWithObjectIdField3);
 
-        long actualDeletedCount = Dena.remove(modelWithObjectIdFields);
+        long actualDeletedCount = Dena.removeObjects(modelWithObjectIdFields);
         assertEquals("Number of deleted object is wrong", 3, actualDeletedCount);
 
     }
