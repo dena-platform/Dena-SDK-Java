@@ -29,9 +29,9 @@ This API used for two purposed:
 2. Updating existing objects.
  
 
-The save operation checks if the object has denaObjectId assigned by the server. In that case, the object is updated, otherwise it is created in the Dena Platform data store. 
+The save operation checks if the object has object_id assigned by the server. In that case, the object is updated, otherwise it is created in the Dena Platform data store. 
 
-The denaObjectId property is automatically assigned to all objects in the database when they are initially saved. 
+The object_id property is automatically assigned to all objects in the database when they are initially saved. 
 
 **Class Hierarchy**
 
@@ -39,11 +39,31 @@ The denaObjectId property is automatically assigned to all objects in the databa
 2. Interface are not include in hierarchy and do not include in this operation.
 
 
-**Method:**
+Method:
 
     public T DENA.saveOrUpdate(T object) throws DenaFault
 
-**Return Value:**
+Return Value:
 
 Returns the saved object.
+
+Example:
+       
+
+## Delete Object ##
+
+
+**Delete One Object** 
+
+This API remove object completely from dena storage. If the object is successfully delete, the API returns the timestamp of deletion time in milliseconds and number of deleted object count.
+
+
+Method: 
+
+    public static <T> long remove(T denaObject) throws DenaFault
+
+Return Value:
+
+**Delete Bulk Objects**
+This API remove objects completely from dena storage. If the object is successfully delete, the API returns the timestamp of deletion time in milliseconds and number of deleted object count.
 

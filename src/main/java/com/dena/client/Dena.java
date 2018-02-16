@@ -74,7 +74,7 @@ public final class Dena {
 
     }
 
-    public static long remove(Object denaObject) throws DenaFault {
+    public static <T> long remove(T denaObject) throws DenaFault {
         if (denaObject == null) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
