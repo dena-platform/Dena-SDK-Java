@@ -9,6 +9,7 @@ import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.text.html.Option;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -93,6 +94,15 @@ public class DenaSerializer {
         return refinedFields;
     }
 
+    public static Set<Map<String, Object>> serializeToMap(Set<Object> targetObjects) {
+        Set<Map<String, Object>> returnObject = new ArrayList<>();
+        targetObjects.forEach(targetObject -> {
+            returnObject.add(serializeToMap(targetObject));
+        });
+
+        return returnObject;
+    }
+
 
     public static Map<String, Object> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);
@@ -127,9 +137,26 @@ public class DenaSerializer {
         return returnMap;
     }
 
+    /**
+     * Check if object_id field is present and value is not null
+     *
+     * @param denaObject for checking if id present
+     * @return true if object_id is present and not null
+     */
     public static boolean isObjectIdSet(Map<String, Object> denaObject) {
         return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
     }
+
+    /**
+     * For each object check if object_id field is present and value is not null
+     *
+     * @param denaObjects for checking if id present
+     * @return true if object_id is present and not null
+     */
+    public static boolean isObjectIdSet(Set<Map<String, Object>> denaObjects) {
+        return denaObjects.stream().allMatch(DenaSerializer::isObjectIdSet);
+    }
+
 
     /**
      * Inject field dena_object_id and specified value to target object.
@@ -219,6 +246,29 @@ public class DenaSerializer {
 
 
     public static Optional<String> findObjectId(Object targetObject) {
-        return Optional.ofNullable(String.valueOf(findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD)));
+        Object ObjectId = findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD);
+        if (Objects.isNull(ObjectId)) {
+            return Optional.of(String.valueOf(ObjectId));
+        } else {
+            return Optional.empty();
+        }
     }
+
+    public static Optional<String> findObjectId(Collection<?> targetObject) {
+
+        StringBuilder objectIds = new StringBuilder();
+        for (Object object : targetObject) {
+            Optional<String> objectId = findObjectId(object);
+            objectId.ifPresent(objectIdValue -> objectIds.append(objectIdValue).append(","));
+        }
+
+        if (objectIds.length() == 0) {
+            return Optional.empty();
+        } else {
+            objectIds.deleteCharAt(objectIds.length()); // delete last "," character
+            return Optional.of(objectIds.toString());
+        }
+    }
+
+
 }

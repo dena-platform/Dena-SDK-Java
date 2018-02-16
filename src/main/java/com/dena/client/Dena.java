@@ -103,13 +103,18 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
-        final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
+        if (!CollectionUtils.isCollectionOfSameType(denaObjects)) {
+            throw DenaFault.makeException(ErrorCode.OBJECTS_IS_NOT_SAME_TYPE, new IllegalAccessException());
+        }
 
-        if (!DenaSerializer.isObjectIdSet(serializedObject)) {
+
+        final Set<Map<String, Object>> serializedObjects = DenaSerializer.serializeToMap(denaObjects);
+
+        if (!DenaSerializer.isObjectIdSet(serializedObjects)) {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+        final String typeName = ClassUtils.findSimpleTypeName(denaObjects.iterator().next());
 
         DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
                 .withBaseURL(DENA_URL)
