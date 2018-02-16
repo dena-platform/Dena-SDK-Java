@@ -74,7 +74,7 @@ public final class Dena {
 
     }
 
-    public static <T> long remove(T denaObject) throws DenaFault {
+    public static long remove(Object denaObject) throws DenaFault {
         if (denaObject == null) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
@@ -98,12 +98,12 @@ public final class Dena {
         return denaResponse.getCount();
     }
 
-    public static long remove(Set<Object> denaObjects) throws DenaFault {
+    public static long removeBulk(Set<? extends Object> denaObjects) throws DenaFault {
         if (CollectionUtils.isEmpty(denaObjects)) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
-        if (!CollectionUtils.isCollectionOfSameType(denaObjects)) {
+        if (!ClassUtils.isCollectionOfSameType(denaObjects)) {
             throw DenaFault.makeException(ErrorCode.OBJECTS_IS_NOT_SAME_TYPE, new IllegalAccessException());
         }
 
@@ -120,7 +120,7 @@ public final class Dena {
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
                 .withTypeName(typeName)
-                .withObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .withObjectId(DenaSerializer.findObjectId(denaObjects).get())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);

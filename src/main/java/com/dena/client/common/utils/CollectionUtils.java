@@ -77,21 +77,6 @@ public final class CollectionUtils {
         return true;
     }
 
-    public static boolean isCollectionOfSameType(Collection<?> denaObjects) {
-        if (isEmpty(denaObjects) || denaObjects.size() == 1) {
-            return true;
-        }
-
-        Object firstObject = denaObjects.iterator().next();
-
-        while (denaObjects.iterator().hasNext()) {
-            if (!firstObject.getClass().equals(denaObjects.iterator().next().getClass())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
 
 }

@@ -6,9 +6,7 @@ import com.dena.client.model.SuperClassA;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -80,15 +78,18 @@ public class DenaTest {
         ModelWithObjectIdField modelWithObjectIdField2 = new ModelWithObjectIdField();
         ModelWithObjectIdField modelWithObjectIdField3 = new ModelWithObjectIdField();
         modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
-        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField2);
-        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField3);
+        modelWithObjectIdField2 = Dena.saveOrUpdate(modelWithObjectIdField2);
+        modelWithObjectIdField3 = Dena.saveOrUpdate(modelWithObjectIdField3);
 
-        long actualDeletedCount = Dena.remove(modelWithObjectIdField1);
-        assertEquals("Number of deleted object is wrong", 1, actualDeletedCount);
+        Set<ModelWithObjectIdField> modelWithObjectIdFields = new HashSet<>();
+        modelWithObjectIdFields.add(modelWithObjectIdField1);
+        modelWithObjectIdFields.add(modelWithObjectIdField2);
+        modelWithObjectIdFields.add(modelWithObjectIdField3);
+
+        long actualDeletedCount = Dena.removeBulk(modelWithObjectIdFields);
+        assertEquals("Number of deleted object is wrong", 3, actualDeletedCount);
 
     }
-
-
 
 
 }

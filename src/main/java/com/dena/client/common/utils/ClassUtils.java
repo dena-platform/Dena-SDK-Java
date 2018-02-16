@@ -4,6 +4,8 @@ import com.dena.client.core.feature.persistence.Relation;
 
 import java.util.*;
 
+import static com.dena.client.common.utils.CollectionUtils.isEmpty;
+
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -41,6 +43,20 @@ public final class ClassUtils {
         return targetObject != null && (targetObject instanceof Collection);
     }
 
+    public static boolean isCollectionOfSameType(Collection<?> denaObjects) {
+        if (CollectionUtils.isEmpty(denaObjects) || denaObjects.size() == 1) {
+            return true;
+        }
+
+        Object firstObject = denaObjects.iterator().next();
+        for (Object otherObject : denaObjects) {
+            if (!findSimpleTypeName(firstObject).equals(findSimpleTypeName(otherObject))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 }

@@ -9,7 +9,6 @@ import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.text.html.Option;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -94,8 +93,8 @@ public class DenaSerializer {
         return refinedFields;
     }
 
-    public static Set<Map<String, Object>> serializeToMap(Set<Object> targetObjects) {
-        Set<Map<String, Object>> returnObject = new ArrayList<>();
+    public static Set<Map<String, Object>> serializeToMap(Collection<? extends Object> targetObjects) {
+        Set<Map<String, Object>> returnObject = new HashSet<>();
         targetObjects.forEach(targetObject -> {
             returnObject.add(serializeToMap(targetObject));
         });
@@ -248,9 +247,9 @@ public class DenaSerializer {
     public static Optional<String> findObjectId(Object targetObject) {
         Object ObjectId = findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD);
         if (Objects.isNull(ObjectId)) {
-            return Optional.of(String.valueOf(ObjectId));
-        } else {
             return Optional.empty();
+        } else {
+            return Optional.of(String.valueOf(ObjectId));
         }
     }
 
@@ -265,7 +264,7 @@ public class DenaSerializer {
         if (objectIds.length() == 0) {
             return Optional.empty();
         } else {
-            objectIds.deleteCharAt(objectIds.length()); // delete last "," character
+            objectIds.deleteCharAt(objectIds.length() - 1); // delete last "," character
             return Optional.of(objectIds.toString());
         }
     }
