@@ -20,9 +20,13 @@ public class DeleteRelationRequest {
 
     private String appId;
 
-    private String typeName1;
+    private String parentTypeName;
 
-    private String objectId1;
+    private String parentObjectId;
+
+    private String childTypeName;
+
+    private String childObjectId;
 
     public String getBaseURL() {
         return BaseURL;
@@ -52,35 +56,56 @@ public class DeleteRelationRequest {
         this.appId = appId;
     }
 
-    public String getTypeName1() {
-        return typeName1;
+    public String getParentTypeName() {
+        return parentTypeName;
     }
 
-    public void setTypeName1(String typeName1) {
-        if (!typeName1.startsWith("/")) {
-            typeName1 = "/" + typeName1;
+    public void setParentTypeName(String parentTypeName) {
+        if (!parentTypeName.startsWith("/")) {
+            parentTypeName = "/" + parentTypeName;
         }
 
-        this.typeName1 = typeName1;
+        this.parentTypeName = parentTypeName;
     }
 
-    public String getObjectId1() {
-        return objectId1;
-    }
-
-    public void setObjectId1(String objectId1) {
-        if (!objectId1.startsWith("/")) {
-            objectId1 = "/" + objectId1;
+    public void setChildTypeName(String childTypeName) {
+        if (!childTypeName.startsWith("/")) {
+            childTypeName = "/" + childTypeName;
         }
 
-        this.objectId1 = objectId1;
+        this.childTypeName = childTypeName;
     }
+
+    public String getParentObjectId() {
+        return parentObjectId;
+    }
+
+    public void setParentObjectId(String parentObjectId) {
+        if (!parentObjectId.startsWith("/")) {
+            parentObjectId = "/" + parentObjectId;
+        }
+
+        this.parentObjectId = parentObjectId;
+    }
+
+    public String getChildObjectId() {
+        return childObjectId;
+    }
+
+    public void setChildObjectId(String childObjectId) {
+        if (!childObjectId.startsWith("/")) {
+            childObjectId = "/" + childObjectId;
+        }
+
+        this.childObjectId = childObjectId;
+    }
+
 
     public static final class DeleteRelationRequestBuilder {
-        private DeleteRelationRequest createObjectRequest;
+        private DeleteRelationRequest deleteRelationRequest;
 
         private DeleteRelationRequestBuilder() {
-            createObjectRequest = new DeleteRelationRequest();
+            deleteRelationRequest = new DeleteRelationRequest();
         }
 
         public static DeleteRelationRequestBuilder aDeleteObjectRequest() {
@@ -88,41 +113,41 @@ public class DeleteRelationRequest {
         }
 
         public DeleteRelationRequestBuilder withBaseURL(String baseURL) {
-            createObjectRequest.setBaseURL(baseURL);
+            deleteRelationRequest.setBaseURL(baseURL);
             return this;
         }
 
         public DeleteRelationRequestBuilder withAppId(String appId) {
-            createObjectRequest.setAppId(appId);
+            deleteRelationRequest.setAppId(appId);
             return this;
         }
 
 
-        public DeleteRelationRequestBuilder withTypeName1(String typeName) {
-            createObjectRequest.setTypeName1(typeName);
+        public DeleteRelationRequestBuilder withParentTypeName(String typeName) {
+            deleteRelationRequest.setParentTypeName(typeName);
             return this;
         }
 
-        public DeleteRelationRequestBuilder withObjectId1(String objectId) {
-            if (StringUtils.isBlank(createObjectRequest.getObjectId1())) {
-                createObjectRequest.setObjectId1(objectId);
+        public DeleteRelationRequestBuilder withParentObjectId(String objectId) {
+            if (StringUtils.isBlank(deleteRelationRequest.getParentObjectId())) {
+                deleteRelationRequest.setParentObjectId(objectId);
             } else {
-                String newObjectId = createObjectRequest.getObjectId1() + "," + objectId;
-                createObjectRequest.setObjectId1(newObjectId);
+                String newObjectId = deleteRelationRequest.getParentObjectId() + "," + objectId;
+                deleteRelationRequest.setParentObjectId(newObjectId);
             }
 
             return this;
         }
 
         public DeleteRelationRequestBuilder withParameterList(List<Parameter> parameterList) {
-            createObjectRequest.setParameterList(parameterList);
+            deleteRelationRequest.setParameterList(parameterList);
             return this;
         }
 
         public DeleteRelationRequestBuilder withParameterList(Map<String, Object> parameterMap) {
             if (MapUtils.isNotEmpty(parameterMap)) {
                 for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
-                    createObjectRequest.parameterList.add(new Parameter(entry.getKey(), entry.getValue().toString()));
+                    deleteRelationRequest.parameterList.add(new Parameter(entry.getKey(), entry.getValue().toString()));
                 }
             }
             return this;
@@ -130,7 +155,7 @@ public class DeleteRelationRequest {
 
 
         public DeleteRelationRequest build() {
-            return createObjectRequest;
+            return deleteRelationRequest;
         }
     }
 }
