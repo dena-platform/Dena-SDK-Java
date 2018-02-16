@@ -45,7 +45,7 @@ Method:
 
 Return Value:
 
-Returns the saved object.
+The saved object.
 
 Example:
        
@@ -60,10 +60,22 @@ This API remove object completely from dena storage. If the object is successful
 
 Method: 
 
-    public static <T> long remove(T denaObject) throws DenaFault
+    public static long remove(Object denaObject) throws DenaFault
 
 Return Value:
+  Number of deleted objects.
 
 **Delete Bulk Objects**
-This API remove objects completely from dena storage. If the object is successfully delete, the API returns the timestamp of deletion time in milliseconds and number of deleted object count.
+This API remove bulk objects completely from dena storage. If the objects is successfully delete, the API returns the timestamp of deletion time in milliseconds and number of deleted object count.
+
+Method: 
+
+    public static long remove(Collection<?> denaObjects) throws DenaFault
+
+Return Value:
+  Number of deleted objects.
+
+
+
+
 

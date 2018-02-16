@@ -86,7 +86,7 @@ public class DenaTest {
         modelWithObjectIdFields.add(modelWithObjectIdField2);
         modelWithObjectIdFields.add(modelWithObjectIdField3);
 
-        long actualDeletedCount = Dena.removeBulk(modelWithObjectIdFields);
+        long actualDeletedCount = Dena.remove(modelWithObjectIdFields);
         assertEquals("Number of deleted object is wrong", 3, actualDeletedCount);
 
     }

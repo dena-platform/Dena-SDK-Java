@@ -13,6 +13,7 @@ import com.dena.client.common.utils.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -98,7 +99,7 @@ public final class Dena {
         return denaResponse.getCount();
     }
 
-    public static long removeBulk(Set<? extends Object> denaObjects) throws DenaFault {
+    public static long remove(Collection<?> denaObjects) throws DenaFault {
         if (CollectionUtils.isEmpty(denaObjects)) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
@@ -127,5 +128,6 @@ public final class Dena {
         return denaResponse.getCount();
     }
 
+    
 
 }
