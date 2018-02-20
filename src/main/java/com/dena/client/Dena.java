@@ -180,7 +180,38 @@ public final class Dena {
             return 0;
         }
 
-        
+        final Map<String, Object> parentSerializedObject = DenaSerializer.serializeToMap(parentObject);
+
+        if (!DenaSerializer.isObjectIdSet(parentSerializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        final Map<String, Object> childSerializedObject = DenaSerializer.serializeToMap(childObject);
+
+        if (!DenaSerializer.isObjectIdSet(childSerializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        final String parentTypeName = ClassUtils.findSimpleTypeName(parentObject);
+        final String parentObjectId = DenaSerializer.findObjectId(parentObject).get();
+
+        final String childTypeName = ClassUtils.findSimpleTypeName(childObject);
+        final String childObjectId = DenaSerializer.findObjectId(childObject).get();
+
+
+        DeleteRelationRequest deleteRelationRequest = aDeleteRelationRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withParentTypeName(parentTypeName)
+                .withParentObjectId(parentObjectId)
+                .withChildTypeName(childTypeName)
+                .withChildObjectId(childObjectId)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
+        return denaResponse.getCount();
+
+
     }
 
 }

@@ -62,13 +62,14 @@ public class DenaClientManager {
     }
 
     public static DenaResponse deleteRelation(DeleteRelationRequest deleteRelationRequest) throws DenaFault {
-        // child object id is empty. remove relation with type
         String fullURL;
+
+        // child object id is empty. remove relation with type
         if (StringUtils.isBlank(deleteRelationRequest.getChildObjectId())) {
             fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
                     + deleteRelationRequest.getParentTypeName() + deleteRelationRequest.getParentObjectId()
                     + "/relation" + deleteRelationRequest.getChildTypeName();
-        } else {
+        } else { // child object id is not empty. remove relation with other type with specified object_id
             fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
                     + deleteRelationRequest.getParentTypeName() + deleteRelationRequest.getParentObjectId()
                     + "/relation" + deleteRelationRequest.getChildTypeName() + deleteRelationRequest.getChildObjectId();
