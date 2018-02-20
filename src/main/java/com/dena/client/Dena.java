@@ -240,7 +240,9 @@ public final class Dena {
 
         if (CollectionUtils.isNotEmpty(denaObjectResponses)) {
             DenaObjectResponse denaObjectResponse = denaObjectResponses.get(0);
-
+            return DenaSerializer.deserializeObjectResponse(klass, denaObjectResponse);
+        } else {
+            return null;
         }
     }
 
