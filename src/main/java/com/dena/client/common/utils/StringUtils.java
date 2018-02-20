@@ -5,7 +5,7 @@ package com.dena.client.common.utils;
  */
 public final class StringUtils {
     /**
-     * Return true if string is null or contain only space  
+     * Return true if string is null or contain only space eg "    "
      * @param s
      * @return
      */

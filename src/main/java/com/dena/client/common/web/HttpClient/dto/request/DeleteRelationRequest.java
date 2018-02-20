@@ -137,8 +137,8 @@ public class DeleteRelationRequest {
             return this;
         }
 
-        public DeleteRelationRequestBuilder withChildObjectId(String childObjectId) {
-            deleteRelationRequest.setChildObjectId(childObjectId);
+        public DeleteRelationRequestBuilder withChildObjectId(String objectId) {
+            deleteRelationRequest.setChildObjectId(objectId);
             return this;
         }
 
