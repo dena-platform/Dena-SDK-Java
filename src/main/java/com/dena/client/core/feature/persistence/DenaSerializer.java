@@ -103,10 +103,12 @@ public class DenaSerializer {
         return returnObject;
     }
 
-    public static <T> T deserillizeObjectResponse(Class<T> targetKlass, DenaObjectResponse denaObjectResponse) {
+    public static <T> T deserializeObjectResponse(Class<T> targetKlass, DenaObjectResponse denaObjectResponse) {
         try {
-            T newObject = ReflectionUtils.callDefaultConstructor(targetKlass);
+            T deserializeObject = ReflectionUtils.callDefaultConstructor(targetKlass);
 
+
+            return deserializeObject;
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
             throw new DenaFault(String.format("Can not create object with class [%s]", targetKlass.getSimpleName()), ex);
         }
