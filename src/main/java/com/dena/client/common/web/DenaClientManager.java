@@ -6,7 +6,7 @@ import com.dena.client.common.web.HttpClient.HttpClient;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
-import com.dena.client.common.web.HttpClient.dto.request.GetObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.common.utils.JSONMapper;
 import okhttp3.MediaType;
@@ -26,10 +26,12 @@ public class DenaClientManager {
 
     private static final HttpClient DENA_HTTP_CLIENT = HttpClient.getInstance();
 
-    public static DenaResponse getData(GetObjectRequest getObjectRequest) throws DenaFault {
-        String URL = getObjectRequest.getURL();
-        return DENA_HTTP_CLIENT.getData(URL, getObjectRequest.getParameterList());
+    public static DenaResponse findDenaObject(FindObjectRequest getObjectRequest) throws DenaFault {
+        String fullURL = getObjectRequest.getBaseURL() + getObjectRequest.getAppId() + getObjectRequest.getTypeName();
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.getData(fullURL, getObjectRequest.getParameterList());
+        log.debug("Find object, address [{}], parameters {}", fullURL, getObjectRequest.getParameterList());
 
+        return denaResponse;
     }
 
     public static DenaResponse createNewDenaObject(CreateObjectRequest createObjectRequest) throws DenaFault {

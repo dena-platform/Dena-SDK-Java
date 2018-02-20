@@ -3,8 +3,11 @@ package com.dena.client;
 import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.exception.ErrorCode;
 import com.dena.client.common.utils.CollectionUtils;
+import com.dena.client.common.utils.ReflectionUtils;
+import com.dena.client.common.utils.StringUtils;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
+import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.common.web.DenaClientManager;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
@@ -15,12 +18,15 @@ import com.dena.client.core.feature.persistence.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 import static com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest.DeleteRelationRequestBuilder.aDeleteRelationRequest;
+import static com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest.FindObjectRequestBuilder.aFindObjectRequest;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -212,6 +218,30 @@ public final class Dena {
         return denaResponse.getCount();
 
 
+    }
+
+    public static <T> T findById(Class<T> klass, String objectId) {
+        if (klass == null) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        if (StringUtils.isBlank(objectId)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalAccessException());
+        }
+
+        FindObjectRequest findObjectRequest = aFindObjectRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withObjectId(objectId)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.findDenaObject(findObjectRequest);
+        List<DenaObjectResponse> denaObjectResponses = denaResponse.getDenaObjectResponseList();
+
+        if (CollectionUtils.isNotEmpty(denaObjectResponses)) {
+            DenaObjectResponse denaObjectResponse = denaObjectResponses.get(0);
+
+        }
     }
 
 }

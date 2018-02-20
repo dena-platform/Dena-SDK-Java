@@ -5,6 +5,7 @@ import com.dena.client.common.utils.ClassUtils;
 import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.utils.MapUtils;
 import com.dena.client.common.utils.ReflectionUtils;
+import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +101,15 @@ public class DenaSerializer {
         });
 
         return returnObject;
+    }
+
+    public static <T> T deserillizeObjectResponse(Class<T> targetKlass, DenaObjectResponse denaObjectResponse) {
+        try {
+            T newObject = ReflectionUtils.callDefaultConstructor(targetKlass);
+
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not create object with class [%s]", targetKlass.getSimpleName()), ex);
+        }
     }
 
 
