@@ -1,6 +1,7 @@
 package com.dena.client.core.feature.persistence;
 
 import com.dena.client.common.utils.ClassUtils;
+import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,14 @@ public final class Relation<T> {
 
     public Set<RelatedObject> getAllRelatedObjects() {
         return relatedObjects;
+    }
+
+    public Optional<String> getRelationObjectType() {
+        if (CollectionUtils.isNotEmpty(relatedObjects)) {
+            return Optional.of(relatedObjects.iterator().next().getType());
+        }
+
+        return Optional.empty();
     }
 
 

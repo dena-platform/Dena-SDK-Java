@@ -108,7 +108,7 @@ public class DeleteRelationRequest {
             deleteRelationRequest = new DeleteRelationRequest();
         }
 
-        public static DeleteRelationRequestBuilder aDeleteObjectRequest() {
+        public static DeleteRelationRequestBuilder aDeleteRelationRequest() {
             return new DeleteRelationRequestBuilder();
         }
 
@@ -122,34 +122,23 @@ public class DeleteRelationRequest {
             return this;
         }
 
-
-        public DeleteRelationRequestBuilder withParentTypeName(String typeName) {
-            deleteRelationRequest.setParentTypeName(typeName);
+        public DeleteRelationRequestBuilder withParentTypeName(String parentTypeName) {
+            deleteRelationRequest.setParentTypeName(parentTypeName);
             return this;
         }
 
-        public DeleteRelationRequestBuilder withParentObjectId(String objectId) {
-            if (StringUtils.isBlank(deleteRelationRequest.getParentObjectId())) {
-                deleteRelationRequest.setParentObjectId(objectId);
-            } else {
-                String newObjectId = deleteRelationRequest.getParentObjectId() + "," + objectId;
-                deleteRelationRequest.setParentObjectId(newObjectId);
-            }
-
+        public DeleteRelationRequestBuilder withChildTypeName(String childTypeName) {
+            deleteRelationRequest.setChildTypeName(childTypeName);
             return this;
         }
 
-        public DeleteRelationRequestBuilder withParameterList(List<Parameter> parameterList) {
-            deleteRelationRequest.setParameterList(parameterList);
+        public DeleteRelationRequestBuilder withParentObjectId(String parentObjectId) {
+            deleteRelationRequest.setParentObjectId(parentObjectId);
             return this;
         }
 
-        public DeleteRelationRequestBuilder withParameterList(Map<String, Object> parameterMap) {
-            if (MapUtils.isNotEmpty(parameterMap)) {
-                for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
-                    deleteRelationRequest.parameterList.add(new Parameter(entry.getKey(), entry.getValue().toString()));
-                }
-            }
+        public DeleteRelationRequestBuilder withChildObjectId(String childObjectId) {
+            deleteRelationRequest.setChildObjectId(childObjectId);
             return this;
         }
 

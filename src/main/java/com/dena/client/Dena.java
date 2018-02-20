@@ -4,6 +4,7 @@ import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.exception.ErrorCode;
 import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.common.web.DenaClientManager;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
+import static com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest.DeleteRelationRequestBuilder.aDeleteRelationRequest;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -134,19 +136,29 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
+        if (relation == null) {
+            throw DenaFault.makeException(ErrorCode.RELATION_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        if (CollectionUtils.isEmpty(relation.getAllRelatedObjects())) {
+            log.debug("Relation element is empty");
+            return 0;
+        }
+
         final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
 
         if (!DenaSerializer.isObjectIdSet(serializedObject)) {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+        final String parentTypeName = ClassUtils.findSimpleTypeName(denaObject);
 
-        DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
+        DeleteRelationRequest createObjectRequest = aDeleteRelationRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
-                .withTypeName(typeName)
-                .withObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .withParentTypeName(parentTypeName)
+                .withParentObjectId(DenaSerializer.findObjectId(denaObject).get())
+                .withChildTypeName(relation.getRelationObjectType().get())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);

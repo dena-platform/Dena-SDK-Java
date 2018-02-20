@@ -1,9 +1,11 @@
 package com.dena.client.common.web;
 
 import com.dena.client.common.exception.DenaFault;
+import com.dena.client.common.utils.StringUtils;
 import com.dena.client.common.web.HttpClient.HttpClient;
 import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.common.web.HttpClient.dto.request.GetObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
 import com.dena.client.common.utils.JSONMapper;
@@ -55,6 +57,18 @@ public class DenaClientManager {
 
         DenaResponse denaResponse = DENA_HTTP_CLIENT.deleteData(fullURL, deleteObjectRequest.getParameterList());
         log.debug("Successfully delete data, address [{}], parameters {}", fullURL, deleteObjectRequest.getParameterList());
+
+        return denaResponse;
+    }
+
+    public static DenaResponse DeleteRelation(DeleteRelationRequest deleteRelationRequest) throws DenaFault {
+        if(StringUtils.isNoneBlank()deleteRelationRequest.getChildObjectId())
+
+        String fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
+                + deleteRelationRequest.getTypeName() + deleteRelationRequest.getObjectIds();
+
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.deleteData(fullURL, deleteRelationRequest.getParameterList());
+        log.debug("Successfully delete data, address [{}], parameters {}", fullURL, deleteRelationRequest.getParameterList());
 
         return denaResponse;
     }
