@@ -166,4 +166,21 @@ public final class Dena {
 
     }
 
+    public static long removeRelation(Object parentObject, Relation<?> relation, Object childObject) throws DenaFault {
+        if (parentObject == null || childObject == null) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        if (relation == null) {
+            throw DenaFault.makeException(ErrorCode.RELATION_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        if (CollectionUtils.isEmpty(relation.getAllRelatedObjects())) {
+            log.debug("Relation have no element");
+            return 0;
+        }
+
+        
+    }
+
 }

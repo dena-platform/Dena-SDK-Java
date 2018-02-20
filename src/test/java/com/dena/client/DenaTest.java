@@ -101,11 +101,11 @@ public class DenaTest {
         childObject = Dena.saveOrUpdate(childObject);
 
         ParentClass parentObject = new ParentClass();
-        parentObject.childClass.addRelatedObject(childObject);
+        parentObject.childRelation.addRelatedObject(childObject);
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
-        Dena.removeRelation(parentObject, parentObject.childClass);
+        Dena.removeRelation(parentObject, parentObject.childRelation);
 
     }
 
@@ -118,14 +118,13 @@ public class DenaTest {
         childObject = Dena.saveOrUpdate(childObject);
 
         ParentClass parentObject = new ParentClass();
-        parentObject.childClass.addRelatedObject(childObject);
+        parentObject.childRelation.addRelatedObject(childObject);
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
-        Dena.removeRelation(parentObject, parentObject.childClass);
+        Dena.removeRelation(parentObject, parentObject.);
 
     }
-
 
 
 }
