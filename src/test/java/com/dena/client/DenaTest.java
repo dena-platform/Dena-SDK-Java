@@ -122,7 +122,7 @@ public class DenaTest {
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
-        Dena.removeRelation(parentObject, parentObject.);
+        Dena.removeRelation(parentObject, parentObject.childRelation, childObject);
 
     }
 
