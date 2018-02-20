@@ -10,9 +10,9 @@ import java.util.Map;
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
-public class SuperClassA {
+public class ParentClass {
 
-    private transient int a1;
+    public transient int a1;
 
     private UserDefinedClass UserDefinedClass;
 
@@ -24,15 +24,7 @@ public class SuperClassA {
 
     public List<String> nameList = new ArrayList<>();
 
-    public Relation<ModelWithObjectIdField> modelWithObjectIdFieldRelation = new Relation<>();
-
-    public int getA1() {
-        return a1;
-    }
-
-    public void setA1(int a1) {
-        this.a1 = a1;
-    }
+    public Relation<ChildClass> childClass = new Relation<>();
 
     public String getA2() {
         return a2;

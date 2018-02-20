@@ -76,6 +76,10 @@ public class DeleteRelationRequest {
         this.childTypeName = childTypeName;
     }
 
+    public String getChildTypeName() {
+        return childTypeName;
+    }
+
     public String getParentObjectId() {
         return parentObjectId;
     }

@@ -1,12 +1,6 @@
 package com.dena.client.service;
 
-import com.dena.client.model.ModelWithObjectIdField;
-import com.dena.client.model.SuperClassA;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Map;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]

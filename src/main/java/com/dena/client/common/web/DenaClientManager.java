@@ -61,18 +61,21 @@ public class DenaClientManager {
         return denaResponse;
     }
 
-    public static DenaResponse DeleteRelation(DeleteRelationRequest deleteRelationRequest) throws DenaFault {
-        // child object id is empty. remove relation
+    public static DenaResponse deleteRelation(DeleteRelationRequest deleteRelationRequest) throws DenaFault {
+        // child object id is empty. remove relation with type
+        String fullURL;
         if (StringUtils.isBlank(deleteRelationRequest.getChildObjectId())) {
-            String.format("")
-            String fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
-                    + deleteRelationRequest.getParentTypeName() + deleteRelationRequest.getParentObjectId();
-
+            fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
+                    + deleteRelationRequest.getParentTypeName() + deleteRelationRequest.getParentObjectId()
+                    + "/relation" + deleteRelationRequest.getChildTypeName();
+        } else {
+            fullURL = deleteRelationRequest.getBaseURL() + deleteRelationRequest.getAppId()
+                    + deleteRelationRequest.getParentTypeName() + deleteRelationRequest.getParentObjectId()
+                    + "/relation" + deleteRelationRequest.getChildTypeName() + deleteRelationRequest.getChildObjectId();
         }
 
-
         DenaResponse denaResponse = DENA_HTTP_CLIENT.deleteData(fullURL, deleteRelationRequest.getParameterList());
-        log.debug("Successfully delete data, address [{}], parameters {}", fullURL, deleteRelationRequest.getParameterList());
+        log.debug("Successfully delete relation, address [{}]", fullURL);
 
         return denaResponse;
     }

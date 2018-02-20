@@ -1,15 +1,15 @@
 package com.dena.client;
 
 
+import com.dena.client.model.ChildClass;
 import com.dena.client.model.ModelWithObjectIdField;
-import com.dena.client.model.SuperClassA;
+import com.dena.client.model.ParentClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
@@ -24,28 +24,28 @@ public class DenaTest {
     @Test
     public void test_saveObject() {
 
-        // create related object
-        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
-        ModelWithObjectIdField modelWithObjectIdField2 = new ModelWithObjectIdField();
-        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
-        modelWithObjectIdField2 = Dena.saveOrUpdate(modelWithObjectIdField2);
-
-        // create main object
-        SuperClassA superClassA = new SuperClassA();
-        superClassA.setA1(10);
-        superClassA.setA2("javad");
-        superClassA.nameList = Arrays.asList("javad", "ali");
-
-        Map<Integer, Integer> myMap = new HashMap<>();
-        myMap.put(1, 1);
-        myMap.put(2, 2);
-        myMap.put(3, 3);
-
-        superClassA.myMap = myMap;
-        superClassA.modelWithObjectIdFieldRelation.addRelatedObject(modelWithObjectIdField1);
-        superClassA.modelWithObjectIdFieldRelation.addRelatedObject(modelWithObjectIdField2);
-
-        Dena.saveOrUpdate(superClassA);
+//        // create related object
+//        ModelWithObjectIdField modelWithObjectIdField1 = new ModelWithObjectIdField();
+//        ModelWithObjectIdField modelWithObjectIdField2 = new ModelWithObjectIdField();
+//        modelWithObjectIdField1 = Dena.saveOrUpdate(modelWithObjectIdField1);
+//        modelWithObjectIdField2 = Dena.saveOrUpdate(modelWithObjectIdField2);
+//
+//        // create main object
+//        ParentClass parentClass = new ParentClass();
+//        parentClass.setA1(10);
+//        parentClass.setA2("javad");
+//        parentClass.nameList = Arrays.asList("javad", "ali");
+//
+//        Map<Integer, Integer> myMap = new HashMap<>();
+//        myMap.put(1, 1);
+//        myMap.put(2, 2);
+//        myMap.put(3, 3);
+//
+//        parentClass.myMap = myMap;
+//        parentClass.childClass.addRelatedObject(modelWithObjectIdField1);
+//        parentClass.childClass.addRelatedObject(modelWithObjectIdField2);
+//
+//        Dena.saveOrUpdate(parentClass);
     }
 
     @Test
@@ -90,6 +90,42 @@ public class DenaTest {
         assertEquals("Number of deleted object is wrong", 3, actualDeletedCount);
 
     }
+
+
+    @Test
+    public void test_DeleteRelationWithType_When_Type_Exist() {
+        ChildClass childObject = new ChildClass();
+        childObject.childIntField = 1;
+        childObject.childStringField = "string value 1";
+
+        childObject = Dena.saveOrUpdate(childObject);
+
+        ParentClass parentObject = new ParentClass();
+        parentObject.childClass.addRelatedObject(childObject);
+
+        parentObject = Dena.saveOrUpdate(parentObject);
+
+        Dena.removeRelation(parentObject, parentObject.childClass);
+
+    }
+
+    @Test
+    public void test_DeleteRelationWithObjectId_When_Type_Exist() {
+        ChildClass childObject = new ChildClass();
+        childObject.childIntField = 1;
+        childObject.childStringField = "string value 1";
+
+        childObject = Dena.saveOrUpdate(childObject);
+
+        ParentClass parentObject = new ParentClass();
+        parentObject.childClass.addRelatedObject(childObject);
+
+        parentObject = Dena.saveOrUpdate(parentObject);
+
+        Dena.removeRelation(parentObject, parentObject.childClass);
+
+    }
+
 
 
 }

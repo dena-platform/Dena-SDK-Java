@@ -141,7 +141,7 @@ public final class Dena {
         }
 
         if (CollectionUtils.isEmpty(relation.getAllRelatedObjects())) {
-            log.debug("Relation element is empty");
+            log.debug("Relation have no element");
             return 0;
         }
 
@@ -153,7 +153,7 @@ public final class Dena {
 
         final String parentTypeName = ClassUtils.findSimpleTypeName(denaObject);
 
-        DeleteRelationRequest createObjectRequest = aDeleteRelationRequest()
+        DeleteRelationRequest deleteRelationRequest = aDeleteRelationRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
                 .withParentTypeName(parentTypeName)
@@ -161,7 +161,7 @@ public final class Dena {
                 .withChildTypeName(relation.getRelationObjectType().get())
                 .build();
 
-        DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
+        DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
         return denaResponse.getCount();
 
     }
