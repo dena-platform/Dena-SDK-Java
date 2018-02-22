@@ -11,6 +11,7 @@ import java.util.Map;
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
 public class ParentClass {
+    public String object_id;
 
     public transient int a1;
 

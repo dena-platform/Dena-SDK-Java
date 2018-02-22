@@ -4,8 +4,6 @@ import com.dena.client.core.feature.persistence.Relation;
 
 import java.util.*;
 
-import static com.dena.client.common.utils.CollectionUtils.isEmpty;
-
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
  */
@@ -36,7 +34,7 @@ public final class ClassUtils {
 
 
     public static String findSimpleTypeName(final Object targetObject) {
-        return ReflectionUtils.findTypeName(ReflectionUtils.findClassName(targetObject));
+        return ReflectionUtils.findClassNameWithoutRedundant(ReflectionUtils.findClassName(targetObject));
     }
 
     public static boolean isCollectionType(final Object targetObject) {

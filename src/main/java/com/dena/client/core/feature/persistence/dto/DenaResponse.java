@@ -1,4 +1,4 @@
-package com.dena.client.common.web.HttpClient.dto.response;
+package com.dena.client.core.feature.persistence.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

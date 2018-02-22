@@ -95,7 +95,7 @@ public final class ReflectionUtils {
                     @Override
                     protected String name(TypeDescription superClass) {
                         long randomNumber = (long) (Math.random() * 99999999999999999L);
-                        return findTypeName(superClass.getSimpleName()) + CLASS_NAMING_PREFIX + randomNumber;
+                        return findClassNameWithoutRedundant(superClass.getSimpleName()) + CLASS_NAMING_PREFIX + randomNumber;
                     }
                 })
                 .subclass(targetClass)
@@ -173,7 +173,7 @@ public final class ReflectionUtils {
         }
     }
 
-    public static String findTypeName(final String className) {
+    public static String findClassNameWithoutRedundant(final String className) {
         int endIndex = !className.contains(CLASS_NAMING_PREFIX) ? className.length() : className.indexOf(CLASS_NAMING_PREFIX);
         return className.substring(0, endIndex);
 

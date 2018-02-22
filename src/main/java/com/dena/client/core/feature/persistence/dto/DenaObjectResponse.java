@@ -1,4 +1,4 @@
-package com.dena.client.common.web.HttpClient.dto.response;
+package com.dena.client.core.feature.persistence.dto;
 
 import com.dena.client.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.*;

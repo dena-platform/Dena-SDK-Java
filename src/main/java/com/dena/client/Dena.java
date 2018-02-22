@@ -10,8 +10,8 @@ import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
-import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.core.feature.persistence.dto.DenaObjectResponse;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.core.feature.persistence.Relation;
 import org.slf4j.Logger;
@@ -162,7 +162,7 @@ public final class Dena {
                 .withAppId(APP_ID)
                 .withParentTypeName(parentTypeName)
                 .withParentObjectId(DenaSerializer.findObjectId(denaObject).get())
-                .withChildTypeName(relation.getRelationObjectType().get())
+                .withChildTypeName(relation.getRelationType())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);

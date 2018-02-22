@@ -2,7 +2,7 @@ package com.dena.client.common.web.HttpClient;
 
 
 import com.dena.client.common.exception.DenaFault;
-import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
 import com.dena.client.common.web.HttpClient.dto.Parameter;
 import com.dena.client.common.utils.StringUtils;

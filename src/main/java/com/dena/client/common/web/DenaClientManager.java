@@ -7,7 +7,7 @@ import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import com.dena.client.common.utils.JSONMapper;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
