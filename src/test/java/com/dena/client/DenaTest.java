@@ -126,5 +126,23 @@ public class DenaTest {
 
     }
 
+    @Test
+    public void test_FindObjectWithObjectId_When_Object_Exist() {
+//        ChildClass childObject = new ChildClass();
+//        childObject.childIntField = 1;
+//        childObject.childStringField = "string value 1";
+//
+//        childObject = Dena.saveOrUpdate(childObject);
+
+        ModelWithObjectIdField parentObject = new ModelWithObjectIdField();
+        parentObject.setA2(10);
+//        parentObject.childRelation.addRelatedObject(childObject);
+
+        parentObject = Dena.saveOrUpdate(parentObject);
+
+        parentObject = Dena.findById(ModelWithObjectIdField.class, parentObject.object_id);
+        System.out.println(parentObject);
+    }
+
 
 }

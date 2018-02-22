@@ -106,7 +106,13 @@ public class DenaSerializer {
     public static <T> T deserializeObjectResponse(Class<T> targetKlass, DenaObjectResponse denaObjectResponse) {
         try {
             T deserializeObject = ReflectionUtils.callDefaultConstructor(targetKlass);
+            Map<String, Object> allFields = denaObjectResponse.getAllFields();
 
+            for (Map.Entry<String, Object> field : allFields.entrySet()) {
+                ReflectionUtils.forceSetField(deserializeObject, field.getKey(), field.getValue());
+            }
+
+            setObjectId(deserializeObject, denaObjectResponse.getObjectId());
 
             return deserializeObject;
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {

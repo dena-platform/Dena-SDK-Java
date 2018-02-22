@@ -25,4 +25,13 @@ public class ModelWithObjectIdField {
     public void setA2(int a2) {
         this.a2 = a2;
     }
+
+    @Override
+    public String toString() {
+        return "ModelWithObjectIdField{" +
+                "object_id='" + object_id + '\'' +
+                ", a1=" + a1 +
+                ", a2=" + a2 +
+                '}';
+    }
 }

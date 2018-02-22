@@ -2,23 +2,21 @@ package com.dena.client;
 
 import com.dena.client.common.exception.DenaFault;
 import com.dena.client.common.exception.ErrorCode;
+import com.dena.client.common.utils.ClassUtils;
 import com.dena.client.common.utils.CollectionUtils;
-import com.dena.client.common.utils.ReflectionUtils;
 import com.dena.client.common.utils.StringUtils;
+import com.dena.client.common.web.DenaClientManager;
+import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
-import com.dena.client.core.feature.persistence.DenaSerializer;
-import com.dena.client.common.web.DenaClientManager;
-import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.response.DenaObjectResponse;
 import com.dena.client.common.web.HttpClient.dto.response.DenaResponse;
-import com.dena.client.common.utils.ClassUtils;
+import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.core.feature.persistence.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -232,6 +230,7 @@ public final class Dena {
         FindObjectRequest findObjectRequest = aFindObjectRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
+                .withTypeName(klass.getSimpleName())
                 .withObjectId(objectId)
                 .build();
 
