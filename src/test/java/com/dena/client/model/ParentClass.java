@@ -24,8 +24,8 @@ public class ParentClass {
     public String a3;
 
     public List<String> nameList = new ArrayList<>();
-    
-    public Relation<ChildClass> childRelation = new Relation<>();
+
+    public Relation<ChildClass> childRelation = Relation.makeRelationOf(ChildClass.class);
 
     public String getA2() {
         return a2;

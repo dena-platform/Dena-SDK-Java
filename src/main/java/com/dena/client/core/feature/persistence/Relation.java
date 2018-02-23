@@ -16,7 +16,13 @@ import java.util.Set;
 public final class Relation<T> {
     private final static Logger log = LoggerFactory.getLogger(Relation.class);
 
+    private Class<T> klass;
+
     private Set<RelatedObject> relatedObjects = new HashSet<>();
+
+    private Relation(Class<T> klass) {
+        this.klass = klass;
+    }
 
     public void addRelatedObject(T object) {
         String type = ClassUtils.findSimpleTypeName(object);
@@ -34,14 +40,12 @@ public final class Relation<T> {
         return relatedObjects;
     }
 
-    public Optional<String> getRelationObjectType() {
-        if (CollectionUtils.isNotEmpty(relatedObjects)) {
-            return Optional.of(relatedObjects.iterator().next().getType());
-        }
-
-        return Optional.empty();
+    public String getRelationObjectType() {
+        return klass.getSimpleName();
     }
 
-
+    public static <E> Relation<E> makeRelationOf(Class<E> klass) {
+        return new Relation<>(klass);
+    }
 
 }

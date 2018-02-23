@@ -162,7 +162,7 @@ public final class Dena {
                 .withAppId(APP_ID)
                 .withParentTypeName(parentTypeName)
                 .withParentObjectId(DenaSerializer.findObjectId(denaObject).get())
-                .withChildTypeName(relation.getRelationObjectType().get())
+                .withChildTypeName(relation.getRelationObjectType())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
@@ -244,5 +244,30 @@ public final class Dena {
             return null;
         }
     }
+
+    public static <T> List<T> loadRelation(Object parent, Relation<T> relation) {
+        if (parent == null || relation == null) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
+        }
+
+        final Map<String, Object> parentSerializedObject = DenaSerializer.serializeToMap(parentObject);
+
+        if (!DenaSerializer.isObjectIdSet(parentSerializedObject)) {
+            throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
+        }
+
+        
+
+        FindObjectRequest findObjectRequest = aFindObjectRequest()
+                .withBaseURL(DENA_URL)
+                .withAppId(APP_ID)
+                .withTypeName(klass.getSimpleName())
+                .withObjectId(objectId)
+                .build();
+
+
+    }
+
+
 
 }
