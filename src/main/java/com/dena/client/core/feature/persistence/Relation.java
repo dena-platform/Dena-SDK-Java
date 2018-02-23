@@ -1,7 +1,6 @@
 package com.dena.client.core.feature.persistence;
 
 import com.dena.client.common.utils.ClassUtils;
-import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public final class Relation<T> {
     }
 
     public void addObject(T object) {
-        String type = ClassUtils.findSimpleTypeName(object);
+        String type = ClassUtils.findOriginalTypeName(object);
         Optional<String> objectId = DenaSerializer.findObjectId(object);
 
         if (objectId.isPresent()) {

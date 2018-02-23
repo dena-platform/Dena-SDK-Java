@@ -32,8 +32,12 @@ public final class ClassUtils {
         return targetObject instanceof Relation;
     }
 
-
-    public static String findSimpleTypeName(final Object targetObject) {
+    /**
+     * Find original class name of targetObject without added redundant 
+     * @param targetObject
+     * @return
+     */
+    public static String findOriginalTypeName(final Object targetObject) {
         return ReflectionUtils.findClassNameWithoutRedundant(ReflectionUtils.findClassName(targetObject));
     }
 
@@ -48,7 +52,7 @@ public final class ClassUtils {
 
         Object firstObject = denaObjects.iterator().next();
         for (Object otherObject : denaObjects) {
-            if (!findSimpleTypeName(firstObject).equals(findSimpleTypeName(otherObject))) {
+            if (!findOriginalTypeName(firstObject).equals(findOriginalTypeName(otherObject))) {
                 return false;
             }
         }

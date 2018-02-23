@@ -53,7 +53,7 @@ public final class Dena {
         }
 
         final Map<String, Object> serializedObject = DenaSerializer.serializeToMap(denaObject);
-        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+        final String typeName = ClassUtils.findOriginalTypeName(denaObject);
 
         CreateObjectRequest createObjectRequest = aCreateObjectRequest()
                 .withRequestBodyMap(serializedObject)
@@ -93,7 +93,7 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String typeName = ClassUtils.findSimpleTypeName(denaObject);
+        final String typeName = ClassUtils.findOriginalTypeName(denaObject);
 
         DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
                 .withBaseURL(DENA_URL)
@@ -122,7 +122,7 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String typeName = ClassUtils.findSimpleTypeName(denaObjects.iterator().next());
+        final String typeName = ClassUtils.findOriginalTypeName(denaObjects.iterator().next());
 
         DeleteObjectRequest createObjectRequest = DeleteObjectRequest.DeleteObjectRequestBuilder.aDeleteObjectRequest()
                 .withBaseURL(DENA_URL)
@@ -155,7 +155,7 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String parentTypeName = ClassUtils.findSimpleTypeName(denaObject);
+        final String parentTypeName = ClassUtils.findOriginalTypeName(denaObject);
 
         DeleteRelationRequest deleteRelationRequest = aDeleteRelationRequest()
                 .withBaseURL(DENA_URL)
@@ -196,10 +196,10 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String parentTypeName = ClassUtils.findSimpleTypeName(parentObject);
+        final String parentTypeName = ClassUtils.findOriginalTypeName(parentObject);
         final String parentObjectId = DenaSerializer.findObjectId(parentObject).get();
 
-        final String childTypeName = ClassUtils.findSimpleTypeName(childObject);
+        final String childTypeName = ClassUtils.findOriginalTypeName(childObject);
         final String childObjectId = DenaSerializer.findObjectId(childObject).get();
 
 
@@ -256,7 +256,7 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        final String parentTypeName = ClassUtils.findSimpleTypeName(parentObject);
+        final String parentTypeName = ClassUtils.findOriginalTypeName(parentObject);
         final String parentObjectId = DenaSerializer.findObjectId(parentObject).get();
 
         final String childTypeName = relation.getTypeName();

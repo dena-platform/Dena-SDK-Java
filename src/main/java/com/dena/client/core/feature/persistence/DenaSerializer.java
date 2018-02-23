@@ -34,7 +34,7 @@ public class DenaSerializer {
         Map<String, Object> fields = findAllFields(targetObject);
         Map<String, Object> refinedFields = new HashMap<>();
 
-        // ignore null value fields, empty collection, map
+        // Ignore null value fields, empty collection, map
         for (Map.Entry<String, Object> entry : fields.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(DENA_OBJECT_ID_FIELD)) {
                 refinedFields.put(DENA_OBJECT_ID_FIELD, entry.getValue());
