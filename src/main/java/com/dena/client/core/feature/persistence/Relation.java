@@ -20,11 +20,15 @@ public final class Relation<T> {
 
     private Set<RelatedObject> relatedObjects = new HashSet<>();
 
+    public static <E> Relation<E> makeRelationOf(Class<E> klass) {
+        return new Relation<>(klass);
+    }
+
     private Relation(Class<T> klass) {
         this.klass = klass;
     }
 
-    public void addRelatedObject(T object) {
+    public void addObject(T object) {
         String type = ClassUtils.findSimpleTypeName(object);
         Optional<String> objectId = DenaSerializer.findObjectId(object);
 
@@ -40,12 +44,13 @@ public final class Relation<T> {
         return relatedObjects;
     }
 
-    public String getRelationObjectType() {
+    public String getTypeName() {
         return klass.getSimpleName();
     }
 
-    public static <E> Relation<E> makeRelationOf(Class<E> klass) {
-        return new Relation<>(klass);
+    public Class<T> getClassType() {
+        return klass;
     }
+
 
 }

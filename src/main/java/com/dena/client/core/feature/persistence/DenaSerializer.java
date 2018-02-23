@@ -121,6 +121,26 @@ public class DenaSerializer {
         }
     }
 
+    public static <T> List<T> deserializeObjectResponse(Class<T> targetKlass, List<DenaObjectResponse> denaObjectsResponse) {
+        try {
+            List<T> deserializeObjects = new ArrayList<>();
+            for (DenaObjectResponse response : denaObjectsResponse) {
+                T deserializeObject = ReflectionUtils.callDefaultConstructor(targetKlass);
+                Map<String, Object> allFields = response.getAllFields();
+
+                for (Map.Entry<String, Object> field : allFields.entrySet()) {
+                    ReflectionUtils.forceSetField(deserializeObject, field.getKey(), field.getValue());
+                }
+
+                setObjectId(deserializeObject, response.getObjectId());
+            }
+
+            return deserializeObjects;
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not create object with class [%s]", targetKlass.getSimpleName()), ex);
+        }
+    }
+
 
     public static Map<String, Object> findAllFields(Object targetObject) {
         List<Field> fieldList = ReflectionUtils.findInstanceVariables(targetObject);

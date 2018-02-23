@@ -162,7 +162,7 @@ public final class Dena {
                 .withAppId(APP_ID)
                 .withParentTypeName(parentTypeName)
                 .withParentObjectId(DenaSerializer.findObjectId(denaObject).get())
-                .withChildTypeName(relation.getRelationObjectType())
+                .withChildTypeName(relation.getTypeName())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
@@ -257,17 +257,29 @@ public final class Dena {
         }
 
         final String parentTypeName = ClassUtils.findSimpleTypeName(parentObject);
+        final String parentObjectId = DenaSerializer.findObjectId(parentObject).get();
+
+        final String childTypeName = relation.getTypeName();
+
 
         FindObjectRequest findObjectRequest = aFindObjectRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
-                .withParentTypeName(klass.getSimpleName())
-                .withParentObjectId(objectId)
+                .withParentTypeName(parentTypeName)
+                .withParentObjectId(parentObjectId)
+                .withChildTypeName(childTypeName)
                 .build();
 
 
+        DenaResponse denaResponse = DenaClientManager.findDenaObject(findObjectRequest);
+        List<DenaObjectResponse> denaObjectResponses = denaResponse.getDenaObjectResponseList();
+
+        if (CollectionUtils.isNotEmpty(denaObjectResponses)) {
+            return DenaSerializer.deserializeObjectResponse(relation.getClassType(), denaObjectResponses);
+        } else {
+            return null;
+        }
+
     }
-
-
 
 }

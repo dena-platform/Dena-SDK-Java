@@ -26,10 +26,19 @@ public class DenaClientManager {
 
     private static final HttpClient DENA_HTTP_CLIENT = HttpClient.getInstance();
 
-    public static DenaResponse findDenaObject(FindObjectRequest getObjectRequest) throws DenaFault {
-        String fullURL = getObjectRequest.getBaseURL() + getObjectRequest.getAppId() + getObjectRequest.getParentTypeName()+getObjectRequest.getParentObjectId();
-        DenaResponse denaResponse = DENA_HTTP_CLIENT.getData(fullURL, getObjectRequest.getParameterList());
-        log.debug("Find object, address [{}], parameters {}", fullURL, getObjectRequest.getParameterList());
+    public static DenaResponse findDenaObject(FindObjectRequest findObjectRequest) throws DenaFault {
+        String fullURL;
+        // child type name is empty. find object by id
+        if (StringUtils.isBlank(findObjectRequest.getChildTypeName())) {
+            fullURL = findObjectRequest.getBaseURL() + findObjectRequest.getAppId() + findObjectRequest.getParentTypeName() +
+                    findObjectRequest.getParentObjectId();
+        } else {
+            fullURL = findObjectRequest.getBaseURL() + findObjectRequest.getAppId() + findObjectRequest.getParentTypeName() +
+                    findObjectRequest.getParentObjectId() + "/relation" + findObjectRequest.getChildTypeName();
+        }
+        
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.getData(fullURL, findObjectRequest.getParameterList());
+        log.debug("Find object, address [{}], parameters {}", fullURL, findObjectRequest.getParameterList());
 
         return denaResponse;
     }

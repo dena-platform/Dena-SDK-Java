@@ -42,8 +42,8 @@ public class DenaTest {
 //        myMap.put(3, 3);
 //
 //        parentClass.myMap = myMap;
-//        parentClass.childClass.addRelatedObject(modelWithObjectIdField1);
-//        parentClass.childClass.addRelatedObject(modelWithObjectIdField2);
+//        parentClass.childClass.addObject(modelWithObjectIdField1);
+//        parentClass.childClass.addObject(modelWithObjectIdField2);
 //
 //        Dena.saveOrUpdate(parentClass);
     }
@@ -101,7 +101,7 @@ public class DenaTest {
         childObject = Dena.saveOrUpdate(childObject);
 
         ParentClass parentObject = new ParentClass();
-        parentObject.childRelation.addRelatedObject(childObject);
+        parentObject.childRelation.addObject(childObject);
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
@@ -118,7 +118,7 @@ public class DenaTest {
         childObject = Dena.saveOrUpdate(childObject);
 
         ParentClass parentObject = new ParentClass();
-        parentObject.childRelation.addRelatedObject(childObject);
+        parentObject.childRelation.addObject(childObject);
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
@@ -135,11 +135,36 @@ public class DenaTest {
         childObject = Dena.saveOrUpdate(childObject);
 
         ParentClass parentObject = new ParentClass();
-        parentObject.childRelation.addRelatedObject(childObject);
+        parentObject.childRelation.addObject(childObject);
 
         parentObject = Dena.saveOrUpdate(parentObject);
 
         parentObject = Dena.findById(ParentClass.class, parentObject.object_id);
+
+    }
+
+    @Test
+    public void test_LoadRelatedObjects_When_Object_Exist() {
+        ChildClass childObject1 = new ChildClass();
+        childObject1.childIntField = 1;
+        childObject1.childStringField = "string value 1";
+
+        ChildClass childObject2 = new ChildClass();
+        childObject2.childIntField = 1;
+        childObject2.childStringField = "string value 1";
+
+        childObject1 = Dena.saveOrUpdate(childObject1);
+        childObject2 = Dena.saveOrUpdate(childObject2);
+
+        ParentClass parentObject = new ParentClass();
+        parentObject.childRelation.addObject(childObject1);
+        parentObject.childRelation.addObject(childObject2);
+
+        parentObject = Dena.saveOrUpdate(parentObject);
+
+        List<ChildClass> childClasses = Dena.loadRelation(parentObject, parentObject.childRelation);
+
+        
 
     }
 

@@ -21,6 +21,8 @@ public class FindObjectRequest {
 
     private String parentTypeName;
 
+    private String childTypeName;
+
     public List<Parameter> getParameterList() {
         return parameterList;
     }
@@ -76,6 +78,19 @@ public class FindObjectRequest {
         this.parentObjectId = parentObjectId;
     }
 
+    public void setChildTypeName(String childTypeName) {
+        if (!childTypeName.startsWith("/")) {
+            childTypeName = "/" + childTypeName;
+        }
+
+        this.childTypeName = childTypeName;
+    }
+
+    public String getChildTypeName() {
+        return childTypeName;
+    }
+
+
     public static final class FindObjectRequestBuilder {
         private FindObjectRequest findObjectRequest;
 
@@ -111,6 +126,12 @@ public class FindObjectRequest {
             findObjectRequest.setParentObjectId(objectId);
             return this;
         }
+
+        public FindObjectRequestBuilder withChildTypeName(String childTypeName) {
+            findObjectRequest.setChildTypeName(childTypeName);
+            return this;
+        }
+
 
         public FindObjectRequest build() {
             return findObjectRequest;

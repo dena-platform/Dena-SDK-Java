@@ -19,7 +19,7 @@ public final class CollectionUtils {
     }
 
     /**
-     * check if all element of Collection is primitive or wrapper of primitive
+     * Check if all element of collection is primitive or wrapper of primitive
      *
      * @param collection
      * @return
