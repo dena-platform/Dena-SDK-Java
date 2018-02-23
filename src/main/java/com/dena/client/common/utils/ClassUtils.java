@@ -24,8 +24,9 @@ public final class ClassUtils {
     }
 
 
-    public static boolean isPrimitiveType(final Object targetObject) {
-        return targetObject.getClass().isPrimitive() || PRIMITIVE_WRAPPER_CLASS.contains(targetObject.getClass());
+    public static boolean isStringOrPrimitiveType(final Object targetObject) {
+        return targetObject.getClass().equals(String.class) || targetObject.getClass().isPrimitive() ||
+                PRIMITIVE_WRAPPER_CLASS.contains(targetObject.getClass());
     }
 
     public static boolean isRelationType(final Object targetObject) {
@@ -33,7 +34,8 @@ public final class ClassUtils {
     }
 
     /**
-     * Find original class name of targetObject without added redundant 
+     * Find original class name of targetObject without added redundant
+     *
      * @param targetObject
      * @return
      */

@@ -72,7 +72,7 @@ public class DenaSerializer {
                 continue;
             }
 
-            if (!ClassUtils.isPrimitiveType(entry.getValue()) && !ClassUtils.isRelationType(entry.getValue())
+            if (!ClassUtils.isStringOrPrimitiveType(entry.getValue()) && !ClassUtils.isRelationType(entry.getValue())
                     && !ClassUtils.isCollectionType(entry.getValue())) {
                 // ignore user define type
                 continue;
