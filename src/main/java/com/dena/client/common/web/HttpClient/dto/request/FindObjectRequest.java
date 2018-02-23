@@ -17,9 +17,9 @@ public class FindObjectRequest {
 
     private String appId;
 
-    private String objectId;
+    private String parentObjectId;
 
-    private String typeName;
+    private String parentTypeName;
 
     public List<Parameter> getParameterList() {
         return parameterList;
@@ -51,29 +51,29 @@ public class FindObjectRequest {
 
     }
 
-    public String getTypeName() {
-        return typeName;
+    public String getParentTypeName() {
+        return parentTypeName;
     }
 
-    public void setTypeName(String typeName) {
-        if (!typeName.startsWith("/")) {
-            typeName = "/" + typeName;
+    public void setParentTypeName(String parentTypeName) {
+        if (!parentTypeName.startsWith("/")) {
+            parentTypeName = "/" + parentTypeName;
         }
 
-        this.typeName = typeName;
+        this.parentTypeName = parentTypeName;
 
     }
 
-    public String getObjectId() {
-        return objectId;
+    public String getParentObjectId() {
+        return parentObjectId;
     }
 
-    public void setObjectId(String objectId) {
-        if (!objectId.startsWith("/")) {
-            objectId = "/" + objectId;
+    public void setParentObjectId(String parentObjectId) {
+        if (!parentObjectId.startsWith("/")) {
+            parentObjectId = "/" + parentObjectId;
         }
 
-        this.objectId = objectId;
+        this.parentObjectId = parentObjectId;
     }
 
     public static final class FindObjectRequestBuilder {
@@ -97,18 +97,18 @@ public class FindObjectRequest {
             return this;
         }
 
-        public FindObjectRequestBuilder withObjectId(String objectId) {
-            findObjectRequest.setObjectId(objectId);
-            return this;
-        }
-
         public FindObjectRequestBuilder withAppId(String appId) {
             findObjectRequest.setAppId(appId);
             return this;
         }
 
-        public FindObjectRequestBuilder withTypeName(String typeName) {
-            findObjectRequest.setTypeName(typeName);
+        public FindObjectRequestBuilder withParentTypeName(String typeName) {
+            findObjectRequest.setParentTypeName(typeName);
+            return this;
+        }
+
+        public FindObjectRequestBuilder withParentObjectId(String objectId) {
+            findObjectRequest.setParentObjectId(objectId);
             return this;
         }
 

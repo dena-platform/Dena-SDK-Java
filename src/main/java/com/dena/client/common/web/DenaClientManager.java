@@ -27,7 +27,7 @@ public class DenaClientManager {
     private static final HttpClient DENA_HTTP_CLIENT = HttpClient.getInstance();
 
     public static DenaResponse findDenaObject(FindObjectRequest getObjectRequest) throws DenaFault {
-        String fullURL = getObjectRequest.getBaseURL() + getObjectRequest.getAppId() + getObjectRequest.getTypeName()+getObjectRequest.getObjectId();
+        String fullURL = getObjectRequest.getBaseURL() + getObjectRequest.getAppId() + getObjectRequest.getParentTypeName()+getObjectRequest.getParentObjectId();
         DenaResponse denaResponse = DENA_HTTP_CLIENT.getData(fullURL, getObjectRequest.getParameterList());
         log.debug("Find object, address [{}], parameters {}", fullURL, getObjectRequest.getParameterList());
 

@@ -230,8 +230,8 @@ public final class Dena {
         FindObjectRequest findObjectRequest = aFindObjectRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
-                .withTypeName(klass.getSimpleName())
-                .withObjectId(objectId)
+                .withParentTypeName(klass.getSimpleName())
+                .withParentObjectId(objectId)
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.findDenaObject(findObjectRequest);
@@ -245,8 +245,8 @@ public final class Dena {
         }
     }
 
-    public static <T> List<T> loadRelation(Object parent, Relation<T> relation) {
-        if (parent == null || relation == null) {
+    public static <T> List<T> loadRelation(Object parentObject, Relation<T> relation) {
+        if (parentObject == null || relation == null) {
             throw DenaFault.makeException(ErrorCode.OBJECT_NOT_PRESENT, new IllegalAccessException());
         }
 
@@ -256,13 +256,13 @@ public final class Dena {
             throw DenaFault.makeException(ErrorCode.OBJECT_ID_NOT_SET, new IllegalArgumentException());
         }
 
-        
+        final String parentTypeName = ClassUtils.findSimpleTypeName(parentObject);
 
         FindObjectRequest findObjectRequest = aFindObjectRequest()
                 .withBaseURL(DENA_URL)
                 .withAppId(APP_ID)
-                .withTypeName(klass.getSimpleName())
-                .withObjectId(objectId)
+                .withParentTypeName(klass.getSimpleName())
+                .withParentObjectId(objectId)
                 .build();
 
 
