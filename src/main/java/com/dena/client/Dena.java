@@ -162,7 +162,7 @@ public final class Dena {
                 .withAppId(APP_ID)
                 .withParentTypeName(parentTypeName)
                 .withParentObjectId(DenaSerializer.findObjectId(denaObject).get())
-                .withChildTypeName(relation.getRelationType())
+                .withChildTypeName(relation.getRelationObjectType().get())
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);

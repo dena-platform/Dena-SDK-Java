@@ -1,7 +1,7 @@
 package com.dena.client.core.feature.persistence;
 
 import com.dena.client.common.utils.ClassUtils;
-import com.dena.client.common.utils.type.ParameterizeTypeHolder;
+import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.core.feature.persistence.dto.RelatedObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,6 @@ import java.util.Set;
  */
 public final class Relation<T> {
     private final static Logger log = LoggerFactory.getLogger(Relation.class);
-    private ParameterizeTypeHolder<T> parameterizeTypeHolder = new ParameterizeTypeHolder<T>() {
-    };
-
 
     private Set<RelatedObject> relatedObjects = new HashSet<>();
 
@@ -37,13 +34,14 @@ public final class Relation<T> {
         return relatedObjects;
     }
 
-    public String getRelationType() {
-        return parameterizeTypeHolder.getParameterizeTypeName();
+    public Optional<String> getRelationObjectType() {
+        if (CollectionUtils.isNotEmpty(relatedObjects)) {
+            return Optional.of(relatedObjects.iterator().next().getType());
+        }
+
+        return Optional.empty();
     }
 
-    public boolean isOfType(final String typeName) {
-        return getRelationType().equalsIgnoreCase(typeName);
-    }
 
 
 }

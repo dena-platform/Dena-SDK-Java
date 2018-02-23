@@ -112,18 +112,6 @@ public class DenaSerializer {
                 ReflectionUtils.forceSetField(deserializeObject, field.getKey(), field.getValue());
             }
 
-            List<RelatedObject> relatedTypes = denaObjectResponse.getRelatedObjects();
-
-            List<Relation<?>> relations = findRelations(deserializeObject);
-
-            for (RelatedObject relatedObject : relatedTypes) {
-                for (Relation relation : relations) {
-                    if (relation.isOfType(relatedObject.getType())) {
-                        
-                    }
-                }
-            }
-
             setObjectId(deserializeObject, denaObjectResponse.getObjectId());
 
 
@@ -174,147 +162,145 @@ public class DenaSerializer {
         for (Map.Entry<String, Object> entry : allFields.entrySet()) {
             if (ClassUtils.isRelationType(entry.getValue())) {
                 Relation<?> relation = (Relation<?>) entry.getValue();
-                if (CollectionUtils.isNotEmpty(relation.getAllRelatedObjects())) {
-                    relationFields.add(relation);
-                }
+                relationFields.add(relation);
             }
         }
 
         return relationFields;
     }
 
-        /**
-         * Check if object_id field is present and value is not null
-         *
-         * @param denaObject for checking if id present
-         * @return true if object_id is present and not null
-         */
-        public static boolean isObjectIdSet (Map < String, Object > denaObject){
-            return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
-        }
+    /**
+     * Check if object_id field is present and value is not null
+     *
+     * @param denaObject for checking if id present
+     * @return true if object_id is present and not null
+     */
+    public static boolean isObjectIdSet(Map<String, Object> denaObject) {
+        return denaObject.containsKey(DENA_OBJECT_ID_FIELD) && denaObject.get(DENA_OBJECT_ID_FIELD) != null;
+    }
 
-        /**
-         * For each object check if object_id field is present and value is not null
-         *
-         * @param denaObjects for checking if id present
-         * @return true if object_id is present and not null
-         */
-        public static boolean isObjectIdSet (Set < Map < String, Object >> denaObjects){
-            return denaObjects.stream().allMatch(DenaSerializer::isObjectIdSet);
-        }
-
-
-        /**
-         * Inject field dena_object_id and specified value to target object.
-         * if field with that name exist then only set value to field.
-         *
-         * @param targetObject
-         * @param objectId
-         * @param <T>
-         * @return
-         */
-        public static <T> T setObjectId ( final T targetObject, final String objectId){
-
-            try {
-                if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
-                    ReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
-                    return targetObject;
-                } else {
-                    Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
-                    T newObject = ReflectionUtils.callDefaultConstructor(newClass);
-                    ReflectionUtils.copyObject(targetObject, newObject);
-                    ReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
-
-                    return newObject;
-                }
-            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                throw new DenaFault(String.format("Can not set objectId field [%s]", objectId), ex);
-            }
-
-        }
-
-        public static <T> T setCreatedTime ( final T targetObject, final long timestamp){
-            try {
-                if (findAllFields(targetObject).containsKey(DENA_CREATED_TIME_FIELD)) {
-                    ReflectionUtils.forceSetField(targetObject, DENA_CREATED_TIME_FIELD, timestamp);
-                    return targetObject;
-                } else {
-                    Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_CREATED_TIME_FIELD);
-                    T newObject = ReflectionUtils.callDefaultConstructor(newClass);
-                    ReflectionUtils.copyObject(targetObject, newObject);
-                    ReflectionUtils.forceSetField(newObject, DENA_CREATED_TIME_FIELD, timestamp);
-
-                    return newObject;
-                }
-            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
-            }
-
-        }
-
-        public static <T> T setUpdateTime ( final T targetObject, final long timestamp){
-            try {
-                if (findAllFields(targetObject).containsKey(DENA_UPDATE_TIME_FIELD)) {
-                    ReflectionUtils.forceSetField(targetObject, DENA_UPDATE_TIME_FIELD, timestamp);
-                    return targetObject;
-                } else {
-                    Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_UPDATE_TIME_FIELD);
-                    T newObject = ReflectionUtils.callDefaultConstructor(newClass);
-                    ReflectionUtils.copyObject(targetObject, newObject);
-                    ReflectionUtils.forceSetField(newObject, DENA_UPDATE_TIME_FIELD, timestamp);
-
-                    return newObject;
-                }
-            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
-            }
-
-        }
-
-        public static <T> T setCount ( final T targetObject, final long timestamp){
-            try {
-                if (findAllFields(targetObject).containsKey(DENA_COUNT_FIELD)) {
-                    ReflectionUtils.forceSetField(targetObject, DENA_COUNT_FIELD, timestamp);
-                    return targetObject;
-                } else {
-                    Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_COUNT_FIELD);
-                    T newObject = ReflectionUtils.callDefaultConstructor(newClass);
-                    ReflectionUtils.copyObject(targetObject, newObject);
-                    ReflectionUtils.forceSetField(newObject, DENA_COUNT_FIELD, timestamp);
-
-                    return newObject;
-                }
-            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
-            }
-
-        }
+    /**
+     * For each object check if object_id field is present and value is not null
+     *
+     * @param denaObjects for checking if id present
+     * @return true if object_id is present and not null
+     */
+    public static boolean isObjectIdSet(Set<Map<String, Object>> denaObjects) {
+        return denaObjects.stream().allMatch(DenaSerializer::isObjectIdSet);
+    }
 
 
-        public static Optional<String> findObjectId (Object targetObject){
-            Object ObjectId = findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD);
-            if (Objects.isNull(ObjectId)) {
-                return Optional.empty();
+    /**
+     * Inject field dena_object_id and specified value to target object.
+     * if field with that name exist then only set value to field.
+     *
+     * @param targetObject
+     * @param objectId
+     * @param <T>
+     * @return
+     */
+    public static <T> T setObjectId(final T targetObject, final String objectId) {
+
+        try {
+            if (findAllFields(targetObject).containsKey(DENA_OBJECT_ID_FIELD)) {
+                ReflectionUtils.forceSetField(targetObject, DENA_OBJECT_ID_FIELD, objectId);
+                return targetObject;
             } else {
-                return Optional.of(String.valueOf(ObjectId));
+                Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), String.class, DENA_OBJECT_ID_FIELD);
+                T newObject = ReflectionUtils.callDefaultConstructor(newClass);
+                ReflectionUtils.copyObject(targetObject, newObject);
+                ReflectionUtils.forceSetField(newObject, DENA_OBJECT_ID_FIELD, objectId);
+
+                return newObject;
             }
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set objectId field [%s]", objectId), ex);
         }
-
-        public static Optional<String> findObjectId (Collection < ? > targetObject){
-
-            StringBuilder objectIds = new StringBuilder();
-            for (Object object : targetObject) {
-                Optional<String> objectId = findObjectId(object);
-                objectId.ifPresent(objectIdValue -> objectIds.append(objectIdValue).append(","));
-            }
-
-            if (objectIds.length() == 0) {
-                return Optional.empty();
-            } else {
-                objectIds.deleteCharAt(objectIds.length() - 1); // delete last "," character
-                return Optional.of(objectIds.toString());
-            }
-        }
-
 
     }
+
+    public static <T> T setCreatedTime(final T targetObject, final long timestamp) {
+        try {
+            if (findAllFields(targetObject).containsKey(DENA_CREATED_TIME_FIELD)) {
+                ReflectionUtils.forceSetField(targetObject, DENA_CREATED_TIME_FIELD, timestamp);
+                return targetObject;
+            } else {
+                Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_CREATED_TIME_FIELD);
+                T newObject = ReflectionUtils.callDefaultConstructor(newClass);
+                ReflectionUtils.copyObject(targetObject, newObject);
+                ReflectionUtils.forceSetField(newObject, DENA_CREATED_TIME_FIELD, timestamp);
+
+                return newObject;
+            }
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
+        }
+
+    }
+
+    public static <T> T setUpdateTime(final T targetObject, final long timestamp) {
+        try {
+            if (findAllFields(targetObject).containsKey(DENA_UPDATE_TIME_FIELD)) {
+                ReflectionUtils.forceSetField(targetObject, DENA_UPDATE_TIME_FIELD, timestamp);
+                return targetObject;
+            } else {
+                Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_UPDATE_TIME_FIELD);
+                T newObject = ReflectionUtils.callDefaultConstructor(newClass);
+                ReflectionUtils.copyObject(targetObject, newObject);
+                ReflectionUtils.forceSetField(newObject, DENA_UPDATE_TIME_FIELD, timestamp);
+
+                return newObject;
+            }
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
+        }
+
+    }
+
+    public static <T> T setCount(final T targetObject, final long timestamp) {
+        try {
+            if (findAllFields(targetObject).containsKey(DENA_COUNT_FIELD)) {
+                ReflectionUtils.forceSetField(targetObject, DENA_COUNT_FIELD, timestamp);
+                return targetObject;
+            } else {
+                Class<T> newClass = (Class<T>) ReflectionUtils.injectPublicFieldToClass(targetObject.getClass(), Long.class, DENA_COUNT_FIELD);
+                T newObject = ReflectionUtils.callDefaultConstructor(newClass);
+                ReflectionUtils.copyObject(targetObject, newObject);
+                ReflectionUtils.forceSetField(newObject, DENA_COUNT_FIELD, timestamp);
+
+                return newObject;
+            }
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            throw new DenaFault(String.format("Can not set createTime field [%s]", timestamp), ex);
+        }
+
+    }
+
+
+    public static Optional<String> findObjectId(Object targetObject) {
+        Object ObjectId = findAllFields(targetObject).get(DENA_OBJECT_ID_FIELD);
+        if (Objects.isNull(ObjectId)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(String.valueOf(ObjectId));
+        }
+    }
+
+    public static Optional<String> findObjectId(Collection<?> targetObject) {
+
+        StringBuilder objectIds = new StringBuilder();
+        for (Object object : targetObject) {
+            Optional<String> objectId = findObjectId(object);
+            objectId.ifPresent(objectIdValue -> objectIds.append(objectIdValue).append(","));
+        }
+
+        if (objectIds.length() == 0) {
+            return Optional.empty();
+        } else {
+            objectIds.deleteCharAt(objectIds.length() - 1); // delete last "," character
+            return Optional.of(objectIds.toString());
+        }
+    }
+
+
+}
