@@ -150,7 +150,7 @@ public class DenaTest {
         childObject1.childStringField = "string value 1";
 
         ChildClass childObject2 = new ChildClass();
-        childObject2.childIntField = 1;
+        childObject2.childIntField = 10;
         childObject2.childStringField = "string value 1";
 
         childObject1 = Dena.saveOrUpdate(childObject1);
@@ -164,7 +164,7 @@ public class DenaTest {
 
         List<ChildClass> childClasses = Dena.loadRelation(parentObject, parentObject.childRelation);
 
-        
+        System.out.println(childClasses);
 
     }
 

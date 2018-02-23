@@ -9,5 +9,11 @@ public class ChildClass {
 
     public int childIntField;
 
-
+    @Override
+    public String toString() {
+        return "ChildClass{" +
+                "childStringField='" + childStringField + '\'' +
+                ", childIntField=" + childIntField +
+                '}';
+    }
 }

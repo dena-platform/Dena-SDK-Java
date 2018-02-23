@@ -133,6 +133,8 @@ public class DenaSerializer {
                 }
 
                 setObjectId(deserializeObject, response.getObjectId());
+
+                deserializeObjects.add(deserializeObject);
             }
 
             return deserializeObjects;
