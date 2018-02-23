@@ -19,7 +19,7 @@ public final class Relation<T> {
 
     private Set<RelatedObject> relatedObjects = new HashSet<>();
 
-    public static <E> Relation<E> makeRelationOf(Class<E> klass) {
+    public static <E> Relation<E> of(Class<E> klass) {
         return new Relation<>(klass);
     }
 
