@@ -29,7 +29,7 @@ public final class HttpClient {
 
     private OkHttpClient OK_HTTP_CLIENT;
 
-    private static HttpClient httpClientInstnce;
+    private static HttpClient httpClientInstance;
 
     private HttpClient(int connectionTimeout, int readTimeout) {
         // todo: config write timeout setting
@@ -43,11 +43,11 @@ public final class HttpClient {
     }
 
     public static synchronized HttpClient getInstance(int connectionTimeout, int readTimeout) {
-        if (httpClientInstnce == null) {
-            httpClientInstnce = new HttpClient(connectionTimeout, readTimeout);
+        if (httpClientInstance == null) {
+            httpClientInstance = new HttpClient(connectionTimeout, readTimeout);
         }
 
-        return httpClientInstnce;
+        return httpClientInstance;
     }
 
     public static synchronized HttpClient getInstance() {
