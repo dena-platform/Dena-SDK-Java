@@ -3,7 +3,7 @@
 ----------
 
 ## Object ##
-To Save object in Dena use simple class type. class need not extend or implement any class or interface. those class should have following requirements:
+To Save object in Dena use simple class type. Class need not extend or implement any class or interface. those class should have following requirements:
 
 1.It should have public fields or have getter and setter for private fields (that follow the naming design patterns outlined in the JavaBeans Specification)
 3. pojo should have default public, no-argument constructor. 
