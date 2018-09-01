@@ -3,7 +3,7 @@ package com.dena.client.common.exception;
 import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 public class DenaFault extends RuntimeException {
     private ErrorResponse errorResponse;

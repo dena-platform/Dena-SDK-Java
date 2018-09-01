@@ -16,7 +16,7 @@ import static java.lang.reflect.Modifier.*;
 import static java.lang.reflect.Modifier.isPublic;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 
 public final class ReflectionUtils {

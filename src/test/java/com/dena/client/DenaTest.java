@@ -12,7 +12,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 public class DenaTest {
 

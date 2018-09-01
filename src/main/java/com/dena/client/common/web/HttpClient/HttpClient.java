@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 
 public final class HttpClient {

@@ -7,7 +7,7 @@ import java.util.Map;
 import static com.dena.client.common.utils.ClassUtils.isStringOrPrimitiveType;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 public final class CollectionUtils {
     public static boolean isEmpty(Collection<?> collections) {

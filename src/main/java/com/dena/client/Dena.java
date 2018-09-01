@@ -27,7 +27,7 @@ import static com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRe
 import static com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest.FindObjectRequestBuilder.aFindObjectRequest;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 
 public final class Dena {

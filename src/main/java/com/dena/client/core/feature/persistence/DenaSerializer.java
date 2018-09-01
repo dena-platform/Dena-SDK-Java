@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 
 public class DenaSerializer {

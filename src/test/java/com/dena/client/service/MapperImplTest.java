@@ -3,7 +3,7 @@ package com.dena.client.service;
 import org.junit.Test;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 public class MapperImplTest {
 

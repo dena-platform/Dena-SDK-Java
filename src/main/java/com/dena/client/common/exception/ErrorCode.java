@@ -1,7 +1,7 @@
 package com.dena.client.common.exception;
 
 /**
- * @author Javad Alimohammadi [<bs.alimohammadi@yahoo.com>]
+ * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 public interface ErrorCode {
     String OBJECT_NOT_PRESENT = "Entity can not be null";
