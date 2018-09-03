@@ -10,10 +10,10 @@ import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
 import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
 import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
-import com.dena.client.core.feature.persistence.dto.DenaObjectResponse;
-import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.core.feature.persistence.Relation;
+import com.dena.client.core.feature.persistence.dto.DenaObjectResponse;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -281,5 +281,14 @@ public final class Dena {
         }
 
     }
+
+    public static void registerUser(String email, String password) throws DenaFault {
+
+    }
+
+    public static void loginUser(String email, String password) throws DenaFault {
+
+    }
+
 
 }
