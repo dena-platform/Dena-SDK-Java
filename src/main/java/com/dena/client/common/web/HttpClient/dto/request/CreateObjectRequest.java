@@ -1,12 +1,9 @@
 package com.dena.client.common.web.HttpClient.dto.request;
 
-import com.dena.client.common.web.HttpClient.dto.Parameter;
 import com.dena.client.common.utils.MapUtils;
+import com.dena.client.common.web.HttpClient.dto.Parameter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
@@ -15,6 +12,8 @@ import java.util.Map;
 public class CreateObjectRequest {
 
     private List<Parameter> parameterList = new ArrayList<>();
+
+    private Map<String, String> headers = new LinkedHashMap<>();
 
     private Map<String, Object> requestBodyMap;
 
@@ -73,6 +72,15 @@ public class CreateObjectRequest {
         this.typeName = typeName;
     }
 
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+
     public static final class CreateObjectRequestBuilder {
         private CreateObjectRequest createObjectRequest;
 
@@ -98,7 +106,7 @@ public class CreateObjectRequest {
             return this;
         }
 
-        public CreateObjectRequestBuilder withRequestBodyMap(Map<String,Object> requestBodyMap) {
+        public CreateObjectRequestBuilder withRequestBodyMap(Map<String, Object> requestBodyMap) {
             createObjectRequest.setRequestBodyMap(requestBodyMap);
             return this;
         }
@@ -116,6 +124,11 @@ public class CreateObjectRequest {
 
         public CreateObjectRequestBuilder withTypeName(String typeName) {
             createObjectRequest.setTypeName(typeName);
+            return this;
+        }
+
+        public CreateObjectRequestBuilder withHeader(String headerName, String headerValue) {
+            createObjectRequest.headers.put(headerName, headerValue);
             return this;
         }
 

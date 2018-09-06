@@ -9,4 +9,7 @@ public class InvalidJSONException extends RuntimeException {
         super(message);
     }
 
+    public InvalidJSONException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -1,7 +1,6 @@
 package com.dena.client.core.feature.persistence.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -11,19 +10,39 @@ import java.util.List;
  * @author Javad Alimohammadi [<bs.alimohammadi@gmail.com>]
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DenaResponse {
+    @JsonProperty("status")
+    private Integer httpStatusCode;
+
     @JsonProperty("timestamp")
     private Long timestamp;
 
-    @JsonProperty("count")
-    private Long count;
+    @JsonProperty("create_user_count(s)")
+    private Integer createUserCount;
 
-    @JsonProperty("total_count")
-    private Long totalCount;
+    @JsonProperty("create_object_count(s)")
+    private Integer createObjectCount;
 
-    @JsonProperty("page")
-    private Long page;
+    @JsonProperty("create_table_count(s)")
+    private Integer createTableCount;
+
+    @JsonProperty("update_object_count(s)")
+    private Integer updateObjectCount;
+
+    @JsonProperty("delete_object_count(s)")
+    private Long deleteObjectCount;
+
+    @JsonProperty("delete_table_count(s)")
+    private Integer deleteTableCount;
+
+    @JsonProperty("delete_relation_count(s)")
+    private Long deleteRelationCount;
+
+    @JsonProperty("found_object_count(s)")
+    private Integer foundObjectCount;
+
+    @JsonProperty("found_table_count(s)")
+    private Integer foundTableCount;
 
     @JsonProperty("objects")
     private List<DenaObjectResponse> denaObjectResponseList = new ArrayList<>();
@@ -36,34 +55,95 @@ public class DenaResponse {
         this.timestamp = timestamp;
     }
 
-    public Long getCount() {
-        return count;
+    public Integer getCreateObjectCount() {
+        return createObjectCount;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setCreateObjectCount(Integer createObjectCount) {
+        this.createObjectCount = createObjectCount;
+    }
+
+    public Integer getCreateTableCount() {
+        return createTableCount;
+    }
+
+    public void setCreateTableCount(Integer createTableCount) {
+        this.createTableCount = createTableCount;
+    }
+
+    public void setDenaObjectResponseList(List<DenaObjectResponse> denaObjectResponseList) {
+        this.denaObjectResponseList = denaObjectResponseList;
+    }
+
+    public Integer getUpdateObjectCount() {
+        return updateObjectCount;
+    }
+
+    public void setUpdateObjectCount(Integer updateObjectCount) {
+        this.updateObjectCount = updateObjectCount;
+    }
+
+    public Long getDeleteObjectCount() {
+        return deleteObjectCount;
+    }
+
+    public void setDeleteObjectCount(Long deleteObjectCount) {
+        this.deleteObjectCount = deleteObjectCount;
+    }
+
+    public void setDeleteRelationCount(Long deleteRelationCount) {
+        this.deleteRelationCount = deleteRelationCount;
     }
 
     public List<DenaObjectResponse> getDenaObjectResponseList() {
         return denaObjectResponseList;
     }
 
-    public void setTotalCount(Long totalCount) {
-        this.totalCount = totalCount;
+    public void setFoundObjectCount(Integer foundObjectCount) {
+        this.foundObjectCount = foundObjectCount;
     }
 
-    public void setPage(Long page) {
-        this.page = page;
+    public Integer getFoundTableCount() {
+        return foundTableCount;
+    }
+
+    public void setFoundTableCount(Integer foundTableCount) {
+        this.foundTableCount = foundTableCount;
+    }
+
+    public Integer getHttpStatusCode() {
+        return httpStatusCode;
+    }
+
+    public void setHttpStatusCode(Integer httpStatusCode) {
+        this.httpStatusCode = httpStatusCode;
+    }
+
+    public Integer getDeleteTableCount() {
+        return deleteTableCount;
+    }
+
+    public void setDeleteTableCount(Integer deleteTableCount) {
+        this.deleteTableCount = deleteTableCount;
+    }
+
+    public Integer getCreateUserCount() {
+        return createUserCount;
+    }
+
+    public void setCreateUserCount(Integer createUserCount) {
+        this.createUserCount = createUserCount;
+    }
+
+    public Integer getFoundObjectCount() {
+        return foundObjectCount;
     }
 
     public static final class DenaResponseBuilder {
-        private Long timestamp;
-        private Long count;
-        private Long totalCount;
-        private Long page;
-        private List<DenaObjectResponse> denaObjectResponseList = new ArrayList<>();
+        private DenaResponse denaResponse;
 
         private DenaResponseBuilder() {
+            denaResponse = new DenaResponse();
         }
 
         public static DenaResponseBuilder aDenaResponse() {
@@ -71,41 +151,71 @@ public class DenaResponse {
         }
 
         public DenaResponseBuilder withTimestamp(Long timestamp) {
-            this.timestamp = timestamp;
+            denaResponse.setTimestamp(timestamp);
             return this;
         }
 
-        public DenaResponseBuilder withCount(Long count) {
-            this.count = count;
+        public DenaResponseBuilder withCreatedUserCount(int userCount) {
+            denaResponse.setCreateUserCount(userCount);
             return this;
         }
 
-        public DenaResponseBuilder withCount(Integer count) {
-            this.count = Long.valueOf(count);
+
+        public DenaResponseBuilder withCreateObjectCount(int createObjectCount) {
+            denaResponse.setCreateObjectCount(createObjectCount);
             return this;
         }
 
-        public DenaResponseBuilder withObjectResponseList(List<DenaObjectResponse> denaObjectResponseList) {
-            this.denaObjectResponseList = denaObjectResponseList;
+        public DenaResponseBuilder withCreateTableCount(int createSchemaCount) {
+            denaResponse.setCreateTableCount(createSchemaCount);
             return this;
         }
 
-        public DenaResponseBuilder withTotalCount(long totalCount) {
-            this.totalCount = totalCount;
+        public DenaResponseBuilder withUpdateObjectCount(int updateObjectCount) {
+            denaResponse.setUpdateObjectCount(updateObjectCount);
             return this;
         }
 
-        public DenaResponseBuilder withPage(long page) {
-            this.page = page;
+        public DenaResponseBuilder withDeleteObjectCount(Long deleteObjectCount) {
+            denaResponse.setDeleteObjectCount(deleteObjectCount);
             return this;
         }
+
+        public DenaResponseBuilder withDeleteRelationCount(Long deleteRelationCount) {
+            denaResponse.setDeleteRelationCount(deleteRelationCount);
+            return this;
+        }
+
+        public DenaResponseBuilder withFoundObjectCount(int foundObjectCount) {
+            denaResponse.setFoundObjectCount(foundObjectCount);
+            return this;
+        }
+
+        public DenaResponseBuilder withFoundTableCount(int foundTableCount) {
+            denaResponse.setFoundTableCount(foundTableCount);
+            return this;
+
+        }
+
+        public DenaResponseBuilder withDeleteTableCount(int deleteTableCount) {
+            denaResponse.setDeleteTableCount(deleteTableCount);
+            return this;
+
+        }
+
+
+        public DenaResponseBuilder withDenaObjectResponseList(List<DenaObjectResponse> denaObjectResponseList) {
+            denaResponse.setDenaObjectResponseList(denaObjectResponseList);
+            return this;
+        }
+
+        public DenaResponseBuilder withHttpStatusCode(int httpStatusCode) {
+            denaResponse.setHttpStatusCode(httpStatusCode);
+            return this;
+        }
+
 
         public DenaResponse build() {
-            DenaResponse denaResponse = new DenaResponse();
-            denaResponse.setTimestamp(timestamp);
-            denaResponse.setCount(count);
-            denaResponse.setTotalCount(totalCount);
-            denaResponse.setPage(page);
             return denaResponse;
         }
     }

@@ -1,7 +1,10 @@
 package com.dena.client.core.feature.persistence.dto;
 
 import com.dena.client.common.utils.StringUtils;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,18 +16,23 @@ import java.util.Map;
  */
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DenaObjectResponse {
     private Map<String, Object> fields = new LinkedHashMap<>();
 
     @JsonProperty(value = "object_id")
     private String objectId;
 
-    @JsonProperty(value = "related_objects")
-    private List<RelatedObject> relatedObjects = new ArrayList<>();
+    @JsonProperty("update_time")
+    private Long updateTime;
+
+    @JsonProperty("create_time")
+    private Long createTime;
 
     @JsonProperty(value = "object_uri")
     private String objectURI;
+
+    @JsonProperty(value = "related_objects")
+    private List<RelatedObject> relatedObjects = new ArrayList<>();
 
     @JsonAnyGetter
     public Map<String, Object> getAllFields() {
@@ -67,4 +75,21 @@ public class DenaObjectResponse {
     public void setRelatedObjects(List<RelatedObject> relatedObjects) {
         this.relatedObjects = relatedObjects;
     }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
 }

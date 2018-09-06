@@ -6,10 +6,7 @@ import com.dena.client.common.utils.ClassUtils;
 import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.utils.StringUtils;
 import com.dena.client.common.web.DenaClientManager;
-import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
-import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
+import com.dena.client.common.web.HttpClient.dto.request.*;
 import com.dena.client.core.feature.persistence.DenaSerializer;
 import com.dena.client.core.feature.persistence.Relation;
 import com.dena.client.core.feature.persistence.dto.DenaObjectResponse;
@@ -17,10 +14,7 @@ import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest.CreateObjectRequestBuilder.aCreateObjectRequest;
 import static com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest.DeleteRelationRequestBuilder.aDeleteRelationRequest;
@@ -33,6 +27,10 @@ import static com.dena.client.common.web.HttpClient.dto.request.FindObjectReques
 public final class Dena {
 
     private final static Logger log = LoggerFactory.getLogger(Dena.class);
+
+    private static String token;
+
+    private static String emailAddress;
 
     private static String DENA_URL = "http://localhost:8090/v1";
 
@@ -68,14 +66,14 @@ public final class Dena {
             DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
             denaObject = DenaSerializer.setObjectId(denaObject, denaObjectResponse.getObjectId());
             denaObject = DenaSerializer.setCreatedTime(denaObject, denaResponse.getTimestamp());
-            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getCount());
+            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getFoundObjectCount());
             log.debug("Object [{}] is created successfully with id [{}].", denaObject, denaObjectResponse.getObjectId());
             return denaObject;
         } else {
             // send update object request
             DenaResponse denaResponse = DenaClientManager.updateDenaObject(createObjectRequest);
             denaObject = DenaSerializer.setUpdateTime(denaObject, denaResponse.getTimestamp());
-            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getCount());
+            denaObject = DenaSerializer.setCount(denaObject, denaResponse.getFoundObjectCount());
             log.debug("Object [{}] is updated successfully.", denaObject);
             return denaObject;
         }
@@ -103,7 +101,7 @@ public final class Dena {
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
-        return denaResponse.getCount();
+        return denaResponse.getFoundObjectCount();
     }
 
     public static long removeObjects(Collection<?> denaObjects) throws DenaFault {
@@ -132,7 +130,7 @@ public final class Dena {
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteDenaObject(createObjectRequest);
-        return denaResponse.getCount();
+        return denaResponse.getFoundObjectCount();
     }
 
     public static long removeRelation(Object denaObject, Relation<?> relation) throws DenaFault {
@@ -166,7 +164,7 @@ public final class Dena {
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
-        return denaResponse.getCount();
+        return denaResponse.getFoundObjectCount();
 
     }
 
@@ -213,7 +211,7 @@ public final class Dena {
                 .build();
 
         DenaResponse denaResponse = DenaClientManager.deleteRelation(deleteRelationRequest);
-        return denaResponse.getCount();
+        return denaResponse.getFoundObjectCount();
 
 
     }
@@ -282,11 +280,75 @@ public final class Dena {
 
     }
 
-    public static void registerUser(String email, String password) throws DenaFault {
+    public static void registerUser(final String email, final String password, Map<String, Object> otherField) throws DenaFault {
+        if (StringUtils.isAnyBlank(email, password)) {
+            throw DenaFault.makeException(ErrorCode.USER_CREDIT_INVALID, new IllegalAccessException());
+        }
+
+        Map<String, Object> credit = new LinkedHashMap<>();
+        credit.put("email", email);
+        credit.put("password", password);
+        credit.putAll(otherField);
+
+        GeneralRequest loginRequest = GeneralRequest.GeneralRequestBuilder.aGeneralRequest()
+                .withRequestBodyMap(credit)
+                .withAPPId(APP_ID)
+                .withBaseURL(DENA_URL)
+                .withHeader("Authorization", token)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.registerUser(loginRequest);
+        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
+
+        log.info("Successfully register user [{}]", email);
+
 
     }
 
-    public static void loginUser(String email, String password) throws DenaFault {
+    public static void login(final String email, final String password) throws DenaFault {
+        if (StringUtils.isAnyBlank(email, password)) {
+            throw DenaFault.makeException(ErrorCode.USER_CREDIT_INVALID, new IllegalAccessException());
+        }
+
+        Map<String, Object> credit = new LinkedHashMap<>();
+        credit.put("email", email);
+        credit.put("password", password);
+
+
+        GeneralRequest loginRequest = GeneralRequest.GeneralRequestBuilder.aGeneralRequest()
+                .withRequestBodyMap(credit)
+                .withAPPId(APP_ID)
+                .withBaseURL(DENA_URL)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.loginUser(loginRequest);
+        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
+        token = String.valueOf(denaObjectResponse.getAllFields().get("token"));
+        emailAddress = email;
+
+        log.info("Successfully login user [{}]", emailAddress);
+
+    }
+
+    public static void logOut() throws DenaFault {
+        if (StringUtils.isBlank(token)) {
+            throw DenaFault.makeException(ErrorCode.USER_IS_NOT_LOGGEDED, new IllegalAccessException());
+        }
+
+        Map<String, Object> credit = new LinkedHashMap<>();
+        credit.put("email", emailAddress);
+
+
+        GeneralRequest logOutRequest = GeneralRequest.GeneralRequestBuilder.aGeneralRequest()
+                .withRequestBodyMap(credit)
+                .withAPPId(APP_ID)
+                .withBaseURL(DENA_URL)
+                .withHeader("Authorization", token)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.logOutUser(logOutRequest);
+
+        log.info("Successfully logout user [{}]", emailAddress);
 
     }
 

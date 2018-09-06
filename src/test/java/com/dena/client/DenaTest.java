@@ -7,7 +7,10 @@ import com.dena.client.model.ParentClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +21,7 @@ public class DenaTest {
 
     @BeforeClass
     public static void setup() {
-        Dena.initApp("denaQA");
+        Dena.initApp("Dena");
     }
 
     @Test
@@ -166,6 +169,24 @@ public class DenaTest {
 
         System.out.println(childClasses);
 
+    }
+
+    @Test
+    public void test_loginUser() {
+        Dena.login("admin@dena-platform.com", "123456");
+
+    }
+
+    @Test
+    public void test_logoutUser() {
+        Dena.login("admin@dena-platform.com", "123456");
+        Dena.logOut();
+    }
+
+    @Test
+    public void test_registerUser() {
+        Dena.login("admin@dena-platform.com", "123456");
+        Dena.registerUser("user2@dena-platform.com", "123", new LinkedHashMap<>());
     }
 
 

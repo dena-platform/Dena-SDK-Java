@@ -1,14 +1,13 @@
 package com.dena.client.common.web;
 
 import com.dena.client.common.exception.DenaFault;
-import com.dena.client.common.utils.StringUtils;
-import com.dena.client.common.web.HttpClient.HttpClient;
-import com.dena.client.common.web.HttpClient.dto.request.CreateObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.request.DeleteObjectRequest;
-import com.dena.client.common.web.HttpClient.dto.request.DeleteRelationRequest;
-import com.dena.client.common.web.HttpClient.dto.request.FindObjectRequest;
-import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import com.dena.client.common.utils.JSONMapper;
+import com.dena.client.common.utils.StringUtils;
+import com.dena.client.common.utils.URLUtils;
+import com.dena.client.common.web.HttpClient.HttpClient;
+import com.dena.client.common.web.HttpClient.dto.request.*;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
@@ -21,6 +20,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class DenaClientManager {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private final static String loginUserURL = "/users/login";
+
+    private final static String logoutUserURL = "/users/logout";
+
+    private final static String registerNewUserURL = "/users/register";
 
     private final static Logger log = getLogger(DenaClientManager.class);
 
@@ -36,7 +41,7 @@ public class DenaClientManager {
             fullURL = findObjectRequest.getBaseURL() + findObjectRequest.getAppId() + findObjectRequest.getParentTypeName() +
                     findObjectRequest.getParentObjectId() + "/relation" + findObjectRequest.getChildTypeName();
         }
-        
+
         DenaResponse denaResponse = DENA_HTTP_CLIENT.getData(fullURL, findObjectRequest.getParameterList());
         log.debug("Find object, address [{}], parameters {}", fullURL, findObjectRequest.getParameterList());
 
@@ -46,7 +51,8 @@ public class DenaClientManager {
     public static DenaResponse createNewDenaObject(CreateObjectRequest createObjectRequest) throws DenaFault {
         String fullURL = createObjectRequest.getBaseURL() + createObjectRequest.getAppId() + createObjectRequest.getTypeName();
         RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(createObjectRequest.getRequestBodyMap()));
-        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, createObjectRequest.getParameterList(), requestBody);
+        Headers headers = Headers.of(createObjectRequest.getHeaders());
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, headers, createObjectRequest.getParameterList(), requestBody);
         log.debug("Successfully posted data to address [{}], parameters {}, body [{}]", fullURL, createObjectRequest.getParameterList(), createObjectRequest.getRequestBodyMap());
 
         return denaResponse;
@@ -88,6 +94,37 @@ public class DenaClientManager {
 
         DenaResponse denaResponse = DENA_HTTP_CLIENT.deleteData(fullURL, deleteRelationRequest.getParameterList());
         log.debug("Successfully delete relation, address [{}]", fullURL);
+
+        return denaResponse;
+    }
+
+    public static DenaResponse loginUser(GeneralRequest generalRequest) {
+        String fullURL = URLUtils.makeURLString(generalRequest.getBaseURL(), generalRequest.getAppId(), loginUserURL);
+        RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(generalRequest.getRequestBodyMap()));
+        Headers headers = Headers.of(generalRequest.getHeaders());
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, headers, null, requestBody);
+        log.debug("Successfully calling login user address [{}]", fullURL);
+
+        return denaResponse;
+    }
+
+    public static DenaResponse logOutUser(GeneralRequest generalRequest) {
+        String fullURL = URLUtils.makeURLString(generalRequest.getBaseURL(), generalRequest.getAppId(), logoutUserURL);
+        RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(generalRequest.getRequestBodyMap()));
+        Headers headers = Headers.of(generalRequest.getHeaders());
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, headers, null, requestBody);
+        log.debug("Successfully calling logout user address [{}]", fullURL);
+
+        return denaResponse;
+    }
+
+
+    public static DenaResponse registerUser(GeneralRequest generalRequest) {
+        String fullURL = URLUtils.makeURLString(generalRequest.getBaseURL(), generalRequest.getAppId(), registerNewUserURL);
+        RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(generalRequest.getRequestBodyMap()));
+        Headers headers = Headers.of(generalRequest.getHeaders());
+        DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, headers, null, requestBody);
+        log.debug("Successfully calling login user address [{}]", fullURL);
 
         return denaResponse;
     }

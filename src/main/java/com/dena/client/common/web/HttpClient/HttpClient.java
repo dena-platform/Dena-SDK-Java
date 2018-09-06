@@ -2,11 +2,12 @@ package com.dena.client.common.web.HttpClient;
 
 
 import com.dena.client.common.exception.DenaFault;
-import com.dena.client.core.feature.persistence.dto.DenaResponse;
-import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
-import com.dena.client.common.web.HttpClient.dto.Parameter;
-import com.dena.client.common.utils.StringUtils;
+import com.dena.client.common.utils.CollectionUtils;
 import com.dena.client.common.utils.JSONMapper;
+import com.dena.client.common.utils.StringUtils;
+import com.dena.client.common.web.HttpClient.dto.Parameter;
+import com.dena.client.common.web.HttpClient.dto.response.ErrorResponse;
+import com.dena.client.core.feature.persistence.dto.DenaResponse;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +68,8 @@ public final class HttpClient {
         return response;
     }
 
-    public DenaResponse postData(final String URL, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
-        Request request = preparePostClient(URL, parameterList, requestBody);
+    public DenaResponse postData(final String URL, Headers headers, List<Parameter> parameterList, RequestBody requestBody) throws DenaFault {
+        Request request = preparePostClient(URL, headers, parameterList, requestBody);
         log.debug("Posting data to address [{}]", request.url());
 
         DenaResponse denaResponse = sendRequest(URL, parameterList, request);
@@ -95,13 +96,14 @@ public final class HttpClient {
     }
 
 
-    private Request preparePostClient(final String URL, List<Parameter> parameterList, RequestBody requestBody) {
+    private Request preparePostClient(final String URL, Headers headers, List<Parameter> parameterList, RequestBody requestBody) {
         HttpUrl httpUrl = HttpUrl.parse(URL);
 
         HttpUrl result = addParameterToHttpURL(httpUrl, parameterList);
         Request request = new Request.Builder()
                 .url(result)
                 .post(requestBody)
+                .headers(headers)
                 .build();
         return request;
     }
@@ -142,17 +144,19 @@ public final class HttpClient {
     private HttpUrl addParameterToHttpURL(final HttpUrl httpUrl, List<Parameter> parameterList) {
         HttpUrl result = httpUrl;
 
-        for (Parameter parameter : parameterList) {
-            String parameterName = parameter.getName();
-            String parameterValue = parameter.getValue();
-            if (StringUtils.isBlank(parameterName))
-                log.warn("Parameter name for entry [{}] is empty", parameter);
+        if (!CollectionUtils.isEmpty(parameterList)) {
+            for (Parameter parameter : parameterList) {
+                String parameterName = parameter.getName();
+                String parameterValue = parameter.getValue();
+                if (StringUtils.isBlank(parameterName))
+                    log.warn("Parameter name for entry [{}] is empty", parameter);
 
-            if (StringUtils.isBlank(parameterValue))
-                log.warn("Parameter value for entry [{}] is empty", parameter);
+                if (StringUtils.isBlank(parameterValue))
+                    log.warn("Parameter value for entry [{}] is empty", parameter);
 
-            if (StringUtils.isNoneBlank(parameterName, parameterValue)) {
-                result = result.newBuilder().addQueryParameter(parameterName, parameterValue).build();
+                if (StringUtils.isNoneBlank(parameterName, parameterValue)) {
+                    result = result.newBuilder().addQueryParameter(parameterName, parameterValue).build();
+                }
             }
         }
 
