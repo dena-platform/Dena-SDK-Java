@@ -280,31 +280,12 @@ public final class Dena {
 
     }
 
-    public static void registerUser(final String email, final String password, Map<String, Object> otherField) throws DenaFault {
-        if (StringUtils.isAnyBlank(email, password)) {
-            throw DenaFault.makeException(ErrorCode.USER_CREDIT_INVALID, new IllegalAccessException());
-        }
-
-        Map<String, Object> credit = new LinkedHashMap<>();
-        credit.put("email", email);
-        credit.put("password", password);
-        credit.putAll(otherField);
-
-        GeneralRequest loginRequest = GeneralRequest.GeneralRequestBuilder.aGeneralRequest()
-                .withRequestBodyMap(credit)
-                .withAPPId(APP_ID)
-                .withBaseURL(DENA_URL)
-                .withHeader("Authorization", token)
-                .build();
-
-        DenaResponse denaResponse = DenaClientManager.registerUser(loginRequest);
-        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
-
-        log.info("Successfully register user [{}]", email);
-
-
-    }
-
+    /**
+     * login user with email and password
+     * @param email
+     * @param password
+     * @throws DenaFault
+     */
     public static void login(final String email, final String password) throws DenaFault {
         if (StringUtils.isAnyBlank(email, password)) {
             throw DenaFault.makeException(ErrorCode.USER_CREDIT_INVALID, new IllegalAccessException());
@@ -349,6 +330,31 @@ public final class Dena {
         DenaResponse denaResponse = DenaClientManager.logOutUser(logOutRequest);
 
         log.info("Successfully logout user [{}]", emailAddress);
+
+    }
+
+    public static void registerUser(final String email, final String password, Map<String, Object> otherField) throws DenaFault {
+        if (StringUtils.isAnyBlank(email, password)) {
+            throw DenaFault.makeException(ErrorCode.USER_CREDIT_INVALID, new IllegalAccessException());
+        }
+
+        Map<String, Object> credit = new LinkedHashMap<>();
+        credit.put("email", email);
+        credit.put("password", password);
+        credit.putAll(otherField);
+
+        GeneralRequest loginRequest = GeneralRequest.GeneralRequestBuilder.aGeneralRequest()
+                .withRequestBodyMap(credit)
+                .withAPPId(APP_ID)
+                .withBaseURL(DENA_URL)
+                .withHeader("Authorization", token)
+                .build();
+
+        DenaResponse denaResponse = DenaClientManager.registerUser(loginRequest);
+        DenaObjectResponse denaObjectResponse = denaResponse.getDenaObjectResponseList().get(0);
+
+        log.info("Successfully register user [{}]", email);
+
 
     }
 
