@@ -124,7 +124,7 @@ public class DenaClientManager {
         RequestBody requestBody = RequestBody.create(JSON, JSONMapper.createJSONFromObject(generalRequest.getRequestBodyMap()));
         Headers headers = Headers.of(generalRequest.getHeaders());
         DenaResponse denaResponse = DENA_HTTP_CLIENT.postData(fullURL, headers, null, requestBody);
-        log.debug("Successfully calling login user address [{}]", fullURL);
+        log.debug("Successfully calling login register address [{}]", fullURL);
 
         return denaResponse;
     }

@@ -281,7 +281,7 @@ public final class Dena {
     }
 
     /**
-     * login user with email and password
+     * Login user with provided email and password
      * @param email
      * @param password
      * @throws DenaFault
